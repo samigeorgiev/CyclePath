@@ -12,6 +12,14 @@ export class RoutesController {
         private readonly neo4jService: Neo4jService
     ) {}
 
+    get(
+        @Param('startNodeId') startNodeLat: number,
+        @Param('endNodeId') startNodeLong: number, 
+        @Param('startNodeId') startNodeLat: number,
+        @Param('endNodeId') startNodeLong: number, ) {
+            const 
+        }
+
     @Post()
     create(@Body() createRouteDto: CreateRouteDto) {
         return this.routesService.create(createRouteDto)
