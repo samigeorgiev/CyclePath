@@ -1,5 +1,4 @@
-import { Body, Controller, Post, ValidationPipe } from '@nestjs/common'
-import { Neo4jService } from 'nest-neo4j/dist'
+import { Body, Controller, HttpCode, HttpStatus, Post, ValidationPipe } from '@nestjs/common'
 import { RateRouteDto } from './dto/rate-route.dto'
 import { RoutesService } from './routes.service'
 
@@ -8,5 +7,11 @@ export class RoutesController {
     constructor(private readonly routesService: RoutesService) {}
 
     @Post('rate')
-    rateRoute(@Body(ValidationPipe) rateRouteDto: RateRouteDto) {}
+    @HttpCode(HttpStatus.NO_CONTENT)
+    async rateRoute(@Body(ValidationPipe) rateRouteDto: RateRouteDto) {
+        //TO DO: get userId from request object after implementing auth
+        const userId: number = 1
+
+        await this.routesService.rateRoute(rateRouteDto, userId)
+    }
 }
