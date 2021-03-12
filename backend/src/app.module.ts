@@ -5,10 +5,15 @@ import { AppController } from './app.controller'
 import { AppService } from './app.service'
 import { RoutesModule } from './routes/routes.module'
 import { NodesModule } from './nodes/nodes.module'
+import { TypeOrmModule } from '@nestjs/typeorm'
+import { TypeOrmConfigService } from './config/typeorm-config.service'
 
 @Module({
     imports: [
         ConfigModule.forRoot({ isGlobal: true }),
+        TypeOrmModule.forRootAsync({
+            useClass: TypeOrmConfigService
+        }),
         Neo4jModule.fromEnv(),
         RoutesModule,
         NodesModule
