@@ -1,5 +1,5 @@
 import React from 'react';
-import Map from '../../containers/Map/Map';
+import MapContainer from '../../containers/Map/Map';
 import {
   BrowserRouter as Router,
   Switch,
@@ -13,11 +13,13 @@ const Layout = () => {
     <Router>
       <div className="Layout">
         <NavigationBar />
-        <Switch>
-          <Route path="/map">
-            <Map />
-          </Route>
-        </Switch>
+        <div className="Container">
+          <Switch>
+            <Route path="/Map">
+              <MapContainer />
+            </Route>
+          </Switch>
+        </div>
       </div>
     </Router>
   );

@@ -1,30 +1,38 @@
 import React from 'react';
-import { Map, GoogleApiWrapper } from 'google-maps-react';
 import './Map.css';
+import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet'
 
-const mapStyles = {
-  width: '100%',
-  height: '100%'
-};
+const Map = () => {
 
-const MapContainer = (props) => {
+  const link =
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"
+      integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A=="
+      crossorigin=""/>
+
+  const script =
+    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"
+      integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA=="
+      crossorigin=""></script>;
+
   return (
     <div className="MapContainer">
-      <Map
-        google={props.google}
-        zoom={14}
-        style={mapStyles}
-        initialCenter={
-          {
-            lat: 37.090240,
-            lng: -95.712891
-          }
-        }
-      />
+      {link}
+      {script}
+      <div id="mapid">
+        <MapContainer center={[51.505, -0.09]} zoom={13} scrollWheelZoom={false}>
+          <TileLayer
+            attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+            url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+          />
+          <Marker position={[51.505, -0.09]}>
+            <Popup>
+              A pretty CSS3 popup. <br /> Easily customizable.
+            </Popup>
+          </Marker>
+        </MapContainer>
+      </div>
     </div>
   )
 }
 
-export default GoogleApiWrapper({
-  apiKey: 'AIzaSyCw_TCGtabbNofC-_WTwyAaRuq7RfZ6Knk'
-})(MapContainer);
+export default Map;
