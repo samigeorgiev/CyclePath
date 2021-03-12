@@ -1,4 +1,7 @@
-import { Body, Controller, HttpCode, HttpStatus, Post, ValidationPipe } from '@nestjs/common'
+import { Get, Param } from '@nestjs/common'
+import { Body, Controller, Post, ValidationPipe } from '@nestjs/common'
+import { Neo4jService } from 'nest-neo4j/dist'
+import { GetRouteDto } from './dto/get-route.dto'
 import { RateRouteDto } from './dto/rate-route.dto'
 import { RoutesService } from './routes.service'
 
@@ -6,11 +9,14 @@ import { RoutesService } from './routes.service'
 export class RoutesController {
     constructor(private readonly routesService: RoutesService) {}
 
+    @Get()
     get(
         @Param('startNodeId') startNodeLat: number,
         @Param('endNodeId') startNodeLong: number, 
-        @Param('startNodeId') startNodeLat: number,
-        @Param('endNodeId') startNodeLong: number, ) { 
+        @Param('startNodeId') endNodeLat: number,
+        @Param('endNodeId') endNodeLong: number, ) {
+            const request = new GetRouteDto(startNodeLat, startNodeLong, endNodeLat, endNodeLong);
+            this.routesService.getRoute(request);
         }
 
     @Post('rate')

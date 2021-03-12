@@ -22,6 +22,15 @@ export class NodesRepository {
         return new Node(queryResult.records[0].get('n'))
     }
 
+    async getAllNodes(): Promise<Node[]> {
+        const queryResult = await this.neo4jService.read(`
+            MATCH (node:Node) return node`
+        )
+        // queryResult.records.
+        console.log(queryResult.records)
+        return []
+    }
+
     async  findShortestRouteBetweenTwoNodes(startNodeId: number, endNodeId: number) {
         const queryResult = await this.neo4jService.read(
             `MATCH (startNode: Node{node_id: 7271008793}, endNode: Node{node_id: 1684697691})
