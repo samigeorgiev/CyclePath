@@ -1,5 +1,4 @@
 import React from 'react';
-import MapContainer from '../../containers/Map/Map';
 import {
   BrowserRouter as Router,
   Switch,
@@ -7,6 +6,7 @@ import {
 } from "react-router-dom";
 import './Layout.css';
 import NavigationBar from '../../containers/NavigationBar/NavigationBar';
+import MapContainer from '../../containers/MapContainer/MapContainer';
 
 const Layout = () => {
   return (
