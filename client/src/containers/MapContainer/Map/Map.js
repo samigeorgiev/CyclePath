@@ -13,6 +13,8 @@ import {
 const Map = withScriptjs(
   withGoogleMap(props => (
     <GoogleMap
+      center={props.mapCenter}
+      zoom={props.mapZoom}
       defaultCenter={props.defaultCenter}
       defaultZoom={props.defaultZoom}
     >
