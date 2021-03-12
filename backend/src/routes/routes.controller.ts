@@ -6,6 +6,13 @@ import { RoutesService } from './routes.service'
 export class RoutesController {
     constructor(private readonly routesService: RoutesService) {}
 
+    get(
+        @Param('startNodeId') startNodeLat: number,
+        @Param('endNodeId') startNodeLong: number, 
+        @Param('startNodeId') startNodeLat: number,
+        @Param('endNodeId') startNodeLong: number, ) { 
+        }
+
     @Post('rate')
     @HttpCode(HttpStatus.NO_CONTENT)
     async rateRoute(@Body(ValidationPipe) rateRouteDto: RateRouteDto) {
