@@ -1,11 +1,7 @@
 import { Injectable } from '@nestjs/common'
-<<<<<<< Updated upstream
 import { InjectRepository } from '@nestjs/typeorm'
-=======
 import { GetRouteDto } from './dto/get-route.dto'
->>>>>>> Stashed changes
 import { RateRouteDto } from './dto/rate-route.dto'
-import { RouteRating } from './entities/route-rating.entity'
 import { Route } from './entities/route.entity'
 import { RoutesRatingRepository } from './repository/routes-rating.repository'
 import { RoutesRepository } from './repository/routes.repository'
