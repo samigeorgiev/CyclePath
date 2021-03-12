@@ -1,8 +1,0 @@
-.NavigationBar {
-  display: flex;
-  justify-content: flex-end;
-  height: 75px;
-  width: 100%;
-  background-color: rgb(87, 184, 87);
-  border-bottom: 2px black solid;
-}
