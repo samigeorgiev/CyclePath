@@ -7,7 +7,8 @@ interface Props {}
 const Nav: React.FC<Props> = () => {
     const routes = [
         { name: 'Home', path: '/' },
-        { name: 'Map', path: '/map' }
+        { name: 'Map', path: '/map' },
+        { name: 'Login', path: '/login' }
     ]
     return (
         <div className={styles.root}>
