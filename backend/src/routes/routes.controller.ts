@@ -4,15 +4,18 @@ import {
     Get,
     HttpCode,
     HttpStatus,
-    Param,
-    ParseIntPipe,
     Post,
     Query,
     ValidationPipe
 } from '@nestjs/common'
+import { AirPollutionReqDto } from './dto/air-pollution-req.dto'
+import { AuthJwtGuard } from 'src/auth/guard/auth.guard'
+import { AuthenticatedRequest } from 'src/auth/interfaces/auth-request.interface'
 import { GetRouteDto } from './dto/get-route.dto'
 import { RateRouteDto } from './dto/rate-route.dto'
 import { RoutesService } from './routes.service'
+import { UseGuards } from '@nestjs/common'
+import { Req } from '@nestjs/common'
 
 @Controller('routes')
 export class RoutesController {
@@ -31,13 +34,20 @@ export class RoutesController {
     }
 
     @Post('rate')
+    @UseGuards(AuthJwtGuard)
     @HttpCode(HttpStatus.NO_CONTENT)
-    async rateRoute(@Body(ValidationPipe) rateRouteDto: RateRouteDto): Promise<void> {
-        //TO DO: get userId from request object after implementing auth
-        const userId: number = 1
-
-        await this.routesService.rateRoute(rateRouteDto, userId)
+    async rateRoute(
+        @Req() req: AuthenticatedRequest,
+        @Body(ValidationPipe) rateRouteDto: RateRouteDto
+    ): Promise<void> {
+        await this.routesService.rateRoute(rateRouteDto, req.user.id)
 
         return
+    }
+
+    @Get('air-pollution')
+    async airPollution (@Body(ValidationPipe) airPollutionReqDto: AirPollutionReqDto) {
+
+        return await this.routesService.airPollution(airPollutionReqDto)
     }
 }
