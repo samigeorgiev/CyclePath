@@ -16,11 +16,11 @@ export class AppController {
 
     @Get('/all')
     async getAll() {
-        const res = await this.neo4jService.read(
-            `MATCH (n1: Node{node_id: $nodeOneId})-[r: Route]-(n2: Node{node_id: $nodeTwoId}) RETURN r LIMIT 1`,
-            { nodeOneId: 7271008793, nodeTwoId: 1684697691 }
-        )
-
+        const res = await this.neo4jService.read(`MATCH (n) RETURN n limit 10`)
+        const queryResult = await this.neo4jService.read(`
+        MATCH (node:Node) return node limit 10`)
+        // queryResult.records.
+        console.log(queryResult.records)
         return res
     }
 }
