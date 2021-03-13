@@ -1,12 +1,13 @@
 @import '../../scss/const';
 
 .root {
-    display: flex;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    height: 3.5rem;
-    width: 100vw;
+    bottom: 0 !important;
+    position: fixed !important;
+    width: 100vw !important;
+
+    & svg {
+        font-size: 1.25rem;
+    }
 }
 
 .link {
