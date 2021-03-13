@@ -1,16 +1,18 @@
 import React, { useContext, useState } from 'react'
 import { useHistory } from 'react-router-dom'
 import decode from 'jwt-decode'
-import LoginForm from '../components/LoginForm'
-import styles from './Login.module.scss'
-import { toast } from 'react-toastify'
-import { AuthContext } from 'src/context/Auth/AuthContext'
-import { AuthContextInterface } from 'src/context/Auth/AuthContext.interface'
-import { DecodedToken } from 'src/tokenTypes/DecodedToken'
+import { toast } from 'react-toastify';
+import { DecodedToken } from 'src/tokenTypes/DecodedToken';
+import RegisterForm from '../components/RegisterForm';
+import styles from './Register.module.scss'
+import { AuthContext } from 'src/context/Auth/AuthContext';
+import { AuthContextInterface } from 'src/context/Auth/AuthContext.interface';
+// import { toast } from 'react-toastify';
 
 interface Props {}
 
-const Login: React.FC<Props> = () => {
+const Register: React.FC<Props> = () => {
+  const [name, setName] = useState<string> ("");
   const [email, setEmail] = useState<string> ("");
   const [password, setPassword] = useState<string> ("");
 
@@ -18,14 +20,15 @@ const Login: React.FC<Props> = () => {
 
   let history = useHistory()
 
-  const login = () => {
-    fetch(`${process.env.REACT_APP_API_URL}/auth/sign-in`, {
+  const register = async () => {
+    await fetch(`${process.env.REACT_APP_API_URL}/auth/sign-up`, {
       headers: {
         'Accept': 'application/json',
         'Content-Type': 'application/json'
       },
       method: "POST",
       body: JSON.stringify({
+        name: name,
         email: email,
         password: password
       })
@@ -43,23 +46,24 @@ const Login: React.FC<Props> = () => {
             userId: id
           })
           toast.success("Successful!")
-          history.push('/')
+          history.push('/')        
         }
       })
   }
 
   return (
     <div className={styles.root}>
-      <LoginForm
+      <RegisterForm
+        name={name}
         email={email}
         password={password}
+        handleName={e => setName(e.target.value)}
         handleEmail={e => setEmail(e.target.value)}
         handlePassword={e => setPassword(e.target.value)}
-        handleLogin={() => login()}
+        handleRegister={() => register()}
       />
-      <a href="/register" className={styles.link}>Register Now!</a>
     </div>
   )
 }
 
-export default Login
+export default Register
