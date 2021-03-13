@@ -7,8 +7,9 @@ import { RoutesModule } from './routes/routes.module'
 import { NodesModule } from './nodes/nodes.module'
 import { TypeOrmModule } from '@nestjs/typeorm'
 import { TypeOrmConfigService } from './config/typeorm-config.service'
-import { UsersModule } from './users/users.module';
-import { AuthModule } from './auth/auth.module';
+import { UsersModule } from './users/users.module'
+import { AuthModule } from './auth/auth.module'
+import { RefreshTokenModule } from './refresh-token/refresh-token.module'
 
 @Module({
     imports: [
@@ -20,6 +21,7 @@ import { AuthModule } from './auth/auth.module';
         RoutesModule,
         NodesModule,
         UsersModule,
+        RefreshTokenModule,
         AuthModule
     ],
     controllers: [AppController],
