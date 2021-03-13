@@ -1,5 +1,6 @@
-import React, { FunctionComponent } from 'react';
+import React, { FunctionComponent, useContext } from 'react';
 import { Polyline, Popup } from 'react-leaflet';
+
 import { useRateRoute } from '../../hooks/useRateRoute/useRateRoute';
 import { Route } from './Route';
 
