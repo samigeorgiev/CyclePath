@@ -29,7 +29,6 @@ export class AppController {
         point.lat = 7.422909;
         point.long = 43.737117
         const nearestNode = nodesTree.nearest(point, 1);
-        console.log(nearestNode)
         return res
     }
 }

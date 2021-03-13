@@ -33,22 +33,18 @@ export class RoutesService {
         endPointNode.lat = getRouteDto.endNodeLat
         endPointNode.long = getRouteDto.endNodeLong
         const nearestEndNode = this.findNearestNode(nodes, endPointNode)
-        console.log(startPointNode, endPointNode)
-        console.log(nearestStartNode, nearestEndNode)
         this.nodesRepository.findShortestRouteBetweenTwoNodes(nearestStartNode.nodeId, nearestEndNode.nodeId)
     }
 
     private findNearestNode(nodes: Node[], node: Node): Node {
-        // console.log(node);
         const nodesTree = new kdTree(nodes, this.findNodesDelta, ['long', 'lat'])
-        // console.log(nodesTree.nearest(node, 1))
+        console.log(nodes.filter(x => x.nodeId < 0))
         const [nearestNode, _delta] = nodesTree.nearest(node, 1)[0]
-        return nearestNode;
+        return nearestNode
     }
 
     private findNodesDelta(a: Node, b: Node): number {
         const c = (a.lat - b.lat) ** 2 + (a.long - b.long) ** 2
-        // console.log(c)
         return c
     }
 

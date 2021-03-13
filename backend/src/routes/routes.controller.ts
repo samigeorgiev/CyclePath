@@ -29,7 +29,6 @@ export class RoutesController {
         @Query('endNodeLong') endNodeLong: number
     ) {
         const request = new GetRouteDto(startNodeLat, startNodeLong, endNodeLat, endNodeLong)
-        console.log(request)
         return this.routesService.getRoute(request);
     }
 

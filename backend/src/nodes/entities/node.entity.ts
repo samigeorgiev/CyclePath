@@ -12,6 +12,10 @@ export class Node {
             return
         }
 
+        if (this.node.properties['node_id'].low <= 0) {
+            console.log(node)
+        }
+
         this.id = this.node.identity.low
         this.lat = this.node.properties['lat']
         this.long = this.node.properties['long']
