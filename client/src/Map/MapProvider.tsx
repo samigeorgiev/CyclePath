@@ -4,6 +4,8 @@ import { MapContainer } from 'react-leaflet';
 import { useDestinationSearch } from '../hooks/useDestinationSearch/useDestinationSearch';
 import { Map } from './Map';
 import styles from './Map.module.scss';
+import { TextField, InputAdornment } from '@material-ui/core';
+import { HiOutlineSearch } from 'react-icons/hi';
 
 interface Props {}
 
@@ -26,14 +28,27 @@ export const MapProvider: FunctionComponent<Props> = (props) => {
 
     return (
         <>
-            <input type='text' value={search} onChange={searchChangeHandler} />
-            <button onClick={() => getDestinationFromSearch(search)}>
-                Search
-            </button>
+            <TextField
+                id='input-with-icon-textfield'
+                value={search}
+                variant='outlined'
+                onChange={searchChangeHandler}
+                onKeyDown={(e) => {
+                    if (e.key === 'Enter') {
+                        getDestinationFromSearch(search);
+                    }
+                }}
+                fullWidth
+                className={styles.search}
+                InputProps={{
+                    startAdornment: <HiOutlineSearch />
+                }}
+            />
             <MapContainer
                 center={defaultLocation}
                 zoom={15}
                 className={styles.root}
+                zoomControl={false}
             >
                 <Map destination={destination} />
             </MapContainer>
