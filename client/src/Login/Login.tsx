@@ -58,9 +58,11 @@ const Login: React.FC<Props> = () => {
                 handlePassword={(e) => setPassword(e.target.value)}
                 handleLogin={() => login()}
             />
-            <a href='/register' className={styles.link}>
-                Register Now!
-            </a>
+            <p> Don't have an account?{' '}
+              <a href='/register' className={styles.link}>
+                  Register Now!
+              </a>
+            </p>
         </div>
     );
 };
