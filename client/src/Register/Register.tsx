@@ -1,8 +1,12 @@
-import React, { useState } from 'react'
+import React, { useContext, useState } from 'react'
 import { useHistory } from 'react-router-dom'
+import decode from 'jwt-decode'
 import { toast } from 'react-toastify';
+import { DecodedToken } from 'src/tokenTypes/DecodedToken';
 import RegisterForm from '../components/RegisterForm';
 import styles from './Register.module.scss'
+import { AuthContext } from 'src/context/Auth/AuthContext';
+import { AuthContextInterface } from 'src/context/Auth/AuthContext.interface';
 // import { toast } from 'react-toastify';
 
 interface Props {}
@@ -11,6 +15,8 @@ const Register: React.FC<Props> = () => {
   const [name, setName] = useState<string> ("");
   const [email, setEmail] = useState<string> ("");
   const [password, setPassword] = useState<string> ("");
+
+  const { setAuthState } = useContext<AuthContextInterface>(AuthContext)
 
   let history = useHistory()
 
@@ -33,6 +39,12 @@ const Register: React.FC<Props> = () => {
           toast.error(data.message[0])
           return
         } else {
+          const { exp, id }: DecodedToken = decode(data.token)
+          setAuthState({
+            exp: exp * 1000 - Date.now(),
+            token: data.token,
+            userId: id
+          })
           toast.success("Successful!")
           history.push('/')        
         }
