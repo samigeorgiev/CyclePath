@@ -33,7 +33,9 @@ export class RoutesService {
         endPointNode.lat = getRouteDto.endNodeLat
         endPointNode.long = getRouteDto.endNodeLong
         const nearestEndNode = this.findNearestNode(nodes, endPointNode)
-        this.nodesRepository.findShortestRouteBetweenTwoNodes(nearestStartNode.nodeId, nearestEndNode.nodeId)
+        const r = this.nodesRepository.findShortestRouteBetweenTwoNodes(nearestStartNode.nodeId, nearestEndNode.nodeId)
+        console.log('r', r)
+        return r
     }
 
     private findNearestNode(nodes: Node[], node: Node): Node {

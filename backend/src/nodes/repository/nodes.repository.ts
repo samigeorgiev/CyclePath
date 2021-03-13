@@ -69,22 +69,36 @@ export class NodesRepository {
             return []
         }
         let total_cost = 0.0
-        queryResult.records[0].get('path').segments.map(segment => {
+        const res = queryResult.records[0].get('path').segments.map(segment => {
             const a = {
                 start: {
+                    nodeId: this.toNumber(segment.start.properties['node_id']),
                     lat: segment.start.properties['lat'],
                     long: segment.start.properties['long']
                 },
                 end: {
+                    nodeId: this.toNumber(segment.end.properties['node_id']),
                     lat: segment.end.properties['lat'],
                     long: segment.end.properties['long']
                 },
-                cost: segment.relationship.properties['cost']
+                cost: segment.relationship.properties['cost'],
+                rating: 4
             }
             console.log(a)
             total_cost += a.cost
+            return a
         })
         console.log('total cost: ' + total_cost)
-        return
+        return res
     }
+
+    private toNumber({ low, high }) {
+        let res = high
+      
+        for (let i = 0; i < 32; i++) {
+          res *= 2
+        }
+      
+        return low + res
+      }
 }
