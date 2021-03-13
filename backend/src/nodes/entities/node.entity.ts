@@ -7,7 +7,11 @@ export class Node {
     public long: number
     public nodeId: number
 
-    constructor(private readonly node: Neo4JNode) {
+    constructor(private readonly node?: Neo4JNode) {
+        if (node === undefined) {
+            return
+        }
+
         this.id = this.node.identity.low
         this.lat = this.node.properties['lat']
         this.long = this.node.properties['long']
