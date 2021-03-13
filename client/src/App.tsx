@@ -17,36 +17,37 @@ const App = () => {
     useRefreshToken();
 
     const { authState } = useContext<AuthContextInterface>(AuthContext);
-    console.log(authState);
 
     return (
-        <Suspense fallback='loading...'>
-            <Nav />
+        <>
+            <Suspense fallback='loading...'>
+                <Switch>
+                    <Route exact path='/'>
+                        <Home />
+                    </Route>
+                    {authState ? (
+                        <Route exact path='/map'>
+                            <MapProvider />
+                        </Route>
+                    ) : null}
+                    {authState ? null : (
+                        <Route exact path='/login'>
+                            <Login />
+                        </Route>
+                    )}
+                    {authState ? null : (
+                        <Route exact path='/register'>
+                            <Register />
+                        </Route>
+                    )}
+                    <Route path='/'>
+                        <div>404</div>
+                    </Route>
+                </Switch>
+            </Suspense>
             <ToastContainer />
-            <Switch>
-                <Route exact path='/'>
-                    <Home />
-                </Route>
-                {authState ? (
-                    <Route exact path='/map'>
-                        <MapProvider />
-                    </Route>
-                ) : null}
-                {authState ? null : (
-                    <Route exact path='/login'>
-                        <Login />
-                    </Route>
-                )}
-                {authState ? null : (
-                    <Route exact path='/register'>
-                        <Register />
-                    </Route>
-                )}
-                <Route path='/'>
-                    <div>404</div>
-                </Route>
-            </Switch>
-        </Suspense>
+            <Nav />
+        </>
     );
 };
 
