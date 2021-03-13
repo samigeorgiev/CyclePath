@@ -1,8 +1,11 @@
 import { Injectable } from '@nestjs/common'
 import { InjectRepository } from '@nestjs/typeorm'
+<<<<<<< HEAD
 import { AirPollutionReqDto } from './dto/air-pollution-req.dto'
+=======
+import { GetRouteDto } from './dto/get-route.dto'
+>>>>>>> 13e7ec72fa24686ab846ad45e394ce50ee9315fa
 import { RateRouteDto } from './dto/rate-route.dto'
-import { RouteRating } from './entities/route-rating.entity'
 import { Route } from './entities/route.entity'
 import { RoutesRatingRepository } from './repository/routes-rating.repository'
 import { RoutesRepository } from './repository/routes.repository'
@@ -16,7 +19,7 @@ export class RoutesService {
         private readonly routesRepository: RoutesRepository
     ) {}
 
-    async rateRoute(rateRouteDto: RateRouteDto, userId: number) {
+    async rateRoute(rateRouteDto: RateRouteDto, userId: number): Promise<void> {
         const route: Route = await this.routesRepository.getRouteByNodesIds(
             rateRouteDto.nodeOneId,
             rateRouteDto.nodeTwoId

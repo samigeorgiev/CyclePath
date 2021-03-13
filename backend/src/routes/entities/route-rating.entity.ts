@@ -1,14 +1,17 @@
-import { Column, Entity, PrimaryColumn } from 'typeorm'
+import { Column, Entity, PrimaryColumn, PrimaryGeneratedColumn } from 'typeorm'
 
 @Entity()
 export class RouteRating {
-    @PrimaryColumn()
+    @PrimaryGeneratedColumn()
+    id: number
+
+    @Column({ type: 'bigint' })
     nodeOneId: number
 
-    @PrimaryColumn()
+    @Column({ type: 'bigint' })
     nodeTwoId: number
 
-    @PrimaryColumn()
+    @Column()
     userId: number
 
     @Column()

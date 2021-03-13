@@ -1,6 +1,7 @@
 export class GetRouteDto {
-    startNodeLat: number
-    startNodeLong: number
-    endNodeLat: number
-    endNodeLong: number
+    constructor(
+        public startNodeLat: number,
+        public startNodeLong: number,
+        public endNodeLat: number,
+        public endNodeLong: number) {}
 }
