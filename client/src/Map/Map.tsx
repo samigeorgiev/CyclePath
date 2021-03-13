@@ -1,4 +1,4 @@
-import { LatLngExpression } from 'leaflet'
+import { DivIcon, LatLngExpression } from 'leaflet'
 import 'leaflet/dist/leaflet.css'
 import React, { useEffect, useState } from 'react'
 import { MapContainer, Marker, Polyline, Popup, TileLayer } from 'react-leaflet'
@@ -15,8 +15,8 @@ const Map: React.FC<Props> = () => {
 
     const places = [
         { lat: 43.731026, lng: 7.425535 },
-        { lat: 27.9947147, lng: -82.5943645 },
-        { lat: 28.4813018, lng: -81.4387899 }
+        { lat: 43.740163, lng: 7.424286 },
+        { lat: 43.740454, lng: 7.425592 }
     ]
     const [edges, setEdges] = useState<LatLngExpression[]>(places)
 
@@ -25,8 +25,8 @@ const Map: React.FC<Props> = () => {
             (location) => {
                 setLocation(null)
                 const { latitude, longitude } = location.coords
-                setLocation({ lat: latitude, lng: longitude })
-                console.log(latitude, longitude)
+                // setLocation({ lat: latitude, lng: longitude })
+                setLocation(places[0])
                 getRoute({ lat: latitude, lng: longitude }, places[0])
             },
             (error: any) => {
@@ -71,20 +71,39 @@ const Map: React.FC<Props> = () => {
     // }
 
     return location ? (
-        <MapContainer center={location} zoom={13} className={styles.root}>
-            {edges.map((edge: any) => (
+        <MapContainer center={location} zoom={15} className={styles.root}>
+            {/* {edges.map((edge: any) => (
                 <Polyline
                     positions={[location, edge]}
                     // onClick={rateRoute.bind(null, edge)}
                 />
-            ))}
+            ))} */}
+            <Polyline positions={edges} />
             <TileLayer
                 attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
                 url='https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png'
             />
 
-            <Marker position={location}>
+            <Marker
+                position={location}
+                icon={
+                    new DivIcon({
+                        html: `<img src='/images/marker-icon.png' alt='marker'/>`
+                    })
+                }
+            >
                 <Popup>{errorMsg || 'Your location'}</Popup>
+            </Marker>
+
+            <Marker
+                position={places[places.length - 1]}
+                icon={
+                    new DivIcon({
+                        html: `<img src='/images/marker-icon.png' alt='marker'/>`
+                    })
+                }
+            >
+                <Popup>Destination</Popup>
             </Marker>
         </MapContainer>
     ) : null
