@@ -3,11 +3,15 @@ import { FunctionComponent, useEffect, useState } from 'react';
 import { Marker, Popup, useMapEvents } from 'react-leaflet';
 
 interface Props {
-    position: LatLng;
+    position: LatLng | null;
     message: string;
 }
 
 export const LocationMarker: FunctionComponent<Props> = (props) => {
+    if (!props.position) {
+        return null;
+    }
+
     return (
         <Marker
             position={props.position}
