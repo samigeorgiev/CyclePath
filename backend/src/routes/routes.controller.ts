@@ -6,8 +6,10 @@ import {
     HttpStatus,
     Param,
     Post,
+    UseGuards,
     ValidationPipe
 } from '@nestjs/common'
+import { AuthJwtGuard } from 'src/auth/guard/auth.guard'
 import { GetRouteDto } from './dto/get-route.dto'
 import { RateRouteDto } from './dto/rate-route.dto'
 import { RoutesService } from './routes.service'
@@ -28,6 +30,7 @@ export class RoutesController {
     }
 
     @Post('rate')
+    @UseGuards(AuthJwtGuard)
     @HttpCode(HttpStatus.NO_CONTENT)
     async rateRoute(@Body(ValidationPipe) rateRouteDto: RateRouteDto): Promise<void> {
         //TO DO: get userId from request object after implementing auth
