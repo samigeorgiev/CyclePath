@@ -1,8 +1,3 @@
-<<<<<<< HEAD
-import { Get } from '@nestjs/common'
-import { Body, Controller, HttpCode, HttpStatus, Post, ValidationPipe } from '@nestjs/common'
-import { AirPollutionReqDto } from './dto/air-pollution-req.dto'
-=======
 import {
     Body,
     Controller,
@@ -13,8 +8,8 @@ import {
     Post,
     ValidationPipe
 } from '@nestjs/common'
+import { AirPollutionReqDto } from './dto/air-pollution-req.dto'
 import { GetRouteDto } from './dto/get-route.dto'
->>>>>>> 13e7ec72fa24686ab846ad45e394ce50ee9315fa
 import { RateRouteDto } from './dto/rate-route.dto'
 import { RoutesService } from './routes.service'
 
@@ -22,14 +17,6 @@ import { RoutesService } from './routes.service'
 export class RoutesController {
     constructor(private readonly routesService: RoutesService) {}
 
-<<<<<<< HEAD
-    // get(
-    //     @Param('startNodeId') startNodeLat: number,
-    //     @Param('endNodeId') startNodeLong: number, 
-    //     @Param('startNodeId') startNodeLat: number,
-    //     @Param('endNodeId') startNodeLong: number, ) { 
-    //     }
-=======
     @Get()
     get(
         @Param('startNodeId') startNodeLat: number,
@@ -40,7 +27,6 @@ export class RoutesController {
         const request = new GetRouteDto(startNodeLat, startNodeLong, endNodeLat, endNodeLong)
         // this.routesService.getRoute(request);
     }
->>>>>>> 13e7ec72fa24686ab846ad45e394ce50ee9315fa
 
     @Post('rate')
     @HttpCode(HttpStatus.NO_CONTENT)
