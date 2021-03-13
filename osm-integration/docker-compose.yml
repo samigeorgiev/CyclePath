@@ -1,8 +1,6 @@
 neo4j:
     image: neo4j:latest
     container_name: neo4j-cyclepath
-    volumes:
-        - ./neo4j_plugins:/plugins
     ports:
         - '7474:7474'
         - '7687:7687'
