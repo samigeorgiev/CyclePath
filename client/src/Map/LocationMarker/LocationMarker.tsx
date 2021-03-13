@@ -1,9 +1,9 @@
-import { DivIcon, LatLng, LocationEvent, Map } from 'leaflet';
+import { DivIcon, LatLng, LatLngExpression, LocationEvent, Map } from 'leaflet';
 import { FunctionComponent, useEffect, useState } from 'react';
 import { Marker, Popup, useMapEvents } from 'react-leaflet';
 
 interface Props {
-    position: LatLng | null;
+    position: LatLngExpression | null;
     message: string;
 }
 

@@ -1,19 +1,9 @@
-import {
-    DivIcon,
-    LatLng,
-    LatLngExpression,
-    LocationEvent,
-    Map as LMap
-} from 'leaflet';
+import { LatLng, LocationEvent, Map as LeafletMap } from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 import React, { useEffect, useState } from 'react';
-import {
-    Marker,
-    Polyline,
-    Popup,
-    TileLayer,
-    useMapEvents
-} from 'react-leaflet';
+import { TileLayer, useMapEvents } from 'react-leaflet';
+import { v4 as uuid } from 'uuid';
+import { AirPollutionArea } from './AirPollutionArea';
 import { LocationMarker } from './LocationMarker';
 import { PolyLine } from './PolyLine';
 import { Route } from './PolyLine/Route';
@@ -22,14 +12,12 @@ interface Props {
     destination: LatLng | null;
 }
 
-// const apiUrl = `${process.env.REACT_APP_API_URL}/route?start=${start}&end=${end}`
-
 export const Map: React.FC<Props> = (props) => {
     const [routes, setRoutes] = useState<Route[]>([]);
 
     const [position, setPosition] = useState<LatLng | null>(null);
 
-    const map: LMap = useMapEvents({
+    const map: LeafletMap = useMapEvents({
         locationfound(event: LocationEvent) {
             setPosition(event.latlng);
             map.flyTo(event.latlng, map.getZoom(), { duration: 1 });
@@ -45,7 +33,8 @@ export const Map: React.FC<Props> = (props) => {
             setRoutes([
                 {
                     start: [position.lat, position.lng],
-                    end: [props.destination.lat, props.destination.lng]
+                    end: [props.destination.lat, props.destination.lng],
+                    rating: 2
                 }
             ]);
             map.fitBounds([
@@ -58,7 +47,10 @@ export const Map: React.FC<Props> = (props) => {
     return (
         <>
             {routes.map((route: Route, i) => (
-                <PolyLine key={i} route={route} />
+                <div key={uuid()}>
+                    <PolyLine route={route} />
+                    <AirPollutionArea route={route} />
+                </div>
             ))}
 
             <TileLayer
