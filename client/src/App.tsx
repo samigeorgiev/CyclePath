@@ -1,6 +1,8 @@
 import React, { Suspense } from 'react'
 import { Route, Switch } from 'react-router-dom'
 import { Nav } from './components'
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const Home = React.lazy(() => import('./Home'))
 const Map = React.lazy(() => import('./Map'))
@@ -11,6 +13,7 @@ const App = () => {
     return (
         <Suspense fallback='loading...'>
             <Nav />
+            <ToastContainer />
             <Switch>
                 <Route exact path='/'>
                     <Home />
