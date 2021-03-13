@@ -19,17 +19,16 @@ export class AppController {
 
     @Get('/all')
     async getAll() {
-        const res = await this.neo4jService.read(`MATCH (n) RETURN n limit 10`)
-        const queryResult = await this.neo4jService.read(`
-        MATCH (node:Node) return node limit 10`)
-        const nodes = queryResult.records.map(node =>  new Node(node.get('node')))
-        const calcDistance = (a, b) => (a.lat - b.lat) ** 2 + (a.long - b.long) ** 2
-        const nodesTree = new kdTree(nodes, calcDistance, ['long', 'lat'])
-        const point = new Node();
-        point.lat = 7.422909;
-        point.long = 43.737117
-        const nearestNode = nodesTree.nearest(point, 1);
-        console.log(nearestNode)
-        return res
+        // const res = await this.neo4jService.read(`MATCH (n) RETURN n limit 10`)
+        // const queryResult = await this.neo4jService.read(`
+        // MATCH (node:Node) return node limit 10`)
+        // const nodes = queryResult.records.map(node =>  new Node(node.get('node')))
+        // const calcDistance = (a, b) => (a.lat - b.lat) ** 2 + (a.long - b.long) ** 2
+        // const nodesTree = new kdTree(nodes, calcDistance, ['long', 'lat'])
+        // const point = new Node();
+        // point.lat = 7.422909;
+        // point.long = 43.737117
+        // const nearestNode = nodesTree.nearest(point, 1);
+        // return res
     }
 }

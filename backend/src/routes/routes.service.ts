@@ -24,31 +24,25 @@ export class RoutesService {
     ) {}
 
     async getRoute(getRouteDto: GetRouteDto) {
-        const nodes: Node[] = await this.nodesService.getAllNodes();
-        const startPointNode: Node = new Node()
-        startPointNode.lat = getRouteDto.startNodeLat
-        startPointNode.long = getRouteDto.startNodeLong
+        const nodes: Node[] = await this.nodesService.getAllNodes()
+        const startPointNode: Node = new Node(getRouteDto.startNodeLat, getRouteDto.startNodeLong)
         const nearestStartNode = this.findNearestNode(nodes, startPointNode)
-        const endPointNode = new Node()
-        endPointNode.lat = getRouteDto.endNodeLat
-        endPointNode.long = getRouteDto.endNodeLong
+        const endPointNode = new Node(getRouteDto.endNodeLat, getRouteDto.endNodeLong)
         const nearestEndNode = this.findNearestNode(nodes, endPointNode)
-        console.log(startPointNode, endPointNode)
-        console.log(nearestStartNode, nearestEndNode)
-        this.nodesRepository.findShortestRouteBetweenTwoNodes(nearestStartNode.nodeId, nearestEndNode.nodeId)
+        return this.nodesRepository.findShortestRouteBetweenTwoNodes(
+            nearestStartNode.nodeId,
+            nearestEndNode.nodeId
+        )
     }
 
     private findNearestNode(nodes: Node[], node: Node): Node {
-        // console.log(node);
         const nodesTree = new kdTree(nodes, this.findNodesDelta, ['long', 'lat'])
-        // console.log(nodesTree.nearest(node, 1))
         const [nearestNode, _delta] = nodesTree.nearest(node, 1)[0]
-        return nearestNode;
+        return nearestNode
     }
 
     private findNodesDelta(a: Node, b: Node): number {
         const c = (a.lat - b.lat) ** 2 + (a.long - b.long) ** 2
-        // console.log(c)
         return c
     }
 
@@ -69,35 +63,37 @@ export class RoutesService {
     }
 
     async getPollutionData(airPollutionReqDto: AirPollutionReqDto) {
-        const startPointUrl = `https://api.waqi.info/feed/geo:${airPollutionReqDto.startLat};${airPollutionReqDto.startLon}/?token=${process.env.AIR_QUALITY_KEY}`;
-        const endPointUrl = `https://api.waqi.info/feed/geo:${airPollutionReqDto.endLat};${airPollutionReqDto.endLon}/?token=${process.env.AIR_QUALITY_KEY}`;
+        const startPointUrl = `https://api.waqi.info/feed/geo:${airPollutionReqDto.startLat};${airPollutionReqDto.startLon}/?token=${process.env.AIR_QUALITY_KEY}`
+        const endPointUrl = `https://api.waqi.info/feed/geo:${airPollutionReqDto.endLat};${airPollutionReqDto.endLon}/?token=${process.env.AIR_QUALITY_KEY}`
 
-        const startPointRes = await fetch (startPointUrl)
+        const startPointRes = await fetch(startPointUrl)
         const startPointData = await startPointRes.json()
 
-        const endPointRes = await fetch (endPointUrl)
+        const endPointRes = await fetch(endPointUrl)
         const endPointData = await endPointRes.json()
 
         return { startPointData: startPointData, endPointData: endPointData }
     }
 
-    async airPollution (airPollutionReqDto: AirPollutionReqDto) : Promise<AirPollutionRes> {
+    async airPollution(airPollutionReqDto: AirPollutionReqDto): Promise<AirPollutionRes> {
         const data = await this.getPollutionData(airPollutionReqDto)
-        
-        let date;
-        if (new Date(data.startPointData.data.time.s).getTime() > new Date(data.endPointData.data.time.s).getTime()) {
-            date = data.startPointData.data.time.s;
+
+        let date
+        if (
+            new Date(data.startPointData.data.time.s).getTime() >
+            new Date(data.endPointData.data.time.s).getTime()
+        ) {
+            date = data.startPointData.data.time.s
         } else {
-            date = data.endPointData.data.time.s;
+            date = data.endPointData.data.time.s
         }
 
-        const pollution = (data.startPointData.data.iaqi.pm10.v + data.endPointData.data.iaqi.pm10.v) / 2
+        const pollution =
+            (data.startPointData.data.iaqi.pm10.v + data.endPointData.data.iaqi.pm10.v) / 2
 
-        
         return {
             measurementTime: date,
             pollutionIndex: pollution
         }
-
     }
 }
