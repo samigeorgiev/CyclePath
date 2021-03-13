@@ -1,9 +1,9 @@
 import React, { Suspense } from 'react'
 import { Route, Switch } from 'react-router-dom'
 import { Nav } from './components'
+import { MapProvider } from './Map/MapProvider'
 
 const Home = React.lazy(() => import('./Home'))
-const Map = React.lazy(() => import('./Map'))
 
 const App = () => {
     return (
@@ -14,7 +14,7 @@ const App = () => {
                     <Home />
                 </Route>
                 <Route exact path='/map'>
-                    <Map />
+                    <MapProvider />
                 </Route>
                 <Route path='/'>
                     <div>404</div>
