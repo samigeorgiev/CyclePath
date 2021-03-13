@@ -1,112 +1,107 @@
-import { DivIcon, LatLngExpression } from 'leaflet'
-import 'leaflet/dist/leaflet.css'
-import React, { useEffect, useState } from 'react'
-import { MapContainer, Marker, Polyline, Popup, TileLayer } from 'react-leaflet'
-import styles from './Map.module.scss'
+import {
+    DivIcon,
+    LatLng,
+    LatLngExpression,
+    LocationEvent,
+    Map as LMap
+} from 'leaflet';
+import 'leaflet/dist/leaflet.css';
+import React, { useEffect, useState } from 'react';
+import {
+    Marker,
+    Polyline,
+    Popup,
+    TileLayer,
+    useMapEvents
+} from 'react-leaflet';
+import { LocationMarker } from './LocationMarker';
 
-interface Props {}
+interface Props {
+    destination: LatLng | null;
+}
 
-const Map: React.FC<Props> = () => {
-    const [errorMsg, setErrorMsg] = useState<string | null>(null)
-    const [location, setLocation] = useState<LatLngExpression | null>({
-        lat: 37.3347986,
-        lng: -122.0091069
-    })
+// const apiUrl = `${process.env.REACT_APP_API_URL}/route?start=${start}&end=${end}`
 
-    const places = [
-        { lat: 43.731026, lng: 7.425535 },
-        { lat: 43.740163, lng: 7.424286 },
-        { lat: 43.740454, lng: 7.425592 }
-    ]
-    const [edges, setEdges] = useState<LatLngExpression[]>(places)
+export const Map: React.FC<Props> = (props) => {
+    const [edges] = useState<LatLngExpression[]>([]);
+
+    const [position, setPosition] = useState<LatLng | null>(null);
+
+    const map: LMap = useMapEvents({
+        locationfound(event: LocationEvent) {
+            setPosition(event.latlng);
+            map.flyTo(event.latlng, map.getZoom(), { duration: 1 });
+        }
+    });
 
     useEffect(() => {
-        navigator?.geolocation.getCurrentPosition(
-            (location) => {
-                setLocation(null)
-                const { latitude, longitude } = location.coords
-                // setLocation({ lat: latitude, lng: longitude })
-                setLocation(places[0])
-                getRoute({ lat: latitude, lng: longitude }, places[0])
-            },
-            (error: any) => {
-                switch (error.code) {
-                    case error.PERMISSION_DENIED:
-                        setErrorMsg('User denied the request for Geolocation.')
-                        break
-                    case error.POSITION_UNAVAILABLE:
-                        setErrorMsg('Location information is unavailable.')
-                        break
-                    case error.TIMEOUT:
-                        setErrorMsg(
-                            'The request to get user location timed out.'
-                        )
-                        break
-                    case error.UNKNOWN_ERROR:
-                        setErrorMsg('An unknown error occurred.')
-                        break
-                }
-            },
-            { enableHighAccuracy: true, timeout: 10000 }
-        )
-    }, [])
+        map.locate();
+    }, []);
 
-    const getRoute = (start: LatLngExpression, end: LatLngExpression) => {
-        fetch(
-            process.env.REACT_APP_API_URL + `/route?start=${start}&end=${end}`
-        )
-            .then((res) => {
-                if (res.ok) {
-                    return res.json()
-                }
-                return []
-            })
-            .then((data) => {
-                setEdges(data)
-            })
-    }
+    useEffect(() => {
+        if (props.destination && position) {
+            map.fitBounds([
+                [position.lat, position.lng],
+                [props.destination.lat, props.destination.lng]
+            ]);
+        }
+    }, [props.destination]);
 
-    // const rateRoute = (route: any) => {
-    //     fetch(process.env.REACT_APP_API_URL || '')
-    // }
+    return (
+        <>
+            {edges.map((e, i) => {
+                if (i === edges.length - 1) return;
 
-    return location ? (
-        <MapContainer center={location} zoom={15} className={styles.root}>
-            {/* {edges.map((edge: any) => (
-                <Polyline
-                    positions={[location, edge]}
-                    // onClick={rateRoute.bind(null, edge)}
-                />
-            ))} */}
-            <Polyline positions={edges} />
+                return (
+                    <Polyline key={i} positions={[e, edges[i + 1]]}>
+                        <Popup>
+                            <p>add rating</p>
+                            {new Array(5).fill(1).map((_, i) => (
+                                <button key={i}>{i + 1}</button>
+                            ))}
+                            <p></p>
+                            <button
+                                onClick={() => {
+                                    console.log(e, edges[i + 1]);
+                                }}
+                            >
+                                Submit
+                            </button>
+                        </Popup>
+                    </Polyline>
+                );
+            })}
+
             <TileLayer
                 attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
                 url='https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png'
             />
+            {position && (
+                <LocationMarker
+                    message='Current location'
+                    position={position}
+                />
+            )}
 
-            <Marker
-                position={location}
-                icon={
-                    new DivIcon({
-                        html: `<img src='/images/marker-icon.png' alt='marker'/>`
-                    })
-                }
-            >
-                <Popup>{errorMsg || 'Your location'}</Popup>
-            </Marker>
+            {props.destination && position && (
+                <>
+                    <LocationMarker
+                        message='Destination'
+                        position={props.destination}
+                    />
 
-            <Marker
-                position={places[places.length - 1]}
-                icon={
-                    new DivIcon({
-                        html: `<img src='/images/marker-icon.png' alt='marker'/>`
-                    })
-                }
-            >
-                <Popup>Destination</Popup>
-            </Marker>
-        </MapContainer>
-    ) : null
-}
-
-export default Map
+                    <Polyline positions={[position, props.destination]}>
+                        <Popup>
+                            <p>add rating</p>
+                            {new Array(5).fill(1).map((_, i) => (
+                                <button key={i}>{i + 1}</button>
+                            ))}
+                            <p></p>
+                            <button onClick={() => {}}>Submit</button>
+                        </Popup>
+                    </Polyline>
+                </>
+            )}
+        </>
+    );
+};
