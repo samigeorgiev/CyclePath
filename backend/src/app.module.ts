@@ -8,6 +8,7 @@ import { NodesModule } from './nodes/nodes.module'
 import { TypeOrmModule } from '@nestjs/typeorm'
 import { TypeOrmConfigService } from './config/typeorm-config.service'
 import { UsersModule } from './users/users.module';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
     imports: [
@@ -18,7 +19,8 @@ import { UsersModule } from './users/users.module';
         Neo4jModule.fromEnv(),
         RoutesModule,
         NodesModule,
-        UsersModule
+        UsersModule,
+        AuthModule
     ],
     controllers: [AppController],
     providers: [AppService]
