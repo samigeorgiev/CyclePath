@@ -1,7 +1,7 @@
 import { LatLng, LocationEvent, Map as LeafletMap } from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 import React, { useEffect, useState } from 'react';
-import { TileLayer, useMapEvents, ZoomControl } from 'react-leaflet';
+import { Pane, TileLayer, useMapEvents, ZoomControl } from 'react-leaflet';
 import { v4 as uuid } from 'uuid';
 import { AirPollutionArea } from './AirPollutionArea';
 import { LocationMarker } from './LocationMarker';
@@ -46,13 +46,17 @@ export const Map: React.FC<Props> = (props) => {
 
     return (
         <>
-            {routes.map((route: Route, i) => (
-                <div key={uuid()}>
-                    <AirPollutionArea route={route} />
-                    <PolyLine route={route} />
-                </div>
+            <Pane
+                name='custom'
+                style={{ zIndex: 10000, border: '4px solid black' }}
+            >
+                {routes.map((route: Route) => (
+                    <PolyLine key={uuid()} route={route} />
+                ))}
+            </Pane>
+            {routes.map((route: Route) => (
+                <AirPollutionArea key={uuid()} route={route} />
             ))}
-            <ZoomControl position='topright' />
             <TileLayer
                 attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
                 url='https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png'
