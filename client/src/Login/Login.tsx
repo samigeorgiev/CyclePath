@@ -4,9 +4,9 @@ import decode from 'jwt-decode'
 import LoginForm from '../components/LoginForm'
 import styles from './Login.module.scss'
 import { toast } from 'react-toastify'
-import { AuthContext } from 'src/context/Auth/AuthContext'
-import { AuthContextInterface } from 'src/context/Auth/AuthContext.interface'
-import { DecodedToken } from 'src/tokenTypes/DecodedToken'
+import { AuthContext } from '../context/Auth/AuthContext'
+import { AuthContextInterface } from '../context/Auth/AuthContext.interface'
+import { DecodedToken } from '../tokenTypes/DecodedToken'
 
 interface Props {}
 

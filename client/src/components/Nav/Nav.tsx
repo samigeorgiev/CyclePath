@@ -1,7 +1,7 @@
 import React, { useContext } from 'react'
 import { NavLink } from 'react-router-dom'
-import { AuthContext } from 'src/context/Auth/AuthContext'
-import { AuthContextInterface } from 'src/context/Auth/AuthContext.interface'
+import { AuthContext } from '../../context/Auth/AuthContext'
+import { AuthContextInterface } from '../../context/Auth/AuthContext.interface'
 import styles from './Nav.module.scss'
 
 interface Props {}

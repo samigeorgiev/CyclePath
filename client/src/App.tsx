@@ -1,13 +1,6 @@
-<<<<<<< HEAD
 import React, { Suspense, useContext } from 'react'
 import { Route, Switch } from 'react-router-dom'
 import { Nav } from './components'
-=======
-import React, { Suspense } from 'react';
-import { Route, Switch } from 'react-router-dom';
-import { Nav } from './components';
-import { MapProvider } from './Map/MapProvider';
->>>>>>> 3842d24b058ee1cf331407076a0a0e595fb4ad9a
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { useRefreshToken } from './hooks/Auth/useRefreshToken';
