@@ -1,3 +1,3 @@
 export interface AVGRating {
-    avg: number
+    avg: string
 }

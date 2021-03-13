@@ -19,6 +19,6 @@ export class RoutesRatingRepository extends Repository<RouteRating> {
             .groupBy('routeRating.id')
             .getRawOne()
 
-        return avgRating.avg
+        return +avgRating.avg
     }
 }
