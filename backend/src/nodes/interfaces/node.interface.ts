@@ -1,6 +1,5 @@
 export interface INode {
-    id: number
-    nodeId: number
+    nodeId: number | string
     lat: number
     long: number
 }
