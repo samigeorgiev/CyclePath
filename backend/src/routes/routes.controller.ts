@@ -5,7 +5,9 @@ import {
     HttpCode,
     HttpStatus,
     Param,
+    ParseIntPipe,
     Post,
+    Query,
     ValidationPipe
 } from '@nestjs/common'
 import { GetRouteDto } from './dto/get-route.dto'
@@ -18,13 +20,14 @@ export class RoutesController {
 
     @Get()
     get(
-        @Param('startNodeId') startNodeLat: number,
-        @Param('endNodeId') startNodeLong: number,
-        @Param('startNodeId') endNodeLat: number,
-        @Param('endNodeId') endNodeLong: number
+        @Query('startNodeLat') startNodeLat: number,
+        @Query('startNodeLong') startNodeLong: number,
+        @Query('endNodeLat') endNodeLat: number,
+        @Query('endNodeLong') endNodeLong: number
     ) {
         const request = new GetRouteDto(startNodeLat, startNodeLong, endNodeLat, endNodeLong)
-        // this.routesService.getRoute(request);
+        console.log(request)
+        return this.routesService.getRoute(request);
     }
 
     @Post('rate')

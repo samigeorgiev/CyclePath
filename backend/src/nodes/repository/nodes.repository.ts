@@ -24,19 +24,28 @@ export class NodesRepository {
 
     async getAllNodes(): Promise<Node[]> {
         const queryResult = await this.neo4jService.read(`
-            MATCH (node:Node) return node`
-        )
-        // queryResult.records.
-        console.log(queryResult.records)
-        return []
+            MATCH (node:Node)
+            return node`)
+        return queryResult.records.map(node => new Node(node.get('node')))
     }
 
-    async  findShortestRouteBetweenTwoNodes(startNodeId: number, endNodeId: number) {
+    async findShortestRouteBetweenTwoNodes(startNodeId: number, endNodeId: number) {
         const queryResult = await this.neo4jService.read(
-            `MATCH (startNode: Node{node_id: 7271008793}, endNode: Node{node_id: 1684697691})
-            CAll algo.shortestPath(startNode, endNode, 'distance')
-            YIELD writeMillis,loadMillis,nodeCount, totalCost
-            RETURN writeMillis,loadMillis,nodeCount,totalCost`
+            `
+            MATCH
+                (startNode: Node{node_id: $startNodeId}),
+                (endNode: Node{node_id: $endNodeId}),
+                path = shortestPath((n1)-[:Route*]-(n2))
+            return path`,
+            { startNodeId, endNodeId }
         )
+        /*match
+                        (n1: Node{node_id: 258071984}),
+                        (n2: Node{node_id: 21915639}),
+                        path = shortestPath((n1)-[:Route*]-(n2))
+                        with REDUCE(dist = 0, rel in relationships(path) | dist + toInteger(rel.distance)) AS distance, path
+                    return path, distance */
+        console.log(queryResult.records)
+        return
     }
 }
