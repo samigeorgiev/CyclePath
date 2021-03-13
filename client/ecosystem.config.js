@@ -1,5 +1,5 @@
 module.exports = {
-    name: 'cyclemap frontend',
+    name: 'CyclePath frontend',
     script: 'serve',
     watch: true,
     env: {
