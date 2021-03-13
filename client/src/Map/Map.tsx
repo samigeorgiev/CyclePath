@@ -12,13 +12,13 @@ const Map: React.FC<Props> = () => {
         lat: 37.3347986,
         lng: -122.0091069
     })
-    const [edges, setEdges] = useState<LatLngExpression[]>([])
 
     const places = [
         { lat: 43.731026, lng: 7.425535 },
         { lat: 27.9947147, lng: -82.5943645 },
         { lat: 28.4813018, lng: -81.4387899 }
     ]
+    const [edges, setEdges] = useState<LatLngExpression[]>(places)
 
     useEffect(() => {
         navigator?.geolocation.getCurrentPosition(
@@ -46,7 +46,8 @@ const Map: React.FC<Props> = () => {
                         setErrorMsg('An unknown error occurred.')
                         break
                 }
-            }
+            },
+            { enableHighAccuracy: true, timeout: 10000 }
         )
     }, [])
 
@@ -73,7 +74,7 @@ const Map: React.FC<Props> = () => {
         <MapContainer center={location} zoom={13} className={styles.root}>
             {edges.map((edge: any) => (
                 <Polyline
-                    positions={[location, places[0]]}
+                    positions={[location, edge]}
                     // onClick={rateRoute.bind(null, edge)}
                 />
             ))}
