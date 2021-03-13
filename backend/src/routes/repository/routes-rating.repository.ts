@@ -1,10 +1,7 @@
-import { Neo4jService, Result } from 'nest-neo4j/dist'
-import { QueryResult } from 'neo4j-driver'
 import { EntityRepository, Repository } from 'typeorm'
-import { RouteRating } from '../entities/route-rating.entity'
-import { Route } from '../entities/route.entity'
-import { NotFoundException } from '@nestjs/common'
 import { RateRouteDto } from '../dto/rate-route.dto'
+import { RouteRating } from '../entities/route-rating.entity'
+import { AVGRating } from '../interfaces/avg-rating.interface'
 
 @EntityRepository(RouteRating)
 export class RoutesRatingRepository extends Repository<RouteRating> {
@@ -15,12 +12,13 @@ export class RoutesRatingRepository extends Repository<RouteRating> {
     }
 
     async getAvgRatingForRoute(nodeOneId: number, nodeTwoId: number): Promise<number> {
-        const avgRating: number = await this.createQueryBuilder('routeRatings')
-            .select('AVG(routeRatings.rating)')
+        const avgRating: AVGRating = await this.createQueryBuilder('routeRating')
+            .select('AVG(routeRating.rating)')
             .where('routeRating.nodeOneId = :nodeOneId', { nodeOneId })
             .andWhere('routeRating.nodeTwoId = :nodeTwoId', { nodeTwoId })
+            .groupBy('routeRating.id')
             .getRawOne()
 
-        return avgRating
+        return avgRating.avg
     }
 }

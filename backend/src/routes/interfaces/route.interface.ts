@@ -3,5 +3,5 @@ export interface IRoute {
     start: number
     end: number
     distance: number
-    avgRating: number
+    rating: number
 }

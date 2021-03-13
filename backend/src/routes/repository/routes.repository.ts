@@ -1,10 +1,9 @@
-import { Neo4jService, Result } from 'nest-neo4j/dist'
+import { Injectable, NotFoundException } from '@nestjs/common'
 import { QueryResult } from 'neo4j-driver'
-import { EntityRepository, Repository } from 'typeorm'
-import { RouteRating } from '../entities/route-rating.entity'
+import { Neo4jService } from 'nest-neo4j/dist'
 import { Route } from '../entities/route.entity'
-import { NotFoundException } from '@nestjs/common'
 
+@Injectable()
 export class RoutesRepository {
     constructor(private readonly neo4jService: Neo4jService) {}
 
@@ -12,7 +11,8 @@ export class RoutesRepository {
         const queryResult: QueryResult = await this.neo4jService.read(
             `
             MATCH (node1: Node{node_id: $nodeOneId})-[route: Route]-(node2: Node{node_id: $nodeTwoId}) 
-            RETURN route LIMIT 1`
+            RETURN route LIMIT 1`,
+            { nodeOneId, nodeTwoId }
         )
 
         if (!queryResult.records.length) {
@@ -22,13 +22,14 @@ export class RoutesRepository {
         return new Route(queryResult.records[0].get('route'))
     }
 
-    async updateRouteRating(id: number, rating: number) {
-        this.neo4jService.write(
+    async updateRouteRating(id: number, rating: number): Promise<void> {
+        console.log(rating)
+        await this.neo4jService.write(
             `
             MATCH (:Node)-[route: Route]-(:Node)
             WHERE id(route) = $id
             SET route.rating = $rating`,
-            { id, rating }
+            { id, rating: rating }
         )
     }
 }

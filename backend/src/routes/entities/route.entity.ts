@@ -11,9 +11,9 @@ export class Route {
     toJSON(): IRoute {
         return {
             id: this.node.identity.low,
-            start: this.node.properties['start'],
-            end: this.node.properties['end'],
-            avgRating: this.node.properties['avgRating'],
+            start: this.node.properties['start'].low,
+            end: this.node.properties['end'].low,
+            rating: this.node.properties['rating'].low,
             distance: this.node.properties['distance']
         }
     }

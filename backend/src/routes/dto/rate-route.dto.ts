@@ -8,7 +8,5 @@ export class RateRouteDto {
     nodeTwoId: number
 
     @IsNumber()
-    @Min(1)
-    @Max(5)
     rating: number
 }

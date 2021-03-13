@@ -14,7 +14,7 @@ export class RoutesService {
         private readonly routesRepository: RoutesRepository
     ) {}
 
-    async rateRoute(rateRouteDto: RateRouteDto, userId: number) {
+    async rateRoute(rateRouteDto: RateRouteDto, userId: number): Promise<void> {
         const route: Route = await this.routesRepository.getRouteByNodesIds(
             rateRouteDto.nodeOneId,
             rateRouteDto.nodeTwoId
