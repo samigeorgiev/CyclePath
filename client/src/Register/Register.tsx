@@ -1,29 +1,28 @@
 import React, { useState } from 'react'
-import LoginForm from '../components/LoginForm';
-import styles from './Login.module.scss'
+import RegisterForm from '../components/RegisterForm';
+import styles from './Register.module.scss'
 
 interface Props {}
 
-const Login: React.FC<Props> = () => {
+const Register: React.FC<Props> = () => {
   const [email, setEmail] = useState<string> ("");
   const [password, setPassword] = useState<string> ("");
 
-  const login = () => {
-    console.log('Login!');
+  const register = () => {
+    
   }
 
   return (
     <div className={styles.root}>
-      <LoginForm
+      <RegisterForm
         email={email}
         password={password}
         handleEmail={e => setEmail(e.target.value)}
         handlePassword={e => setPassword(e.target.value)}
-        handleLogin={() => login()}
+        handleRegister={() => register()}
       />
-      <a href="/register" className={styles.link}>Register Now!</a>
     </div>
   )
 }
 
-export default Login
+export default Register
