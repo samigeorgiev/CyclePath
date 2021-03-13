@@ -1,12 +1,12 @@
-import React, { useContext, useState } from 'react'
-import { useHistory } from 'react-router-dom'
-import decode from 'jwt-decode'
-import LoginForm from '../components/LoginForm'
-import styles from './Login.module.scss'
-import { toast } from 'react-toastify'
-import { AuthContext } from '../context/Auth/AuthContext'
-import { AuthContextInterface } from '../context/Auth/AuthContext.interface'
-import { DecodedToken } from '../tokenTypes/DecodedToken'
+import React, { useContext, useState } from 'react';
+import { useHistory } from 'react-router-dom';
+import decode from 'jwt-decode';
+import LoginForm from '../components/LoginForm';
+import styles from './Login.module.scss';
+import { toast } from 'react-toastify';
+import { AuthContext } from '../context/Auth/AuthContext';
+import { AuthContextInterface } from '../context/Auth/AuthContext.interface';
+import { DecodedToken } from '../tokenTypes/DecodedToken';
 
 interface Props {}
 
@@ -58,10 +58,12 @@ const Login: React.FC<Props> = () => {
                 handlePassword={(e) => setPassword(e.target.value)}
                 handleLogin={() => login()}
             />
-            <p> Don't have an account?{' '}
-              <a href='/register' className={styles.link}>
-                  Register Now!
-              </a>
+            <p>
+                {' '}
+                Don't have an account?{' '}
+                <a href='/register' className={styles.link}>
+                    Register Now!
+                </a>
             </p>
         </div>
     );
