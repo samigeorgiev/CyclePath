@@ -30,7 +30,7 @@ export class RoutesController {
     ) {
         const request = new GetRouteDto(startNodeLat, startNodeLong, endNodeLat, endNodeLong)
         console.log(request)
-        return this.routesService.getRoute(request);
+        return this.routesService.getRoute(request)
     }
 
     @Post('rate')
@@ -45,9 +45,8 @@ export class RoutesController {
         return
     }
 
-    @Get('air-pollution')
-    async airPollution (@Body(ValidationPipe) airPollutionReqDto: AirPollutionReqDto) {
-
-        return await this.routesService.airPollution(airPollutionReqDto)
+    @Post('air-pollution')
+    airPollution(@Body(ValidationPipe) airPollutionReqDto: AirPollutionReqDto) {
+        return this.routesService.airPollution(airPollutionReqDto)
     }
 }
