@@ -2,6 +2,7 @@ import { BottomNavigation, BottomNavigationAction } from '@material-ui/core';
 import React, { useContext, useEffect, useState } from 'react';
 import { AiOutlineHome } from 'react-icons/ai';
 import { HiOutlineLogin } from 'react-icons/hi';
+import { CgProfile } from 'react-icons/cg';
 import { SiGooglemaps } from 'react-icons/si';
 import { useHistory, useLocation } from 'react-router-dom';
 import { AuthContext } from '../../context/Auth/AuthContext';
@@ -47,6 +48,13 @@ const Nav: React.FC<Props> = () => {
                     value='/login'
                 />
             )}
+            {authState ? (
+                <BottomNavigationAction
+                    label='Profile'
+                    icon={<CgProfile />}
+                    value='/profile'
+                />
+            ) : null}
         </BottomNavigation>
     );
 };

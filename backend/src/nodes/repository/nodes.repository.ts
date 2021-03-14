@@ -2,6 +2,7 @@ import { Injectable, NotFoundException } from '@nestjs/common'
 import { Neo4jService } from 'nest-neo4j/dist'
 import { QueryResult, integer, int } from 'neo4j-driver'
 import { Node } from '../entities/node.entity'
+import { RouteSegment } from '../entities/route-segment.entity'
 
 @Injectable()
 export class NodesRepository {
@@ -25,9 +26,9 @@ export class NodesRepository {
     async findShortestRouteBetweenTwoNodes(
         startNodeId: number | string,
         endNodeId: number | string
-    ) {
+    ): Promise<RouteSegment[]> {
         await this.rebuildGdsGraph()
-        const queryResult = await this.neo4jService.read(
+        const queryResult: QueryResult = await this.neo4jService.read(
             `
             MATCH
                 (startNode:Node {node_id: $startNodeId}),
@@ -48,8 +49,7 @@ export class NodesRepository {
         if (queryResult.records.length === 0) {
             return []
         }
-        let total_cost = 0.0
-        const routeSegments = queryResult.records[0].get('path').segments.map(segment => {
+        return queryResult.records[0].get('path').segments.map(segment => {
             const start = new Node(
                 segment.start.properties['lat'],
                 segment.start.properties['long'],
@@ -60,17 +60,8 @@ export class NodesRepository {
                 segment.end.properties['long'],
                 segment.end.properties['node_id']
             )
-            const routeSegment = {
-                start,
-                end,
-                cost: segment.relationship.properties['cost'],
-                rating: 4
-            }
-            total_cost += routeSegment.cost
-            return routeSegment
+            return new RouteSegment(start, end, segment.relationship.properties['cost'])
         })
-        console.log('total cost: ' + total_cost)
-        return routeSegments
     }
 
     private async rebuildGdsGraph(): Promise<void> {

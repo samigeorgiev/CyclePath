@@ -12,6 +12,8 @@ import { RoutesRatingRepository } from './repository/routes-rating.repository'
 import { RoutesRepository } from './repository/routes.repository'
 import fetch from 'node-fetch'
 import { AirPollutionRes } from './interfaces/air-pollution-res.interface'
+import { IRouteSegment } from '../nodes/interfaces/route-segment.interface'
+import { RouteSegment } from 'src/nodes/entities/route-segment.entity'
 
 @Injectable()
 export class RoutesService {
@@ -25,24 +27,23 @@ export class RoutesService {
         private readonly nodesService: NodesService
     ) {}
 
-    async getRoute(getRouteDto: GetRouteDto) {
+    async getRoute(getRouteDto: GetRouteDto): Promise<IRouteSegment[]> {
         const nodes: Node[] = await this.nodesService.getAllNodes()
         const startPointNode: Node = new Node(getRouteDto.startNodeLat, getRouteDto.startNodeLong)
         const nearestStartNode = this.findNearestNode(nodes, startPointNode)
         const endPointNode = new Node(getRouteDto.endNodeLat, getRouteDto.endNodeLong)
         const nearestEndNode = this.findNearestNode(nodes, endPointNode)
-        const segments = await this.nodesRepository.findShortestRouteBetweenTwoNodes(
+        const segments: RouteSegment[] = await this.nodesRepository.findShortestRouteBetweenTwoNodes(
             nearestStartNode.nodeId,
             nearestEndNode.nodeId
         )
         for await (const segment of segments) {
             const rating = await this.routesRatingRepository.getAvgRatingForRoute(
-                segment.start.nodeId,
-                segment.end.nodeId
+                +segment.start.nodeId,
+                +segment.end.nodeId
             )
             segment.rating = rating || 4
         }
-        // console.log(segments)
         return segments
     }
 
@@ -91,25 +92,34 @@ export class RoutesService {
         return { startPointData: this.airPollutionData[startPointUrl], endPointData: this.airPollutionData[endPointUrl] }
     }
 
-    async airPollution(airPollutionReqDto: AirPollutionReqDto): Promise<AirPollutionRes> {
-        const data = await this.getPollutionData(airPollutionReqDto)
+    async airPollution(airPollutionReqDtos: AirPollutionReqDto[]): Promise<AirPollutionRes[]> {
+        const requests = airPollutionReqDtos.map(dto => this.getPollutionData(dto))
+        const responses = await Promise.all(requests)
 
-        let date
-        if (
-            new Date(data.startPointData.data.time.s).getTime() >
-            new Date(data.endPointData.data.time.s).getTime()
-        ) {
-            date = data.startPointData.data.time.s
-        } else {
-            date = data.endPointData.data.time.s
-        }
+        console.log(responses);
+        
+        let date: Date
+        let pollution: number
 
-        const pollution =
-            (data.startPointData.data.iaqi.pm10.v + data.endPointData.data.iaqi.pm10.v) / 2
+        let data: AirPollutionRes[] = []
+        responses.map(res => {
+            if (
+                new Date(res.startPointData.data.time.s).getTime() >
+                new Date(res.endPointData.data.time.s).getTime()
+            ) {
+                date = res.startPointData.data.time.s
+            } else {
+                date = res.endPointData.data.time.s
+            }
 
-        return {
-            measurementTime: date,
-            pollutionIndex: pollution
-        }
+            pollution = (res.startPointData.data.iaqi.pm10.v + res.endPointData.data.iaqi.pm10.v) / 2
+
+            data.push({
+                measurementTime: date,
+                pollutionIndex: pollution
+            })
+        })
+
+        return data
     }
 }

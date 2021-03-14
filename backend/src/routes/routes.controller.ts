@@ -16,20 +16,21 @@ import { RateRouteDto } from './dto/rate-route.dto'
 import { RoutesService } from './routes.service'
 import { UseGuards } from '@nestjs/common'
 import { Req } from '@nestjs/common'
+import { IRouteSegment } from '../nodes/interfaces/route-segment.interface'
 
 @Controller('routes')
 export class RoutesController {
     constructor(private readonly routesService: RoutesService) {}
 
     @Get()
-    get(
+    async get(
         @Query('startNodeLat') startNodeLat: number,
         @Query('startNodeLong') startNodeLong: number,
         @Query('endNodeLat') endNodeLat: number,
         @Query('endNodeLong') endNodeLong: number
-    ) {
+    ): Promise<IRouteSegment[]> {
         const request = new GetRouteDto(startNodeLat, startNodeLong, endNodeLat, endNodeLong)
-        return this.routesService.getRoute(request);
+        return await this.routesService.getRoute(request);
     }
 
     @Post('rate')
@@ -45,7 +46,7 @@ export class RoutesController {
     }
 
     @Post('air-pollution')
-    airPollution(@Body(ValidationPipe) airPollutionReqDto: AirPollutionReqDto) {
-        return this.routesService.airPollution(airPollutionReqDto)
+    airPollution(@Body(ValidationPipe) airPollutionReqDtos: AirPollutionReqDto[]) {
+        return this.routesService.airPollution(airPollutionReqDtos)
     }
 }
