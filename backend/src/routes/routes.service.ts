@@ -29,10 +29,15 @@ export class RoutesService {
         const nearestStartNode = this.findNearestNode(nodes, startPointNode)
         const endPointNode = new Node(getRouteDto.endNodeLat, getRouteDto.endNodeLong)
         const nearestEndNode = this.findNearestNode(nodes, endPointNode)
-        return this.nodesRepository.findShortestRouteBetweenTwoNodes(
+        const segments = await this.nodesRepository.findShortestRouteBetweenTwoNodes(
             nearestStartNode.nodeId,
             nearestEndNode.nodeId
         )
+        segments.map(async segment => ({
+            ...segment,
+            rating: await this.routesRatingRepository.getAvgRatingForRoute(segment.start.nodeId, segment.end.nodeId) || 4
+        }))
+        return segments
     }
 
     private findNearestNode(nodes: Node[], node: Node): Node {
