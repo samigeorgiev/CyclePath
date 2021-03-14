@@ -1,7 +1,17 @@
 import React, { FunctionComponent, useState } from 'react';
-import { Polyline, Popup } from 'react-leaflet';
+import { Polyline, Popup, useMap } from 'react-leaflet';
 import { useRateRoute } from '../../hooks/useRateRoute/useRateRoute';
 import { Route } from './Route';
+import {
+    SentimentVeryDissatisfied,
+    SentimentDissatisfied,
+    SentimentSatisfied,
+    SentimentSatisfiedAlt,
+    SentimentVerySatisfied
+} from '@material-ui/icons';
+import { Box, Button, Typography } from '@material-ui/core';
+import { Rating, IconContainerProps } from '@material-ui/lab';
+import styles from './PolyLine.module.scss';
 
 interface Props {
     route: Route;
@@ -15,48 +25,94 @@ const ratingColorMap = new Map<number, string>([
     [5, 'lime']
 ]);
 
+const customIcons: {
+    [index: string]: { icon: React.ReactElement; label: string };
+} = {
+    1: {
+        icon: <SentimentVeryDissatisfied />,
+        label: 'Very Dissatisfied'
+    },
+    2: {
+        icon: <SentimentDissatisfied />,
+        label: 'Dissatisfied'
+    },
+    3: {
+        icon: <SentimentSatisfied />,
+        label: 'Neutral'
+    },
+    4: {
+        icon: <SentimentSatisfiedAlt />,
+        label: 'Satisfied'
+    },
+    5: {
+        icon: <SentimentVerySatisfied />,
+        label: 'Very Satisfied'
+    }
+};
+
+function IconContainer(props: IconContainerProps) {
+    const { value, ...other } = props;
+    return <span {...other}>{customIcons[value].icon}</span>;
+}
+
 export const PolyLine: FunctionComponent<Props> = ({ route }) => {
     const rateRoute = useRateRoute();
 
     const [rating, setRating] = useState<number>(1);
 
+    const map = useMap();
+
     return (
         <Polyline
+            className={styles.PopUp}
             color={ratingColorMap.get(route.rating)}
             positions={[
                 [route.start.lat, route.start.long],
                 [route.end.lat, route.end.long]
             ]}
         >
-            <Popup>
-                <p>add rating</p>
-                {new Array(5).fill(1).map((_, i) => (
-                    <button
-                        key={i}
-                        onClick={() => {
-                            setRating(i + 1);
+            <Popup className={styles.PopUp}>
+                <Box
+                    className={styles.Box}
+                    component='fieldset'
+                    borderColor='transparent'
+                >
+                    <Typography variant='h6' component='legend'>
+                        Rate Route
+                    </Typography>
+                    <Rating
+                        name='customized-icons'
+                        size='large'
+                        value={rating}
+                        onChange={(e, value: number | null) => {
+                            if (!value) {
+                                return;
+                            }
+
+                            setRating(value);
                         }}
-                        style={{
-                            backgroundColor: i + 1 <= rating ? 'red' : 'blue',
-                            fontSize: '1.5rem',
-                            padding: '0.7rem'
-                        }}
-                    >
-                        {i + 1}
-                    </button>
-                ))}
-                <p></p>
-                <button
+                        getLabelText={(value: number) =>
+                            customIcons[value].label
+                        }
+                        color={ratingColorMap.get(rating)}
+                        IconContainerComponent={IconContainer}
+                    />
+                </Box>
+                <Button
+                    variant='contained'
+                    fullWidth
+                    color='primary'
                     onClick={() => {
+                        map.closePopup();
                         rateRoute({
                             nodeOneId: route.start.nodeId,
                             nodeTwoId: route.end.nodeId,
-                            rating: route.rating
+                            rating
                         });
                     }}
                 >
                     Submit
-                </button>
+                </Button>
             </Popup>
         </Polyline>
     );
