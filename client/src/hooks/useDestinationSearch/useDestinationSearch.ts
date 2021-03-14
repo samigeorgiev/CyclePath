@@ -1,8 +1,8 @@
-import { LatLng } from 'leaflet';
+import { LatLng, LatLngLiteral } from 'leaflet';
 import { useCallback, useState } from 'react';
 
 interface UseDestinationSearch {
-    destination: LatLng | null;
+    destination: LatLngLiteral | null;
     getDestinationFromSearch: (search: string) => void;
 }
 
@@ -20,13 +20,18 @@ export const useDestinationSearch = (): UseDestinationSearch => {
         }
 
         const searchForQuery: string = search.split(' ').join('+');
-        console.log(MAPS_API_URL + searchForQuery + keyQuery);
+
         fetch(MAPS_API_URL + searchForQuery + keyQuery)
             .then((res: Response) => res.json())
             .then((data) => {
                 if (data.status !== 'OK') {
                     return;
                 }
+
+                if (destination?.equals(data.results[0].geometry.location)) {
+                    return;
+                }
+
                 setDestination(data.results[0].geometry.location);
             });
     }, []);

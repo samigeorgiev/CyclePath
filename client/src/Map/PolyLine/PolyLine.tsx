@@ -23,7 +23,10 @@ export const PolyLine: FunctionComponent<Props> = ({ route }) => {
     return (
         <Polyline
             color={ratingColorMap.get(route.rating)}
-            positions={[route.start, route.end]}
+            positions={[
+                [route.start.lat, route.start.long],
+                [route.end.lat, route.end.long]
+            ]}
         >
             <Popup>
                 <p>add rating</p>
@@ -46,9 +49,9 @@ export const PolyLine: FunctionComponent<Props> = ({ route }) => {
                 <button
                     onClick={() => {
                         rateRoute({
-                            nodeOneId: 7271008793,
-                            nodeTwoId: 1684697691,
-                            rating
+                            nodeOneId: route.start.nodeId,
+                            nodeTwoId: route.end.nodeId,
+                            rating: route.rating
                         });
                     }}
                 >

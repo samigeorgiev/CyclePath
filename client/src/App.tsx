@@ -1,12 +1,12 @@
 import React, { Suspense, useContext } from 'react';
 import { Route, Switch } from 'react-router-dom';
 import { Nav } from './components';
-import { MapProvider } from './Map/MapProvider';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { useRefreshToken } from './hooks/Auth/useRefreshToken';
 import { AuthContext } from './context/Auth/AuthContext';
 import { AuthContextInterface } from './context/Auth/AuthContext.interface';
+import { MapProvider } from './Map/MapProvider';
 
 const Home = React.lazy(() => import('./Home'));
 const Map = React.lazy(() => import('./Map'));

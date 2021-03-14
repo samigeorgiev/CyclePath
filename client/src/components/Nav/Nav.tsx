@@ -1,12 +1,12 @@
+import { BottomNavigation, BottomNavigationAction } from '@material-ui/core';
 import React, { useContext, useEffect, useState } from 'react';
-import { NavLink, useHistory, useLocation } from 'react-router-dom';
+import { AiOutlineHome } from 'react-icons/ai';
+import { HiOutlineLogin } from 'react-icons/hi';
+import { SiGooglemaps } from 'react-icons/si';
+import { useHistory, useLocation } from 'react-router-dom';
 import { AuthContext } from '../../context/Auth/AuthContext';
 import { AuthContextInterface } from '../../context/Auth/AuthContext.interface';
 import styles from './Nav.module.scss';
-import { BottomNavigation, BottomNavigationAction } from '@material-ui/core';
-import { AiOutlineHome } from 'react-icons/ai';
-import { SiGooglemaps } from 'react-icons/si';
-import { HiOutlineLogin } from 'react-icons/hi';
 
 interface Props {}
 
