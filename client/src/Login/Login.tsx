@@ -1,12 +1,12 @@
+import decode from 'jwt-decode';
 import React, { useContext, useState } from 'react';
 import { useHistory } from 'react-router-dom';
-import decode from 'jwt-decode';
-import LoginForm from '../components/LoginForm';
-import styles from './Login.module.scss';
 import { toast } from 'react-toastify';
-import { AuthContextInterface } from '../context/Auth/AuthContext.interface';
+import LoginForm from '../components/LoginForm';
 import { AuthContext } from '../context/Auth/AuthContext';
+import { AuthContextInterface } from '../context/Auth/AuthContext.interface';
 import { DecodedToken } from '../tokenTypes/DecodedToken';
+import styles from './Login.module.scss';
 
 interface Props {}
 
@@ -20,11 +20,12 @@ const Login: React.FC<Props> = () => {
 
     const login = () => {
         fetch(`${process.env.REACT_APP_API_URL}/auth/sign-in`, {
+            method: 'POST',
+            credentials: 'include',
             headers: {
                 Accept: 'application/json',
                 'Content-Type': 'application/json'
             },
-            method: 'POST',
             body: JSON.stringify({
                 email: email,
                 password: password
@@ -57,9 +58,13 @@ const Login: React.FC<Props> = () => {
                 handlePassword={(e) => setPassword(e.target.value)}
                 handleLogin={() => login()}
             />
-            <a href='/register' className={styles.link}>
-                Register Now!
-            </a>
+            <p>
+                {' '}
+                Don't have an account?{' '}
+                <a href='/register' className={styles.link}>
+                    Register Now!
+                </a>
+            </p>
         </div>
     );
 };

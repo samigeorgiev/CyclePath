@@ -7,7 +7,6 @@ import styles from './Register.module.scss';
 import { AuthContextInterface } from '../context/Auth/AuthContext.interface';
 import { AuthContext } from '../context/Auth/AuthContext';
 import { DecodedToken } from '../tokenTypes/DecodedToken';
-
 // import { toast } from 'react-toastify';
 
 interface Props {}
@@ -23,11 +22,12 @@ const Register: React.FC<Props> = () => {
 
     const register = async () => {
         await fetch(`${process.env.REACT_APP_API_URL}/auth/sign-up`, {
+            method: 'POST',
+            credentials: 'include',
             headers: {
                 Accept: 'application/json',
                 'Content-Type': 'application/json'
             },
-            method: 'POST',
             body: JSON.stringify({
                 name: name,
                 email: email,
