@@ -28,7 +28,7 @@ export class RoutesController {
         @Query('startNodeLong') startNodeLong: number,
         @Query('endNodeLat') endNodeLat: number,
         @Query('endNodeLong') endNodeLong: number
-    ): Promise<IRouteSegment[]> {
+    ): Promise<IRouteSegment[][]> {
         const request = new GetRouteDto(startNodeLat, startNodeLong, endNodeLat, endNodeLong)
         return await this.routesService.getRoute(request);
     }
