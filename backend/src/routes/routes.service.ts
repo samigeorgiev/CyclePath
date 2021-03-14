@@ -15,6 +15,8 @@ import { AirPollutionRes } from './interfaces/air-pollution-res.interface'
 
 @Injectable()
 export class RoutesService {
+    private readonly airPollutionData: Record<string, any> = {}
+
     constructor(
         @InjectRepository(RoutesRatingRepository)
         private readonly routesRatingRepository: RoutesRatingRepository,
@@ -29,10 +31,19 @@ export class RoutesService {
         const nearestStartNode = this.findNearestNode(nodes, startPointNode)
         const endPointNode = new Node(getRouteDto.endNodeLat, getRouteDto.endNodeLong)
         const nearestEndNode = this.findNearestNode(nodes, endPointNode)
-        return this.nodesRepository.findShortestRouteBetweenTwoNodes(
+        const segments = await this.nodesRepository.findShortestRouteBetweenTwoNodes(
             nearestStartNode.nodeId,
             nearestEndNode.nodeId
         )
+        for await (const segment of segments) {
+            const rating = await this.routesRatingRepository.getAvgRatingForRoute(
+                segment.start.nodeId,
+                segment.end.nodeId
+            )
+            segment.rating = rating || 4
+        }
+        // console.log(segments)
+        return segments
     }
 
     private findNearestNode(nodes: Node[], node: Node): Node {
@@ -66,13 +77,18 @@ export class RoutesService {
         const startPointUrl = `https://api.waqi.info/feed/geo:${airPollutionReqDto.startLat};${airPollutionReqDto.startLon}/?token=${process.env.AIR_QUALITY_KEY}`
         const endPointUrl = `https://api.waqi.info/feed/geo:${airPollutionReqDto.endLat};${airPollutionReqDto.endLon}/?token=${process.env.AIR_QUALITY_KEY}`
 
-        const startPointRes = await fetch(startPointUrl)
-        const startPointData = await startPointRes.json()
+        if (!(startPointUrl in airPollutionReqDto)) {
+            const startPointRes = await fetch(startPointUrl)
+            const startPointData = await startPointRes.json()
+            this.airPollutionData[startPointUrl] = startPointData
+        }
+        if (!(endPointUrl in airPollutionReqDto)) {
+            const endPointRes = await fetch(endPointUrl)
+            const endPointData = await endPointRes.json()
+            this.airPollutionData[endPointUrl] = endPointData
+        }
 
-        const endPointRes = await fetch(endPointUrl)
-        const endPointData = await endPointRes.json()
-
-        return { startPointData: startPointData, endPointData: endPointData }
+        return { startPointData: this.airPollutionData[startPointUrl], endPointData: this.airPollutionData[endPointUrl] }
     }
 
     async airPollution(airPollutionReqDto: AirPollutionReqDto): Promise<AirPollutionRes> {
