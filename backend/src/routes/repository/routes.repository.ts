@@ -34,4 +34,19 @@ export class RoutesRepository {
             { id, rating: rating }
         )
     }
+
+    async getRoutesByNodesIds(nodeIds: number[][]): Promise<Route[]> {
+        const queryResult = await this.neo4jService.read(
+            `
+            UNWIND $nodeIds as nodes 
+            MATCH
+                (start: Node)-[route:Route]-(end: Node)
+            WHERE start.node_id = nodes[0] and end.node_id = nodes[1]
+            RETURN route`,
+            { nodeIds }
+        )
+        return queryResult.records.map(route => {
+            return new Route(route.get('route'))
+        })
+    }
 }

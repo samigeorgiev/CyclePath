@@ -2,7 +2,12 @@ import { Node } from 'neo4j-driver'
 import { IRoute } from '../interfaces/route.interface'
 
 export class Route {
-    constructor(private readonly node: Node) {}
+
+    public rating: number
+
+    constructor(private readonly node: Node) {
+        this.rating = node.properties['rating'].low
+    }
 
     getId(): number {
         return this.node.identity.low
