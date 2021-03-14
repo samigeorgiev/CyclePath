@@ -41,10 +41,15 @@ export const AirPollutionArea: FunctionComponent<Props> = ({ route }) => {
     return (
         <Circle
             center={{
-                lat: (route.start[0] + route.end[0]) / 2,
-                lng: (route.start[1] + route.end[1]) / 2
+                lat: (route.start.lat + route.end.lat) / 2,
+                lng: (route.start.long + route.end.long) / 2
             }}
-            radius={map.distance(route.start, route.end) / 2}
+            radius={
+                map.distance(
+                    [route.start.lat, route.start.long],
+                    [route.end.lat, route.end.long]
+                ) / 2
+            }
             color={color}
         />
     );
