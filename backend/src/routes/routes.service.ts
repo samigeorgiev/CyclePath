@@ -12,6 +12,8 @@ import { RoutesRatingRepository } from './repository/routes-rating.repository'
 import { RoutesRepository } from './repository/routes.repository'
 import fetch from 'node-fetch'
 import { AirPollutionRes } from './interfaces/air-pollution-res.interface'
+import { IRouteSegment } from '../nodes/interfaces/route-segment.interface'
+import { RouteSegment } from 'src/nodes/entities/route-segment.entity'
 
 @Injectable()
 export class RoutesService {
@@ -25,24 +27,23 @@ export class RoutesService {
         private readonly nodesService: NodesService
     ) {}
 
-    async getRoute(getRouteDto: GetRouteDto) {
+    async getRoute(getRouteDto: GetRouteDto): Promise<IRouteSegment[]> {
         const nodes: Node[] = await this.nodesService.getAllNodes()
         const startPointNode: Node = new Node(getRouteDto.startNodeLat, getRouteDto.startNodeLong)
         const nearestStartNode = this.findNearestNode(nodes, startPointNode)
         const endPointNode = new Node(getRouteDto.endNodeLat, getRouteDto.endNodeLong)
         const nearestEndNode = this.findNearestNode(nodes, endPointNode)
-        const segments = await this.nodesRepository.findShortestRouteBetweenTwoNodes(
+        const segments: RouteSegment[] = await this.nodesRepository.findShortestRouteBetweenTwoNodes(
             nearestStartNode.nodeId,
             nearestEndNode.nodeId
         )
         for await (const segment of segments) {
             const rating = await this.routesRatingRepository.getAvgRatingForRoute(
-                segment.start.nodeId,
-                segment.end.nodeId
+                +segment.start.nodeId,
+                +segment.end.nodeId
             )
             segment.rating = rating || 4
         }
-        // console.log(segments)
         return segments
     }
 
