@@ -56,15 +56,16 @@ export const Map: React.FC<Props> = (props) => {
 
     return (
         <>
-            <Pane name='custom' style={{ zIndex: 10000 }}>
+            {routes?.map((route: Route) => (
+                <PolyLine key={uuid()} route={route} />
+            ))}
+            <Pane style={{ zIndex: 399 }} name='air-polution'>
                 {routes?.map((route: Route) => (
-                    <PolyLine key={uuid()} route={route} />
+                    <AirPollutionArea key={uuid()} route={route} />
                 ))}
             </Pane>
-            {routes?.map((route: Route) => (
-                <AirPollutionArea key={uuid()} route={route} />
-            ))}
             <TileLayer
+                zIndex={-100}
                 attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
                 url='https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png'
             />
