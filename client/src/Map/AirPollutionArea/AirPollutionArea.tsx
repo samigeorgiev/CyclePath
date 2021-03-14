@@ -5,6 +5,7 @@ import { Route } from '../PolyLine/Route';
 
 interface Props {
     route: Route;
+    airPollution: number;
 }
 
 const AreaColorMap = new Map<number, string>([
@@ -15,14 +16,11 @@ const AreaColorMap = new Map<number, string>([
     [150, 'brown']
 ]);
 
-export const AirPollutionArea: FunctionComponent<Props> = ({ route }) => {
-    const { airPollution, getAirPollution } = useGetAirPollution();
-
+export const AirPollutionArea: FunctionComponent<Props> = ({
+    route,
+    airPollution
+}) => {
     const map = useMap();
-
-    useEffect(() => {
-        getAirPollution(route);
-    }, []);
 
     if (!airPollution) {
         return null;

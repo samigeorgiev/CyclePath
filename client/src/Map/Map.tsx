@@ -1,3 +1,4 @@
+import { FormControlLabel, Switch } from '@material-ui/core';
 import {
     LatLng,
     LatLngExpression,
@@ -11,6 +12,7 @@ import { Pane, TileLayer, useMapEvents, ZoomControl } from 'react-leaflet';
 import { v4 as uuid } from 'uuid';
 import { useGetRoute } from '../hooks/useGetRoute/useGetRoute';
 import { AirPollutionArea } from './AirPollutionArea';
+import { AirPollutionWrapper } from './AirPollutionArea/AirPollutionWrapper';
 import { LocationMarker } from './LocationMarker';
 import { PolyLine } from './PolyLine';
 import { Route } from './PolyLine/Route';
@@ -23,6 +25,8 @@ export const Map: React.FC<Props> = (props) => {
     const { getRoute, routes } = useGetRoute();
 
     const [position, setPosition] = useState<LatLngLiteral | null>(null);
+
+    const [visible, setVisible] = useState<boolean>(false);
 
     const map: LeafletMap = useMapEvents({
         locationfound(event: LocationEvent) {
@@ -56,13 +60,24 @@ export const Map: React.FC<Props> = (props) => {
 
     return (
         <>
+            <FormControlLabel
+                control={
+                    <Switch
+                        checked={visible}
+                        onChange={() => {
+                            setVisible((v) => !v);
+                        }}
+                        name='air-toggle'
+                        color='primary'
+                    />
+                }
+                label='Air Pollution'
+            />
             {routes?.map((route: Route) => (
                 <PolyLine key={uuid()} route={route} />
             ))}
             <Pane style={{ zIndex: 399 }} name='air-polution'>
-                {routes?.map((route: Route) => (
-                    <AirPollutionArea key={uuid()} route={route} />
-                ))}
+                {routes && <AirPollutionWrapper routes={routes} />}
             </Pane>
             <TileLayer
                 zIndex={-100}
