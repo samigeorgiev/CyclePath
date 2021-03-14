@@ -91,25 +91,34 @@ export class RoutesService {
         return { startPointData: this.airPollutionData[startPointUrl], endPointData: this.airPollutionData[endPointUrl] }
     }
 
-    async airPollution(airPollutionReqDto: AirPollutionReqDto): Promise<AirPollutionRes> {
-        const data = await this.getPollutionData(airPollutionReqDto)
+    async airPollution(airPollutionReqDtos: AirPollutionReqDto[]): Promise<AirPollutionRes[]> {
+        const requests = airPollutionReqDtos.map(dto => this.getPollutionData(dto))
+        const responses = await Promise.all(requests)
 
-        let date
-        if (
-            new Date(data.startPointData.data.time.s).getTime() >
-            new Date(data.endPointData.data.time.s).getTime()
-        ) {
-            date = data.startPointData.data.time.s
-        } else {
-            date = data.endPointData.data.time.s
-        }
+        console.log(responses);
+        
+        let date: Date
+        let pollution: number
 
-        const pollution =
-            (data.startPointData.data.iaqi.pm10.v + data.endPointData.data.iaqi.pm10.v) / 2
+        let data: AirPollutionRes[] = []
+        responses.map(res => {
+            if (
+                new Date(res.startPointData.data.time.s).getTime() >
+                new Date(res.endPointData.data.time.s).getTime()
+            ) {
+                date = res.startPointData.data.time.s
+            } else {
+                date = res.endPointData.data.time.s
+            }
 
-        return {
-            measurementTime: date,
-            pollutionIndex: pollution
-        }
+            pollution = (res.startPointData.data.iaqi.pm10.v + res.endPointData.data.iaqi.pm10.v) / 2
+
+            data.push({
+                measurementTime: date,
+                pollutionIndex: pollution
+            })
+        })
+
+        return data
     }
 }

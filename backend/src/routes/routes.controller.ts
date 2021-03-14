@@ -45,7 +45,7 @@ export class RoutesController {
     }
 
     @Post('air-pollution')
-    airPollution(@Body(ValidationPipe) airPollutionReqDto: AirPollutionReqDto) {
-        return this.routesService.airPollution(airPollutionReqDto)
+    airPollution(@Body(ValidationPipe) airPollutionReqDtos: AirPollutionReqDto[]) {
+        return this.routesService.airPollution(airPollutionReqDtos)
     }
 }
