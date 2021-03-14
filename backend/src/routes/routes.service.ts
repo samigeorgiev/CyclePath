@@ -89,12 +89,18 @@ export class RoutesService {
         const endPointUrl = `https://api.waqi.info/feed/geo:${airPollutionReqDto.endLat};${airPollutionReqDto.endLon}/?token=${process.env.AIR_QUALITY_KEY}`
 
         if (!(startPointUrl in airPollutionReqDto)) {
-            const startPointRes = await fetch(startPointUrl)
+            const startPointRes: Response = await fetch(startPointUrl)
+            if(!startPointRes.ok){
+                return
+            }
             const startPointData = await startPointRes.json()
             this.airPollutionData[startPointUrl] = startPointData
         }
         if (!(endPointUrl in airPollutionReqDto)) {
-            const endPointRes = await fetch(endPointUrl)
+            const endPointRes: Response = await fetch(endPointUrl)
+            if(!endPointRes.ok){
+                return
+            }
             const endPointData = await endPointRes.json()
             this.airPollutionData[endPointUrl] = endPointData
         }

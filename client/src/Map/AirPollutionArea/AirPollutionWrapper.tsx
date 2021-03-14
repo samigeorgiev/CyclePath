@@ -6,9 +6,13 @@ import { v4 as uuid } from 'uuid';
 
 interface Props {
     routes: Route[];
+    visible: boolean;
 }
 
-export const AirPollutionWrapper: FunctionComponent<Props> = ({ routes }) => {
+export const AirPollutionWrapper: FunctionComponent<Props> = ({
+    routes,
+    visible
+}) => {
     const { airPollutions, getAirPollutions } = useGetAirPollution();
 
     useEffect(() => {
@@ -21,13 +25,14 @@ export const AirPollutionWrapper: FunctionComponent<Props> = ({ routes }) => {
 
     return (
         <>
-            {routes?.map((route: Route, index: number) => (
-                <AirPollutionArea
-                    key={uuid()}
-                    route={route}
-                    airPollution={airPollutions[index]}
-                />
-            ))}
+            {visible &&
+                routes?.map((route: Route, index: number) => (
+                    <AirPollutionArea
+                        key={uuid()}
+                        route={route}
+                        airPollution={airPollutions[index]}
+                    />
+                ))}
         </>
     );
 };

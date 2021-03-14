@@ -1,4 +1,4 @@
-import { FormControlLabel, Switch } from '@material-ui/core';
+import { FormControlLabel, Switch, useMediaQuery } from '@material-ui/core';
 import {
     LatLng,
     LatLngExpression,
@@ -7,7 +7,7 @@ import {
     Map as LeafletMap
 } from 'leaflet';
 import 'leaflet/dist/leaflet.css';
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { Pane, TileLayer, useMapEvents, ZoomControl } from 'react-leaflet';
 import { v4 as uuid } from 'uuid';
 import { useGetRoute } from '../hooks/useGetRoute/useGetRoute';
@@ -16,6 +16,8 @@ import { AirPollutionWrapper } from './AirPollutionArea/AirPollutionWrapper';
 import { LocationMarker } from './LocationMarker';
 import { PolyLine } from './PolyLine';
 import { Route } from './PolyLine/Route';
+import styles from './Map.module.scss';
+import { SiTailwindcss } from 'react-icons/si';
 
 interface Props {
     destination: LatLngLiteral | null;
@@ -27,6 +29,14 @@ export const Map: React.FC<Props> = (props) => {
     const [position, setPosition] = useState<LatLngLiteral | null>(null);
 
     const [visible, setVisible] = useState<boolean>(false);
+
+    const [shouldReload, setShouldReload] = useState<boolean>(true);
+
+    const matches = useMediaQuery('(min-width:600px)');
+
+    const forceReload = useCallback(() => {
+        setShouldReload(true);
+    }, []);
 
     const map: LeafletMap = useMapEvents({
         locationfound(event: LocationEvent) {
@@ -45,8 +55,7 @@ export const Map: React.FC<Props> = (props) => {
     }, []);
 
     useEffect(() => {
-        if (props.destination && position) {
-            console.log('success');
+        if (props.destination && position && shouldReload) {
             getRoute(
                 [position.lat, position.lng],
                 [props.destination.lat, props.destination.lng]
@@ -55,8 +64,9 @@ export const Map: React.FC<Props> = (props) => {
                 [position.lat, position.lng],
                 [props.destination.lat, props.destination.lng]
             ]);
+            setShouldReload(false);
         }
-    }, [props.destination]);
+    }, [props.destination, shouldReload]);
 
     return (
         <>
@@ -71,13 +81,20 @@ export const Map: React.FC<Props> = (props) => {
                         color='primary'
                     />
                 }
-                label='Air Pollution'
+                label={matches ? 'Air Pollution' : <SiTailwindcss className={styles.wind}/>}
+                className={styles.toggle}
             />
             {routes?.map((route: Route) => (
-                <PolyLine key={uuid()} route={route} />
+                <PolyLine
+                    key={uuid()}
+                    route={route}
+                    forceReload={forceReload}
+                />
             ))}
             <Pane style={{ zIndex: 399 }} name='air-polution'>
-                {routes && <AirPollutionWrapper routes={routes} />}
+                {routes && (
+                    <AirPollutionWrapper routes={routes} visible={visible} />
+                )}
             </Pane>
             <TileLayer
                 zIndex={-100}
