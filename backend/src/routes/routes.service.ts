@@ -33,10 +33,14 @@ export class RoutesService {
             nearestStartNode.nodeId,
             nearestEndNode.nodeId
         )
-        segments.map(async segment => ({
-            ...segment,
-            rating: await this.routesRatingRepository.getAvgRatingForRoute(segment.start.nodeId, segment.end.nodeId) || 4
-        }))
+        for await (const segment of segments) {
+            const rating = await this.routesRatingRepository.getAvgRatingForRoute(
+                segment.start.nodeId,
+                segment.end.nodeId
+            );
+            segment.rating = rating || 4
+        }
+        // console.log(segments)
         return segments
     }
 
