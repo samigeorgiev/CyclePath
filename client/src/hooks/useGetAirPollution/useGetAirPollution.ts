@@ -24,10 +24,10 @@ export const useGetAirPollution = (): GetAirPollution => {
                     Authorization: `Bearer ${authState?.token}`
                 },
                 body: JSON.stringify({
-                    startLat: route.start[0],
-                    startLon: route.start[1],
-                    endLat: route.end[0],
-                    endLon: route.end[1]
+                    startLat: route.start.lat,
+                    startLon: route.start.long,
+                    endLat: route.end.lat,
+                    endLon: route.end.long
                 })
             })
                 .then((res) => res.json())

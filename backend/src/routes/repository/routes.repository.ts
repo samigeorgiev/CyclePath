@@ -28,8 +28,9 @@ export class RoutesRepository {
             `
             MATCH (:Node)-[route: Route]-(:Node)
             WHERE id(route) = $id
-            SET route.rating = $rating,
-            SET route.cost = $rating * route.distance`,
+            SET
+                route.rating = $rating,
+                route.cost = $rating * route.distance`,
             { id, rating: rating }
         )
     }

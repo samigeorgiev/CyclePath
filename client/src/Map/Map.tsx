@@ -1,26 +1,38 @@
-import { LatLng, LocationEvent, Map as LeafletMap } from 'leaflet';
+import {
+    LatLng,
+    LatLngExpression,
+    LatLngLiteral,
+    LocationEvent,
+    Map as LeafletMap
+} from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 import React, { useEffect, useState } from 'react';
 import { Pane, TileLayer, useMapEvents, ZoomControl } from 'react-leaflet';
 import { v4 as uuid } from 'uuid';
+import { useGetRoute } from '../hooks/useGetRoute/useGetRoute';
 import { AirPollutionArea } from './AirPollutionArea';
 import { LocationMarker } from './LocationMarker';
 import { PolyLine } from './PolyLine';
 import { Route } from './PolyLine/Route';
 
 interface Props {
-    destination: LatLng | null;
+    destination: LatLngLiteral | null;
 }
 
 export const Map: React.FC<Props> = (props) => {
-    const [routes, setRoutes] = useState<Route[]>([]);
+    const { getRoute, routes } = useGetRoute();
 
-    const [position, setPosition] = useState<LatLng | null>(null);
+    const [position, setPosition] = useState<LatLngLiteral | null>(null);
 
     const map: LeafletMap = useMapEvents({
         locationfound(event: LocationEvent) {
-            setPosition(event.latlng);
-            map.flyTo(event.latlng, map.getZoom(), { duration: 1 });
+            // setPosition(event.latlng);
+            setPosition({ lat: 43.73429996534598, lng: 7.418578619024726 });
+            map.flyTo(
+                { lat: 43.73429996534598, lng: 7.418578619024726 },
+                map.getZoom(),
+                { duration: 1 }
+            );
         }
     });
 
@@ -30,13 +42,11 @@ export const Map: React.FC<Props> = (props) => {
 
     useEffect(() => {
         if (props.destination && position) {
-            setRoutes([
-                {
-                    start: [position.lat, position.lng],
-                    end: [props.destination.lat, props.destination.lng],
-                    rating: 2
-                }
-            ]);
+            console.log('success');
+            getRoute(
+                [position.lat, position.lng],
+                [props.destination.lat, props.destination.lng]
+            );
             map.fitBounds([
                 [position.lat, position.lng],
                 [props.destination.lat, props.destination.lng]
@@ -46,15 +56,12 @@ export const Map: React.FC<Props> = (props) => {
 
     return (
         <>
-            <Pane
-                name='custom'
-                style={{ zIndex: 10000, border: '4px solid black' }}
-            >
-                {routes.map((route: Route) => (
+            <Pane name='custom' style={{ zIndex: 10000 }}>
+                {routes?.map((route: Route) => (
                     <PolyLine key={uuid()} route={route} />
                 ))}
             </Pane>
-            {routes.map((route: Route) => (
+            {routes?.map((route: Route) => (
                 <AirPollutionArea key={uuid()} route={route} />
             ))}
             <TileLayer

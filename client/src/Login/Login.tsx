@@ -1,12 +1,12 @@
+import decode from 'jwt-decode';
 import React, { useContext, useState } from 'react';
 import { useHistory } from 'react-router-dom';
-import decode from 'jwt-decode';
-import LoginForm from '../components/LoginForm';
-import styles from './Login.module.scss';
 import { toast } from 'react-toastify';
+import LoginForm from '../components/LoginForm';
 import { AuthContext } from '../context/Auth/AuthContext';
 import { AuthContextInterface } from '../context/Auth/AuthContext.interface';
 import { DecodedToken } from '../tokenTypes/DecodedToken';
+import styles from './Login.module.scss';
 
 interface Props {}
 
