@@ -11,3 +11,8 @@ services:
             - NEO4J_dbms_memory_heap_maxSize=2G
             - NEO4JLABS_PLUGINS='["graph-data-science"]'
             - NEO4J_AUTH=${CON_USER}/${CON_PASS}
+        volumes:
+            - data:/data 
+            - logs:/logs
+            - import:/var/lib/neo4j/import
+            - plugins:/plugins
