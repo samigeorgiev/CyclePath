@@ -27,15 +27,21 @@ export class RoutesService {
         private readonly nodesService: NodesService
     ) {}
 
-    async getRoute(getRouteDto: GetRouteDto): Promise<IRouteSegment[]> {
+    async getRoute(getRouteDto: GetRouteDto): Promise<IRouteSegment[][]> {
         const nodes: Node[] = await this.nodesService.getAllNodes()
         const startPointNode: Node = new Node(getRouteDto.startNodeLat, getRouteDto.startNodeLong)
         const nearestStartNode = this.findNearestNode(nodes, startPointNode)
         const endPointNode = new Node(getRouteDto.endNodeLat, getRouteDto.endNodeLong)
         const nearestEndNode = this.findNearestNode(nodes, endPointNode)
-        const segments: RouteSegment[] = await this.nodesRepository.findShortestRouteBetweenTwoNodes(
+        const bestRouteSegments: RouteSegment[] = await this.nodesRepository.findShortestRouteBetweenTwoNodes(
             nearestStartNode.nodeId,
-            nearestEndNode.nodeId
+            nearestEndNode.nodeId,
+            'cost'
+        )
+        const shortestRouteSegments: RouteSegment[] = await this.nodesRepository.findShortestRouteBetweenTwoNodes(
+            nearestStartNode.nodeId,
+            nearestEndNode.nodeId,
+            'distance'
         )
         // const ratings: Route[] = await this.routesRepository.getRoutesByNodesIds(segments.map(segment => {
         //     return [+segment.start.nodeId, +segment.end.nodeId]
@@ -43,7 +49,7 @@ export class RoutesService {
         // segments.map((segment, index) => {
         //     segment.rating = ratings[index].rating
         // })
-        for await (const segment of segments) {
+        for await (const segment of bestRouteSegments) {
             const rating1 = await this.routesRatingRepository.getAvgRatingForRoute(
                 +segment.start.nodeId,
                 +segment.end.nodeId
@@ -54,7 +60,18 @@ export class RoutesService {
             )
             segment.rating = rating1 || rating2 || 4
         }
-        return segments
+        for await (const segment of shortestRouteSegments) {
+            const rating1 = await this.routesRatingRepository.getAvgRatingForRoute(
+                +segment.start.nodeId,
+                +segment.end.nodeId
+            )
+            const rating2 = await this.routesRatingRepository.getAvgRatingForRoute(
+                +segment.end.nodeId,
+                +segment.start.nodeId
+            )
+            segment.rating = rating1 || rating2 || 4
+        }
+        return [bestRouteSegments, shortestRouteSegments]
     }
 
     private findNearestNode(nodes: Node[], node: Node): Node {

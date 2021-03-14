@@ -25,7 +25,8 @@ export class NodesRepository {
 
     async findShortestRouteBetweenTwoNodes(
         startNodeId: number | string,
-        endNodeId: number | string
+        endNodeId: number | string,
+        criteria: string
     ): Promise<RouteSegment[]> {
         await this.rebuildGdsGraph()
         const queryResult: QueryResult = await this.neo4jService.read(
@@ -37,12 +38,12 @@ export class NodesRepository {
                 sourceNode: id(startNode),
                 targetNode: id(endNode),
                 path: true,
-                relationshipWeightProperty: 'cost'
+                relationshipWeightProperty: $criteria
             })
             YIELD index, sourceNode, targetNode, totalCost, nodeIds, costs, path
             RETURN
                 path`,
-            { startNodeId, endNodeId }
+            { startNodeId, endNodeId, criteria }
         )
         console.log(startNodeId, endNodeId)
         console.log(queryResult.records)
@@ -72,7 +73,7 @@ export class NodesRepository {
             'Node',
             'Route',
             {
-                relationshipProperties: ['rating', 'cost']
+                relationshipProperties: ['rating', 'cost', 'distance']
             }
         )`)
     }
