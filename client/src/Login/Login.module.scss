@@ -6,9 +6,13 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
+
+    & > p {
+        font-size: 0.8rem;
+    }
 }
 
 .link {
-    color: blue;
+    color: #1a87e6;
     text-decoration: underline;
 }

@@ -1,5 +1,26 @@
 @import '../scss/const';
 
 .root {
-    height: 80vh;
+    height: 100%;
+    width: 100%;
+    position: fixed;
+    bottom: 3.8rem;
+    top: 0rem;
+}
+
+.search {
+    padding: 0.5rem 0 0rem;
+    position: fixed;
+    top: 1rem;
+    left: 1rem;
+    width: 90% !important;
+    max-width: 400px;
+    z-index: 10000;
+    background-color: white;
+
+    & svg {
+        font-size: 1.5rem;
+        margin: 0.5rem 0.5rem 0.5rem 0.25rem;
+        color: #1976d2;
+    }
 }
