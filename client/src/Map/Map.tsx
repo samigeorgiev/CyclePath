@@ -55,7 +55,7 @@ export const Map: React.FC<Props> = (props) => {
     }, []);
 
     useEffect(() => {
-        if (props.destination && position && shouldReload) {
+        if (props.destination && position) {
             getRoute(
                 [position.lat, position.lng],
                 [props.destination.lat, props.destination.lng]
@@ -81,7 +81,13 @@ export const Map: React.FC<Props> = (props) => {
                         color='primary'
                     />
                 }
-                label={matches ? 'Air Pollution' : <SiTailwindcss className={styles.wind}/>}
+                label={
+                    matches ? (
+                        'Air Pollution'
+                    ) : (
+                        <SiTailwindcss className={styles.wind} />
+                    )
+                }
                 className={styles.toggle}
             />
             {routes?.map((route: Route) => (
