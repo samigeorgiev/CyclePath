@@ -10,6 +10,7 @@ import { MapProvider } from './Map/MapProvider';
 
 const Home = React.lazy(() => import('./Home'));
 const Map = React.lazy(() => import('./Map'));
+const Profile = React.lazy(() => import('./Profile'));
 const Login = React.lazy(() => import('./Login'));
 const Register = React.lazy(() => import('./Register'));
 
@@ -28,6 +29,11 @@ const App = () => {
                     {authState ? (
                         <Route exact path='/map'>
                             <MapProvider />
+                        </Route>
+                    ) : null}
+                    {authState ? (
+                        <Route exact path='/profile'>
+                            <Profile />
                         </Route>
                     ) : null}
                     {authState ? null : (
