@@ -30,6 +30,14 @@ export const Map: React.FC<Props> = (props) => {
 
     const [visible, setVisible] = useState<boolean>(false);
 
+    const [active, setActive] = useState<number>(0);
+
+    const toggleRoute = () => {
+        setActive((a) => {
+            return a === 0 ? 1 : 0;
+        });
+    };
+
     const [shouldReload, setShouldReload] = useState<boolean>(true);
 
     const matches = useMediaQuery('(min-width:600px)');
@@ -90,16 +98,55 @@ export const Map: React.FC<Props> = (props) => {
                 }
                 className={styles.toggle}
             />
-            {routes?.map((route: Route) => (
-                <PolyLine
-                    key={uuid()}
-                    route={route}
-                    forceReload={forceReload}
-                />
-            ))}
+
+            <FormControlLabel
+                control={
+                    <Switch
+                        checked={active === 0}
+                        onChange={toggleRoute}
+                        name='routes'
+                        color='primary'
+                    />
+                }
+                label='Route'
+                className={styles.routes}
+            />
+
+            <Pane style={{ zIndex: 400 }} name='best-route'>
+                {routes &&
+                    routes[0]?.map((route: Route) => (
+                        <PolyLine
+                            key={uuid()}
+                            route={route}
+                            forceReload={forceReload}
+                            active={active === 0}
+                        />
+                    ))}
+            </Pane>
+            <Pane style={{ zIndex: 399 }} name='fastest-route'>
+                {routes &&
+                    routes[1]?.map((route: Route) => (
+                        <PolyLine
+                            key={uuid()}
+                            route={route}
+                            forceReload={forceReload}
+                            active={active === 1}
+                        />
+                    ))}
+            </Pane>
+
             <Pane style={{ zIndex: 399 }} name='air-polution'>
                 {routes && (
-                    <AirPollutionWrapper routes={routes} visible={visible} />
+                    <AirPollutionWrapper
+                        routes={routes[0]}
+                        visible={visible && active === 0}
+                    />
+                )}
+                {routes && (
+                    <AirPollutionWrapper
+                        routes={routes[1]}
+                        visible={visible && active === 1}
+                    />
                 )}
             </Pane>
             <TileLayer

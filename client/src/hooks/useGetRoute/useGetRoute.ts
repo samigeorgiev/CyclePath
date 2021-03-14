@@ -3,7 +3,7 @@ import { useCallback, useState } from 'react';
 import { Route } from '../../Map/PolyLine/Route';
 
 interface GetRoutes {
-    routes: Route[] | null;
+    routes: [Route[], Route[]] | null;
     getRoute: (start: LatLngTuple, end: LatLngTuple) => void;
 }
 
@@ -12,7 +12,7 @@ const GET_ROUTE_URL: string = `${process.env.REACT_APP_API_URL}/routes`;
 const params: URLSearchParams = new URLSearchParams();
 
 export const useGetRoute = (): GetRoutes => {
-    const [routes, setRoutes] = useState<Route[] | null>(null);
+    const [routes, setRoutes] = useState<[Route[], Route[]] | null>(null);
 
     const getRoute = useCallback((start: LatLngTuple, end: LatLngTuple) => {
         params.set('startNodeLat', start[0].toString());

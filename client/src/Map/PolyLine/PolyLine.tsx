@@ -16,6 +16,7 @@ import styles from './PolyLine.module.scss';
 interface Props {
     route: Route;
     forceReload: () => void;
+    active: boolean;
 }
 
 const ratingColorMap = new Map<number, string>([
@@ -56,7 +57,11 @@ function IconContainer(props: IconContainerProps) {
     return <span {...other}>{customIcons[value].icon}</span>;
 }
 
-export const PolyLine: FunctionComponent<Props> = ({ route, forceReload }) => {
+export const PolyLine: FunctionComponent<Props> = ({
+    route,
+    forceReload,
+    active
+}) => {
     const rateRoute = useRateRoute();
 
     const [rating, setRating] = useState<number>(1);
@@ -66,7 +71,7 @@ export const PolyLine: FunctionComponent<Props> = ({ route, forceReload }) => {
     return (
         <Polyline
             className={styles.PopUp}
-            color={ratingColorMap.get(route.rating)}
+            color={active ? ratingColorMap.get(route.rating) : 'grey'}
             positions={[
                 [route.start.lat, route.start.long],
                 [route.end.lat, route.end.long]
