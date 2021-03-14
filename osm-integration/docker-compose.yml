@@ -16,3 +16,9 @@ services:
             - logs:/logs
             - import:/var/lib/neo4j/import
             - plugins:/plugins
+
+volumes:
+    data:
+    logs:
+    import:
+    plugins:
