@@ -1,4 +1,10 @@
-import { IsNumber } from 'class-validator';
+import { IsArray, IsNumber, ValidateNested } from 'class-validator';
+
+export class AirPollutionArrayDto {
+    @IsArray()
+    @ValidateNested({each: true})
+    airPollutions:AirPollutionReqDto[]
+}
 
 export class AirPollutionReqDto {
   @IsNumber()
