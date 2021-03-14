@@ -14,6 +14,7 @@ const Profile: React.FC<Props> = () => {
             <Button
                 variant='contained'
                 color='primary'
+                size='large'
                 endIcon={<ImExit />}
                 onClick={logout}
             >
