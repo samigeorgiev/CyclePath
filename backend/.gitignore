@@ -1,6 +1,6 @@
 # compiled output
 /dist
-/node_modules
+node_modules/
 
 # Logs
 logs
@@ -18,7 +18,7 @@ lerna-debug.log*
 /.nyc_output
 
 # IDEs and editors
-/.idea
+.idea/
 .project
 .classpath
 .c9/

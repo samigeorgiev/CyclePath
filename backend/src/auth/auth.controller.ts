@@ -68,9 +68,8 @@ export class AuthController {
     private sendResponse(res: Response, tokenResponse: AuthTokens): void {
         res.cookie(REFRESH_TOKEN_COOKIE_NAME, tokenResponse.refreshToken, {
             httpOnly: true,
-            path: '/auth/refresh-token'
-            // sameSite: 'none',
-            // secure: true
+            path: '/auth/refresh-token',
+            ...(process.env.NODE_ENV == 'production' ? { sameSite: 'none', secure: true } : {})
         })
 
         res.status(201).json({ token: tokenResponse.token })
