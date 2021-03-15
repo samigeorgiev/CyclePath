@@ -1,6 +1,7 @@
-import { DivIcon, LatLng, LatLngExpression, LocationEvent, Map } from 'leaflet';
-import { FunctionComponent, useEffect, useState } from 'react';
-import { Marker, Popup, useMapEvents } from 'react-leaflet';
+import { Icon, LatLngExpression } from 'leaflet';
+import { FunctionComponent } from 'react';
+import { Marker, Popup } from 'react-leaflet';
+import styles from './LocationMarker.module.scss';
 
 interface Props {
     position: LatLngExpression | null;
@@ -11,13 +12,15 @@ export const LocationMarker: FunctionComponent<Props> = (props) => {
     if (!props.position) {
         return null;
     }
-
     return (
         <Marker
             position={props.position}
             icon={
-                new DivIcon({
-                    html: `<img src='/images/marker-icon.png' alt='marker'/>`
+                new Icon({
+                    iconUrl: '/images/marker-icon.png',
+                    iconRetinaUrl: '/images/marker-icon-2x.png',
+                    shadowUrl: '/images/marker-shadow.png',
+                    className: styles.icon
                 })
             }
         >

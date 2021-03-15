@@ -1,10 +1,10 @@
+import { ThemeProvider } from '@material-ui/core';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { BrowserRouter } from 'react-router-dom';
 import App from './App';
 import { AuthContextProvider } from './context/Auth/AuthContextProvider';
 import reportWebVitals from './reportWebVitals';
-import { ThemeProvider } from '@material-ui/core';
 import './scss/index.scss';
 import { theme } from './theme';
 

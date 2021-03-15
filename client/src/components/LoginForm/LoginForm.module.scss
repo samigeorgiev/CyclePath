@@ -1,20 +1,20 @@
 @import '../../scss/const';
 
 .root {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  margin-bottom: 0.5rem;
-  width: 100%;
-  max-width: 350px;
-  padding: 1rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 0.5rem;
+    width: 100%;
+    max-width: 350px;
+    padding: 1rem;
 }
 
 .inputs {
-  margin: 0.5rem 0 !important;
-  
-  &:last-of-type {
-    margin-bottom: 1rem !important;
-  }
+    margin: 0.5rem 0 !important;
+
+    &:last-of-type {
+        margin-bottom: 1rem !important;
+    }
 }
