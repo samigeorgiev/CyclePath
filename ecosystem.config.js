@@ -2,8 +2,7 @@ module.exports = {
     apps: [
         {
             name: 'Cyclepath Backend',
-            script: 'yarn',
-            args: 'start:prod',
+            script: './backend/dist/main.js',
             watch: true,
             env: {
                 PORT: 5000,
@@ -11,11 +10,11 @@ module.exports = {
             },
         },
         {
-            name: 'CyclePath frontend',
+            name: 'CyclePath Frontend',
             script: 'serve',
             watch: true,
             env: {
-                PM2_SERVE_PATH: './build',
+                PM2_SERVE_PATH: './client/build',
                 PM2_SERVE_PORT: 3000,
                 PM2_SERVE_SPA: 'true',
                 NODE_ENV: 'production',
