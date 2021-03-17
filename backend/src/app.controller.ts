@@ -1,10 +1,7 @@
 import { Controller, Get } from '@nestjs/common'
-import { kdTree } from 'kd-tree-javascript'
 import { Neo4jService } from 'nest-neo4j/dist'
 import { AppService } from './app.service'
-import { Node } from './nodes/entities/node.entity'
 import { Route } from './routes/entities/route.entity'
-// import { kdTree} from 'kd-tree-javascript'
 
 @Controller()
 export class AppController {
