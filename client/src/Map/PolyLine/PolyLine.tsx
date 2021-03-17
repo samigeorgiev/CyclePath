@@ -96,50 +96,52 @@ export const PolyLine: FunctionComponent<Props> = ({
                 [route.end.lat, route.end.long]
             ]}
         >
-            <Popup pane='popup' className={styles.PopUp}>
-                <Box
-                    className={styles.Box}
-                    component='fieldset'
-                    borderColor='transparent'
-                >
-                    <Typography variant='h6' component='legend'>
-                        Rate Route
-                    </Typography>
-                    <Rating
-                        name='customized-icons'
-                        size='large'
-                        value={rating}
-                        onChange={(e, value: number | null) => {
-                            if (!value) {
-                                return;
-                            }
+            {active && (
+                <Popup pane='popup' className={styles.PopUp}>
+                    <Box
+                        className={styles.Box}
+                        component='fieldset'
+                        borderColor='transparent'
+                    >
+                        <Typography variant='h6' component='legend'>
+                            Rate Route
+                        </Typography>
+                        <Rating
+                            name='customized-icons'
+                            size='large'
+                            value={rating}
+                            onChange={(e, value: number | null) => {
+                                if (!value) {
+                                    return;
+                                }
 
-                            setRating(value);
+                                setRating(value);
+                            }}
+                            getLabelText={(value: number) =>
+                                customIcons[value].label
+                            }
+                            color={ratingColorMap.get(rating)}
+                            IconContainerComponent={IconContainer}
+                        />
+                    </Box>
+                    <Button
+                        variant='contained'
+                        fullWidth
+                        color='primary'
+                        onClick={() => {
+                            map.closePopup();
+                            rateRoute({
+                                nodeOneId: route.start.nodeId,
+                                nodeTwoId: route.end.nodeId,
+                                rating
+                            });
+                            forceReload();
                         }}
-                        getLabelText={(value: number) =>
-                            customIcons[value].label
-                        }
-                        color={ratingColorMap.get(rating)}
-                        IconContainerComponent={IconContainer}
-                    />
-                </Box>
-                <Button
-                    variant='contained'
-                    fullWidth
-                    color='primary'
-                    onClick={() => {
-                        map.closePopup();
-                        rateRoute({
-                            nodeOneId: route.start.nodeId,
-                            nodeTwoId: route.end.nodeId,
-                            rating
-                        });
-                        forceReload();
-                    }}
-                >
-                    Submit
-                </Button>
-            </Popup>
+                    >
+                        Submit
+                    </Button>
+                </Popup>
+            )}
         </Polyline>
     );
 };
