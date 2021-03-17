@@ -33,9 +33,7 @@ export const Map: React.FC<Props> = (props) => {
     const [active, setActive] = useState<number>(0);
 
     const toggleRoute = () => {
-        setActive((a) => {
-            return a === 0 ? 1 : 0;
-        });
+        setActive((a) => (a === 0 ? 1 : 0));
     };
 
     const [shouldReload, setShouldReload] = useState<boolean>(true);
@@ -112,24 +110,26 @@ export const Map: React.FC<Props> = (props) => {
                 className={styles.routes}
             />
 
-            <Pane style={{ zIndex: 400 }} name='best-route'>
+            <Pane name='best-route'>
                 {routes &&
-                    routes[0]?.map((route: Route) => (
+                    routes[0].map((route: Route) => (
                         <PolyLine
                             key={uuid()}
                             route={route}
                             forceReload={forceReload}
                             active={active === 0}
+                            name='best-route'
                         />
                     ))}
             </Pane>
-            <Pane style={{ zIndex: 399 }} name='fastest-route'>
+            <Pane name='fastest-route'>
                 {routes &&
-                    routes[1]?.map((route: Route) => (
+                    routes[1].map((route: Route) => (
                         <PolyLine
                             key={uuid()}
                             route={route}
                             forceReload={forceReload}
+                            name='fastest-route'
                             active={active === 1}
                         />
                     ))}

@@ -1,4 +1,4 @@
-import React, { FunctionComponent, useState } from 'react';
+import React, { FunctionComponent, useEffect, useMemo, useState } from 'react';
 import { Polyline, Popup, useMap } from 'react-leaflet';
 import { useRateRoute } from '../../hooks/useRateRoute/useRateRoute';
 import { Route } from './Route';
@@ -17,6 +17,7 @@ interface Props {
     route: Route;
     forceReload: () => void;
     active: boolean;
+    name: string;
 }
 
 const ratingColorMap = new Map<number, string>([
@@ -60,13 +61,31 @@ function IconContainer(props: IconContainerProps) {
 export const PolyLine: FunctionComponent<Props> = ({
     route,
     forceReload,
-    active
+    active,
+    name
 }) => {
     const rateRoute = useRateRoute();
 
     const [rating, setRating] = useState<number>(1);
 
     const map = useMap();
+
+    const pane = useMemo(() => {
+        return map.getPane(name);
+    }, [map, name]);
+
+    useEffect(() => {
+        if (!pane) {
+            return;
+        }
+
+        if (active) {
+            pane.style.zIndex = '400';
+            return;
+        }
+
+        pane.style.zIndex = '399';
+    }, [active, map]);
 
     return (
         <Polyline
