@@ -25,7 +25,7 @@
     }
 }
 
-.toggle{
+.toggle {
     position: fixed;
     right: 1rem;
     bottom: 5rem;
@@ -35,7 +35,7 @@
     border-radius: 8px;
 }
 
-.routes{
+.routes {
     position: fixed;
     right: 1rem;
     bottom: 10rem;
@@ -45,17 +45,8 @@
     border-radius: 8px;
 }
 
-@media(max-width: 600px){
-    .toggle{
-        display: flex;
-        flex-flow: column-reverse;
-        align-items: center;
-    }
-}
-
 .wind {
     font-size: 1.4rem;
     margin-top: 0.5rem;
     color: #797e83;
-
 }

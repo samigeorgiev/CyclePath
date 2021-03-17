@@ -58,6 +58,9 @@ export const Map: React.FC<Props> = (props) => {
 
     useEffect(() => {
         map.locate();
+        const pane = map.createPane('popup');
+
+        pane.style.zIndex = '600';
     }, []);
 
     useEffect(() => {

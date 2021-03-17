@@ -96,7 +96,7 @@ export const PolyLine: FunctionComponent<Props> = ({
                 [route.end.lat, route.end.long]
             ]}
         >
-            <Popup className={styles.PopUp}>
+            <Popup pane='popup' className={styles.PopUp}>
                 <Box
                     className={styles.Box}
                     component='fieldset'
