@@ -1,7 +1,11 @@
-.Box{
+.Box {
     padding: 0.5rem 0.5rem 0.5rem 0.3rem !important;
-    
+
     & svg {
         font-size: 1.8rem;
     }
+}
+
+.Polyline {
+    padding: 5rem !important;
 }

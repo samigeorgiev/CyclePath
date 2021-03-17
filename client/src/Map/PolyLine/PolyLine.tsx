@@ -89,12 +89,12 @@ export const PolyLine: FunctionComponent<Props> = ({
 
     return (
         <Polyline
-            className={styles.PopUp}
             color={active ? ratingColorMap.get(route.rating) : 'grey'}
             positions={[
                 [route.start.lat, route.start.long],
                 [route.end.lat, route.end.long]
             ]}
+            pathOptions={{ weight: 6, className: styles.Polyline }}
         >
             {active && (
                 <Popup pane='popup' className={styles.PopUp}>
