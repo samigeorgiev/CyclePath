@@ -19,7 +19,9 @@ const Register: React.FC<Props> = () => {
 
     let history = useHistory();
 
-    const register = async () => {
+    const register = async (event: React.FormEvent<HTMLFormElement>) => {
+        event.preventDefault();
+
         await fetch(`${process.env.REACT_APP_API_URL}/auth/sign-up`, {
             method: 'POST',
             credentials: 'include',
@@ -60,7 +62,7 @@ const Register: React.FC<Props> = () => {
                 handleName={(e) => setName(e.target.value)}
                 handleEmail={(e) => setEmail(e.target.value)}
                 handlePassword={(e) => setPassword(e.target.value)}
-                handleRegister={() => register()}
+                handleRegister={register}
             />
         </div>
     );

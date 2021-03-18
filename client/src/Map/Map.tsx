@@ -75,7 +75,7 @@ export const Map: React.FC<Props> = (props) => {
             ]);
             setShouldReload(false);
         }
-    }, [props.destination, shouldReload]);
+    }, [props.destination, position, shouldReload]);
 
     return (
         <>

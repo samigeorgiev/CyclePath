@@ -18,7 +18,9 @@ const Login: React.FC<Props> = () => {
 
     let history = useHistory();
 
-    const login = () => {
+    const login = (event: React.FormEvent<HTMLFormElement>) => {
+        event.preventDefault();
+
         fetch(`${process.env.REACT_APP_API_URL}/auth/sign-in`, {
             method: 'POST',
             credentials: 'include',
@@ -56,7 +58,7 @@ const Login: React.FC<Props> = () => {
                 password={password}
                 handleEmail={(e) => setEmail(e.target.value)}
                 handlePassword={(e) => setPassword(e.target.value)}
-                handleLogin={() => login()}
+                handleLogin={login}
             />
             <p>
                 {' '}

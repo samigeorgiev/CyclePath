@@ -9,12 +9,12 @@ interface Props {
     handleName: (e: React.ChangeEvent<HTMLInputElement>) => void;
     handleEmail: (e: React.ChangeEvent<HTMLInputElement>) => void;
     handlePassword: (e: React.ChangeEvent<HTMLInputElement>) => void;
-    handleRegister: () => void;
+    handleRegister: (event: React.FormEvent<HTMLFormElement>) => Promise<void>;
 }
 
 const RegisterForm: React.FC<Props> = (props) => {
     return (
-        <div className={styles.root}>
+        <form className={styles.root} onSubmit={props.handleRegister}>
             <Typography variant='h4' component='h1'>
                 Register
             </Typography>
@@ -51,11 +51,11 @@ const RegisterForm: React.FC<Props> = (props) => {
                 fullWidth
                 variant='contained'
                 color='primary'
-                onClick={props.handleRegister}
+                type='submit'
             >
                 Register
             </Button>
-        </div>
+        </form>
     );
 };
 

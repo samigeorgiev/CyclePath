@@ -26,7 +26,7 @@ export const AirPollutionWrapper: FunctionComponent<Props> = ({
     return (
         <>
             {visible &&
-                routes?.map((route: Route, index: number) => (
+                routes.map((route: Route, index: number) => (
                     <AirPollutionArea
                         key={uuid()}
                         route={route}

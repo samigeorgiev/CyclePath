@@ -9,12 +9,12 @@ interface Props {
     password: string;
     handleEmail: (e: React.ChangeEvent<HTMLInputElement>) => void;
     handlePassword: (e: React.ChangeEvent<HTMLInputElement>) => void;
-    handleLogin: () => void;
+    handleLogin: (event: React.FormEvent<HTMLFormElement>) => void;
 }
 
 const LoginForm: React.FC<Props> = (props) => {
     return (
-        <div className={styles.root}>
+        <form className={styles.root} onSubmit={props.handleLogin}>
             <Typography variant='h4' component='h1'>
                 Login
             </Typography>
@@ -42,11 +42,11 @@ const LoginForm: React.FC<Props> = (props) => {
                 fullWidth
                 variant='contained'
                 color='primary'
-                onClick={props.handleLogin}
+                type='submit'
             >
                 Login
             </Button>
-        </div>
+        </form>
     );
 };
 

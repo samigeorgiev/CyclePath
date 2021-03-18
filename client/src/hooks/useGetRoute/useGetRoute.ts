@@ -19,7 +19,7 @@ export const useGetRoute = (): GetRoutes => {
         params.set('startNodeLong', start[1].toString());
         params.set('endNodeLat', end[0].toString());
         params.set('endNodeLong', end[1].toString());
-
+        console.log(GET_ROUTE_URL + '?' + params.toString());
         fetch(GET_ROUTE_URL + '?' + params.toString())
             .then((res) => res.json())
             .then((data) => {
