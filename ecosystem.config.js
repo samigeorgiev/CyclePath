@@ -1,7 +1,7 @@
 module.exports = {
     apps: [
         {
-            name: 'Cyclepath Backend',
+            name: 'cyclepath-backend',
             script: './backend/dist/main.js',
             watch: true,
             env: {
@@ -10,7 +10,7 @@ module.exports = {
             },
         },
         {
-            name: 'CyclePath Frontend',
+            name: 'cyclepath-frontend',
             script: 'serve',
             watch: true,
             env: {
