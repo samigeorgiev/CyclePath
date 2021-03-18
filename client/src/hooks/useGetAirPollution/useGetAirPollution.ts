@@ -36,7 +36,7 @@ export const useGetAirPollution = (): GetAirPollutions => {
             })
                 .then((res) => res.json())
                 .then((data) => {
-                    console.log(data);
+                    // console.log(data);
                     setAirPollutions(data.map((a: any) => a.pollutionIndex));
                 })
                 .catch((error) => {

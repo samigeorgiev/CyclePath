@@ -21,7 +21,7 @@ export const useRefreshToken = () => {
                 }
             }
         );
-        console.log(response);
+        // console.log(response);
 
         if (!response.ok) return;
 
