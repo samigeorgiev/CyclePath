@@ -1,7 +1,7 @@
 #!/bin/env python3
-import argparse
 from os import getenv
 
+import argh
 import osmium
 from dotenv import load_dotenv
 from py2neo import Graph
@@ -10,10 +10,6 @@ from py2neo.bulk import create_nodes, merge_relationships
 from utils import GraphEdge, GraphNode, batchify, haversine
 
 load_dotenv()
-
-
-parser = argparse.ArgumentParser()
-parser.add_argument("--url", type=str, default="", help="link or path to osm")
 
 
 class FileHandler(osmium.SimpleHandler):
@@ -48,9 +44,7 @@ class Neo4jHandler:
         self.edges.append(edge)
 
 
-if __name__ == "__main__":
-    args = parser.parse_args()
-    url = args.url
+def load(url: str = "http://download.geofabrik.de/europe/monaco-latest.osm.pbf"):
 
     g = Graph(getenv("CON_STRING"), auth=(getenv("CON_USER"), getenv("CON_PASS")))
     print("connected to db")
@@ -91,3 +85,5 @@ if __name__ == "__main__":
         )
     print("end edges")
 
+
+argh.dispatch_command(load)
