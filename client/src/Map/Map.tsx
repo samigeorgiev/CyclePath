@@ -1,81 +1,74 @@
-import { FormControlLabel, Switch, useMediaQuery } from '@material-ui/core';
-import {
-    LatLng,
-    LatLngExpression,
-    LatLngLiteral,
-    LocationEvent,
-    Map as LeafletMap
-} from 'leaflet';
-import 'leaflet/dist/leaflet.css';
-import React, { useCallback, useEffect, useState } from 'react';
-import { Pane, TileLayer, useMapEvents, ZoomControl } from 'react-leaflet';
-import { v4 as uuid } from 'uuid';
-import { useGetRoute } from '../hooks/useGetRoute/useGetRoute';
-import { AirPollutionArea } from './AirPollutionArea';
-import { AirPollutionWrapper } from './AirPollutionArea/AirPollutionWrapper';
-import { LocationMarker } from './LocationMarker';
-import { PolyLine } from './PolyLine';
-import { Route } from './PolyLine/Route';
-import styles from './Map.module.scss';
-import { SiTailwindcss } from 'react-icons/si';
+import { FormControlLabel, Switch, useMediaQuery } from '@material-ui/core'
+import { LatLngLiteral, LocationEvent, Map as LeafletMap } from 'leaflet'
+import 'leaflet/dist/leaflet.css'
+import React, { useCallback, useEffect, useState } from 'react'
+import { SiTailwindcss } from 'react-icons/si'
+import { Pane, TileLayer, useMapEvents } from 'react-leaflet'
+import { v4 as uuid } from 'uuid'
+import { useGetRoute } from '../hooks/useGetRoute/useGetRoute'
+import { AirPollutionWrapper } from './AirPollutionArea/AirPollutionWrapper'
+import { LocationMarker } from './LocationMarker'
+import styles from './Map.module.scss'
+import { PolyLine } from './PolyLine'
+import { Route } from './PolyLine/Route'
 
 interface Props {
-    destination: LatLngLiteral | null;
+    destination: LatLngLiteral | null
 }
 
 export const Map: React.FC<Props> = (props) => {
-    const { getRoute, routes } = useGetRoute();
+    const { getRoute, routes } = useGetRoute()
 
-    const [position, setPosition] = useState<LatLngLiteral | null>(null);
+    const [position, setPosition] = useState<LatLngLiteral | null>(null)
 
-    const [visible, setVisible] = useState<boolean>(false);
+    const [visible, setVisible] = useState<boolean>(false)
 
-    const [active, setActive] = useState<number>(0);
+    const [active, setActive] = useState<number>(0)
 
     const toggleRoute = () => {
-        setActive((a) => (a === 0 ? 1 : 0));
-    };
+        setActive((a) => (a === 0 ? 1 : 0))
+    }
 
-    const [shouldReload, setShouldReload] = useState<boolean>(true);
+    const [shouldReload, setShouldReload] = useState<boolean>(true)
 
-    const matches = useMediaQuery('(min-width:600px)');
+    const matches = useMediaQuery('(min-width:600px)')
 
     const forceReload = useCallback(() => {
-        setShouldReload(true);
-    }, []);
+        setShouldReload(true)
+    }, [])
 
     const map: LeafletMap = useMapEvents({
         locationfound(event: LocationEvent) {
             // setPosition(event.latlng);
-            setPosition({ lat: 43.73429996534598, lng: 7.418578619024726 });
+            setPosition({ lat: 43.73429996534598, lng: 7.418578619024726 })
             map.flyTo(
                 { lat: 43.73429996534598, lng: 7.418578619024726 },
                 map.getZoom(),
                 { duration: 1 }
-            );
+            )
         }
-    });
+    })
 
     useEffect(() => {
-        map.locate();
-        const pane = map.createPane('popup');
+        map.locate()
+        const pane = map.createPane('popup')
 
-        pane.style.zIndex = '600';
-    }, []);
+        pane.style.zIndex = '600'
+    }, [])
 
     useEffect(() => {
         if (props.destination && position) {
             getRoute(
                 [position.lat, position.lng],
                 [props.destination.lat, props.destination.lng]
-            );
+            )
             map.fitBounds([
                 [position.lat, position.lng],
                 [props.destination.lat, props.destination.lng]
-            ]);
-            setShouldReload(false);
+            ])
+            setShouldReload(false)
         }
-    }, [props.destination, position, shouldReload]);
+    }, [props.destination, position, shouldReload])
 
     return (
         <>
@@ -84,7 +77,7 @@ export const Map: React.FC<Props> = (props) => {
                     <Switch
                         checked={visible}
                         onChange={() => {
-                            setVisible((v) => !v);
+                            setVisible((v) => !v)
                         }}
                         name='air-toggle'
                         color='primary'
@@ -163,5 +156,5 @@ export const Map: React.FC<Props> = (props) => {
                 position={props.destination}
             />
         </>
-    );
-};
+    )
+}

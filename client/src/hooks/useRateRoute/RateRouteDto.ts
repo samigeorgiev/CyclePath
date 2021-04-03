@@ -1,5 +1,5 @@
 export interface RateRouteDto {
-    nodeOneId: number;
-    nodeTwoId: number;
-    rating: number;
+    nodeOneId: number
+    nodeTwoId: number
+    rating: number
 }

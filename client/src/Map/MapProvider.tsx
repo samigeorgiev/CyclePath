@@ -1,30 +1,30 @@
-import { LatLngExpression } from 'leaflet';
-import { FunctionComponent, useCallback, useState } from 'react';
-import { MapContainer } from 'react-leaflet';
-import { useDestinationSearch } from '../hooks/useDestinationSearch/useDestinationSearch';
-import { Map } from './Map';
-import styles from './Map.module.scss';
-import { TextField, InputAdornment } from '@material-ui/core';
-import { HiOutlineSearch } from 'react-icons/hi';
+import { LatLngExpression } from 'leaflet'
+import { FunctionComponent, useCallback, useState } from 'react'
+import { MapContainer } from 'react-leaflet'
+import { useDestinationSearch } from '../hooks/useDestinationSearch/useDestinationSearch'
+import { Map } from './Map'
+import styles from './Map.module.scss'
+import { TextField, InputAdornment } from '@material-ui/core'
+import { HiOutlineSearch } from 'react-icons/hi'
 
 interface Props {}
 
 const defaultLocation: LatLngExpression = {
     lat: 37.3347986,
     lng: -122.0091069
-};
+}
 
 export const MapProvider: FunctionComponent<Props> = (props) => {
-    const { destination, getDestinationFromSearch } = useDestinationSearch();
+    const { destination, getDestinationFromSearch } = useDestinationSearch()
 
-    const [search, setSearch] = useState<string>('');
+    const [search, setSearch] = useState<string>('')
 
     const searchChangeHandler = useCallback(
         (event: React.ChangeEvent<HTMLInputElement>) => {
-            setSearch(event.target.value);
+            setSearch(event.target.value)
         },
         []
-    );
+    )
 
     return (
         <>
@@ -35,7 +35,7 @@ export const MapProvider: FunctionComponent<Props> = (props) => {
                 onChange={searchChangeHandler}
                 onKeyDown={(e) => {
                     if (e.key === 'Enter') {
-                        getDestinationFromSearch(search);
+                        getDestinationFromSearch(search)
                     }
                 }}
                 fullWidth
@@ -53,5 +53,5 @@ export const MapProvider: FunctionComponent<Props> = (props) => {
                 <Map destination={destination} />
             </MapContainer>
         </>
-    );
-};
+    )
+}

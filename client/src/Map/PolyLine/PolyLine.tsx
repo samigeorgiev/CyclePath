@@ -1,23 +1,23 @@
-import React, { FunctionComponent, useEffect, useMemo, useState } from 'react';
-import { Polyline, Popup, useMap } from 'react-leaflet';
-import { useRateRoute } from '../../hooks/useRateRoute/useRateRoute';
-import { Route } from './Route';
+import React, { FunctionComponent, useEffect, useMemo, useState } from 'react'
+import { Polyline, Popup, useMap } from 'react-leaflet'
+import { useRateRoute } from '../../hooks/useRateRoute/useRateRoute'
+import { Route } from './Route'
 import {
     SentimentVeryDissatisfied,
     SentimentDissatisfied,
     SentimentSatisfied,
     SentimentSatisfiedAlt,
     SentimentVerySatisfied
-} from '@material-ui/icons';
-import { Box, Button, Typography } from '@material-ui/core';
-import { Rating, IconContainerProps } from '@material-ui/lab';
-import styles from './PolyLine.module.scss';
+} from '@material-ui/icons'
+import { Box, Button, Typography } from '@material-ui/core'
+import { Rating, IconContainerProps } from '@material-ui/lab'
+import styles from './PolyLine.module.scss'
 
 interface Props {
-    route: Route;
-    forceReload: () => void;
-    active: boolean;
-    name: string;
+    route: Route
+    forceReload: () => void
+    active: boolean
+    name: string
 }
 
 const ratingColorMap = new Map<number, string>([
@@ -26,10 +26,10 @@ const ratingColorMap = new Map<number, string>([
     [3, 'yellow'],
     [4, 'green'],
     [5, 'lime']
-]);
+])
 
 const customIcons: {
-    [index: string]: { icon: React.ReactElement; label: string };
+    [index: string]: { icon: React.ReactElement; label: string }
 } = {
     1: {
         icon: <SentimentVeryDissatisfied />,
@@ -51,11 +51,11 @@ const customIcons: {
         icon: <SentimentVerySatisfied />,
         label: 'Very Satisfied'
     }
-};
+}
 
 function IconContainer(props: IconContainerProps) {
-    const { value, ...other } = props;
-    return <span {...other}>{customIcons[value].icon}</span>;
+    const { value, ...other } = props
+    return <span {...other}>{customIcons[value].icon}</span>
 }
 
 export const PolyLine: FunctionComponent<Props> = ({
@@ -64,28 +64,28 @@ export const PolyLine: FunctionComponent<Props> = ({
     active,
     name
 }) => {
-    const rateRoute = useRateRoute();
+    const rateRoute = useRateRoute()
 
-    const [rating, setRating] = useState<number>(1);
+    const [rating, setRating] = useState<number>(1)
 
-    const map = useMap();
+    const map = useMap()
 
     const pane = useMemo(() => {
-        return map.getPane(name);
-    }, [map, name]);
+        return map.getPane(name)
+    }, [map, name])
 
     useEffect(() => {
         if (!pane) {
-            return;
+            return
         }
 
         if (active) {
-            pane.style.zIndex = '400';
-            return;
+            pane.style.zIndex = '400'
+            return
         }
 
-        pane.style.zIndex = '399';
-    }, [active, map]);
+        pane.style.zIndex = '399'
+    }, [active, map])
 
     return (
         <Polyline
@@ -112,10 +112,10 @@ export const PolyLine: FunctionComponent<Props> = ({
                             value={rating}
                             onChange={(e, value: number | null) => {
                                 if (!value) {
-                                    return;
+                                    return
                                 }
 
-                                setRating(value);
+                                setRating(value)
                             }}
                             getLabelText={(value: number) =>
                                 customIcons[value].label
@@ -129,13 +129,13 @@ export const PolyLine: FunctionComponent<Props> = ({
                         fullWidth
                         color='primary'
                         onClick={() => {
-                            map.closePopup();
+                            map.closePopup()
                             rateRoute({
                                 nodeOneId: route.start.nodeId,
                                 nodeTwoId: route.end.nodeId,
                                 rating
-                            });
-                            forceReload();
+                            })
+                            forceReload()
                         }}
                     >
                         Submit
@@ -143,5 +143,5 @@ export const PolyLine: FunctionComponent<Props> = ({
                 </Popup>
             )}
         </Polyline>
-    );
-};
+    )
+}

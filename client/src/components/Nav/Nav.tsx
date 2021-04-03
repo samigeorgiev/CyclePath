@@ -1,28 +1,28 @@
-import { BottomNavigation, BottomNavigationAction } from '@material-ui/core';
-import React, { useContext, useEffect, useState } from 'react';
-import { AiOutlineHome } from 'react-icons/ai';
-import { HiOutlineLogin } from 'react-icons/hi';
-import { CgProfile } from 'react-icons/cg';
-import { SiGooglemaps } from 'react-icons/si';
-import { useHistory, useLocation } from 'react-router-dom';
-import { AuthContext } from '../../context/Auth/AuthContext';
-import { AuthContextInterface } from '../../context/Auth/AuthContext.interface';
-import styles from './Nav.module.scss';
+import { BottomNavigation, BottomNavigationAction } from '@material-ui/core'
+import React, { useContext, useEffect, useState } from 'react'
+import { AiOutlineHome } from 'react-icons/ai'
+import { HiOutlineLogin } from 'react-icons/hi'
+import { CgProfile } from 'react-icons/cg'
+import { SiGooglemaps } from 'react-icons/si'
+import { useHistory, useLocation } from 'react-router-dom'
+import { AuthContext } from '../../context/Auth/AuthContext'
+import { AuthContextInterface } from '../../context/Auth/AuthContext.interface'
+import styles from './Nav.module.scss'
 
 interface Props {}
 
 const Nav: React.FC<Props> = () => {
-    const history = useHistory();
+    const history = useHistory()
 
-    const { pathname } = useLocation();
+    const { pathname } = useLocation()
 
-    const { authState } = useContext<AuthContextInterface>(AuthContext);
+    const { authState } = useContext<AuthContextInterface>(AuthContext)
 
-    const [navAction, setNavAction] = useState<string>(pathname);
+    const [navAction, setNavAction] = useState<string>(pathname)
 
     useEffect(() => {
-        history.push(navAction);
-    }, [navAction]);
+        history.push(navAction)
+    }, [navAction])
 
     return (
         <BottomNavigation
@@ -56,7 +56,7 @@ const Nav: React.FC<Props> = () => {
                 />
             ) : null}
         </BottomNavigation>
-    );
-};
+    )
+}
 
-export default Nav;
+export default Nav

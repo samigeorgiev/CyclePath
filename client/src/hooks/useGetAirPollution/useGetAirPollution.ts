@@ -1,21 +1,21 @@
-import { useCallback, useContext, useState } from 'react';
-import { useToast } from 'react-toastify';
-import { AuthContext } from '../../context/Auth/AuthContext';
-import { AuthContextInterface } from '../../context/Auth/AuthContext.interface';
-import { Route } from '../../Map/PolyLine/Route';
-import { toast } from 'react-toastify';
+import { useCallback, useContext, useState } from 'react'
+import { useToast } from 'react-toastify'
+import { AuthContext } from '../../context/Auth/AuthContext'
+import { AuthContextInterface } from '../../context/Auth/AuthContext.interface'
+import { Route } from '../../Map/PolyLine/Route'
+import { toast } from 'react-toastify'
 
 interface GetAirPollutions {
-    airPollutions: number[] | null;
-    getAirPollutions: (routes: Route[]) => void;
+    airPollutions: number[] | null
+    getAirPollutions: (routes: Route[]) => void
 }
 
-const GET_AIR_POLLUTION_URL: string = `${process.env.REACT_APP_API_URL}/routes/air-pollution`;
+const GET_AIR_POLLUTION_URL: string = `${process.env.REACT_APP_API_URL}/routes/air-pollution`
 
 export const useGetAirPollution = (): GetAirPollutions => {
-    const { authState } = useContext<AuthContextInterface>(AuthContext);
+    const { authState } = useContext<AuthContextInterface>(AuthContext)
 
-    const [airPollutions, setAirPollutions] = useState<number[] | null>(null);
+    const [airPollutions, setAirPollutions] = useState<number[] | null>(null)
 
     const getAirPollutions = useCallback(
         (routes: Route[]) => {
@@ -37,17 +37,17 @@ export const useGetAirPollution = (): GetAirPollutions => {
                 .then((res) => res.json())
                 .then((data) => {
                     // console.log(data);
-                    setAirPollutions(data.map((a: any) => a.pollutionIndex));
+                    setAirPollutions(data.map((a: any) => a.pollutionIndex))
                 })
                 .catch((error) => {
-                    toast.error('Error occured');
-                });
+                    toast.error('Error occured')
+                })
         },
         [AuthContext]
-    );
+    )
 
     return {
         airPollutions,
         getAirPollutions
-    };
-};
+    }
+}

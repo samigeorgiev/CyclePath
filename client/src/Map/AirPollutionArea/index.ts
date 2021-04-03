@@ -1,1 +1,1 @@
-export { AirPollutionArea } from './AirPollutionArea';
+export { AirPollutionArea } from './AirPollutionArea'

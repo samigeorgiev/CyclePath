@@ -1,15 +1,15 @@
-import { Button, TextField, Typography } from '@material-ui/core';
-import React from 'react';
-import styles from './RegisterForm.module.scss';
+import { Button, TextField, Typography } from '@material-ui/core'
+import React from 'react'
+import styles from './RegisterForm.module.scss'
 
 interface Props {
-    name: string;
-    email: string;
-    password: string;
-    handleName: (e: React.ChangeEvent<HTMLInputElement>) => void;
-    handleEmail: (e: React.ChangeEvent<HTMLInputElement>) => void;
-    handlePassword: (e: React.ChangeEvent<HTMLInputElement>) => void;
-    handleRegister: (event: React.FormEvent<HTMLFormElement>) => Promise<void>;
+    name: string
+    email: string
+    password: string
+    handleName: (e: React.ChangeEvent<HTMLInputElement>) => void
+    handleEmail: (e: React.ChangeEvent<HTMLInputElement>) => void
+    handlePassword: (e: React.ChangeEvent<HTMLInputElement>) => void
+    handleRegister: (event: React.FormEvent<HTMLFormElement>) => Promise<void>
 }
 
 const RegisterForm: React.FC<Props> = (props) => {
@@ -31,7 +31,7 @@ const RegisterForm: React.FC<Props> = (props) => {
                 className={styles.inputs}
                 fullWidth
                 variant='outlined'
-                label='E-Mail'
+                label='Email'
                 size='small'
                 value={props.email}
                 onChange={props.handleEmail}
@@ -56,7 +56,7 @@ const RegisterForm: React.FC<Props> = (props) => {
                 Register
             </Button>
         </form>
-    );
-};
+    )
+}
 
-export default RegisterForm;
+export default RegisterForm

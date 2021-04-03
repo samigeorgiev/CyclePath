@@ -1,5 +1,5 @@
-import React from 'react';
-import styles from './Home.module.scss';
+import React from 'react'
+import styles from './Home.module.scss'
 
 interface Props {}
 
@@ -17,7 +17,7 @@ const Home: React.FC<Props> = () => {
                 on the green side
             </span>
         </div>
-    );
-};
+    )
+}
 
-export default Home;
+export default Home

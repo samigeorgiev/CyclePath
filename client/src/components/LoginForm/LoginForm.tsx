@@ -1,15 +1,15 @@
-import { Typography } from '@material-ui/core';
-import Button from '@material-ui/core/Button';
-import TextField from '@material-ui/core/TextField';
-import React from 'react';
-import styles from './LoginForm.module.scss';
+import { Typography } from '@material-ui/core'
+import Button from '@material-ui/core/Button'
+import TextField from '@material-ui/core/TextField'
+import React from 'react'
+import styles from './LoginForm.module.scss'
 
 interface Props {
-    email: string;
-    password: string;
-    handleEmail: (e: React.ChangeEvent<HTMLInputElement>) => void;
-    handlePassword: (e: React.ChangeEvent<HTMLInputElement>) => void;
-    handleLogin: (event: React.FormEvent<HTMLFormElement>) => void;
+    email: string
+    password: string
+    handleEmail: (e: React.ChangeEvent<HTMLInputElement>) => void
+    handlePassword: (e: React.ChangeEvent<HTMLInputElement>) => void
+    handleLogin: (event: React.FormEvent<HTMLFormElement>) => void
 }
 
 const LoginForm: React.FC<Props> = (props) => {
@@ -22,7 +22,7 @@ const LoginForm: React.FC<Props> = (props) => {
                 className={styles.inputs}
                 fullWidth
                 variant='outlined'
-                label='E-Mail'
+                label='Email'
                 size='small'
                 value={props.email}
                 onChange={props.handleEmail}
@@ -47,7 +47,7 @@ const LoginForm: React.FC<Props> = (props) => {
                 Login
             </Button>
         </form>
-    );
-};
+    )
+}
 
-export default LoginForm;
+export default LoginForm

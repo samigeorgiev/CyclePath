@@ -1,12 +1,12 @@
-import { useCallback, useContext } from 'react';
-import { AuthContext } from '../../context/Auth/AuthContext';
-import { AuthContextInterface } from '../../context/Auth/AuthContext.interface';
-import { RateRouteDto } from './RateRouteDto';
+import { useCallback, useContext } from 'react'
+import { AuthContext } from '../../context/Auth/AuthContext'
+import { AuthContextInterface } from '../../context/Auth/AuthContext.interface'
+import { RateRouteDto } from './RateRouteDto'
 
-const RATE_ROUTE_URL: string = `${process.env.REACT_APP_API_URL}/routes/rate`;
+const RATE_ROUTE_URL: string = `${process.env.REACT_APP_API_URL}/routes/rate`
 
 export const useRateRoute = (): ((rateRouteDto: RateRouteDto) => void) => {
-    const { authState } = useContext<AuthContextInterface>(AuthContext);
+    const { authState } = useContext<AuthContextInterface>(AuthContext)
 
     const rateRoute = useCallback(
         (rateRouteDto: RateRouteDto) => {
@@ -17,10 +17,10 @@ export const useRateRoute = (): ((rateRouteDto: RateRouteDto) => void) => {
                     Authorization: `Bearer ${authState?.token}`
                 },
                 body: JSON.stringify(rateRouteDto)
-            });
+            })
         },
         [authState]
-    );
+    )
 
-    return rateRoute;
-};
+    return rateRoute
+}

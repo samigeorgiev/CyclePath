@@ -1,25 +1,26 @@
-import decode from 'jwt-decode';
-import React, { useContext, useState } from 'react';
-import { useHistory } from 'react-router-dom';
-import { toast } from 'react-toastify';
-import LoginForm from '../components/LoginForm';
-import { AuthContext } from '../context/Auth/AuthContext';
-import { AuthContextInterface } from '../context/Auth/AuthContext.interface';
-import { DecodedToken } from '../tokenTypes/DecodedToken';
-import styles from './Login.module.scss';
+import { Link } from '@material-ui/core'
+import decode from 'jwt-decode'
+import React, { useContext, useState } from 'react'
+import { useHistory } from 'react-router-dom'
+import { toast } from 'react-toastify'
+import LoginForm from '../components/LoginForm'
+import { AuthContext } from '../context/Auth/AuthContext'
+import { AuthContextInterface } from '../context/Auth/AuthContext.interface'
+import { DecodedToken } from '../tokenTypes/DecodedToken'
+import styles from './Login.module.scss'
 
 interface Props {}
 
 const Login: React.FC<Props> = () => {
-    const [email, setEmail] = useState<string>('');
-    const [password, setPassword] = useState<string>('');
+    const [email, setEmail] = useState<string>('')
+    const [password, setPassword] = useState<string>('')
 
-    const { setAuthState } = useContext<AuthContextInterface>(AuthContext);
+    const { setAuthState } = useContext<AuthContextInterface>(AuthContext)
 
-    let history = useHistory();
+    let history = useHistory()
 
     const login = (event: React.FormEvent<HTMLFormElement>) => {
-        event.preventDefault();
+        event.preventDefault()
 
         fetch(`${process.env.REACT_APP_API_URL}/auth/sign-in`, {
             method: 'POST',
@@ -36,20 +37,20 @@ const Login: React.FC<Props> = () => {
             .then((res) => res.json())
             .then((data) => {
                 if (data.message) {
-                    toast.error(data.message[0]);
-                    return;
+                    toast.error(data.message[0])
+                    return
                 } else {
-                    const { exp, id }: DecodedToken = decode(data.token);
+                    const { exp, id }: DecodedToken = decode(data.token)
                     setAuthState({
                         exp: exp * 1000 - Date.now(),
                         token: data.token,
                         userId: id
-                    });
-                    toast.success('Successful!');
-                    history.push('/');
+                    })
+                    toast.success('Successful!')
+                    history.push('/')
                 }
-            });
-    };
+            })
+    }
 
     return (
         <div className={styles.root}>
@@ -61,14 +62,11 @@ const Login: React.FC<Props> = () => {
                 handleLogin={login}
             />
             <p>
-                {' '}
                 Don't have an account?{' '}
-                <a href='/register' className={styles.link}>
-                    Register Now!
-                </a>
+                <Link href='/register'>Register Now!</Link>
             </p>
         </div>
-    );
-};
+    )
+}
 
-export default Login;
+export default Login

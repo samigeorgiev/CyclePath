@@ -1,23 +1,23 @@
-import React, { Suspense, useContext } from 'react';
-import { Route, Switch } from 'react-router-dom';
-import { ToastContainer } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
-import { Nav } from './components';
-import { AuthContext } from './context/Auth/AuthContext';
-import { AuthContextInterface } from './context/Auth/AuthContext.interface';
-import { useRefreshToken } from './hooks/Auth/useRefreshToken';
-import { MapProvider } from './Map/MapProvider';
+import React, { Suspense, useContext } from 'react'
+import { Route, Switch } from 'react-router-dom'
+import { ToastContainer } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css'
+import { Nav } from './components'
+import { AuthContext } from './context/Auth/AuthContext'
+import { AuthContextInterface } from './context/Auth/AuthContext.interface'
+import { useRefreshToken } from './hooks/Auth/useRefreshToken'
+import { MapProvider } from './Map/MapProvider'
 
-const Home = React.lazy(() => import('./Home'));
-const Map = React.lazy(() => import('./Map'));
-const Profile = React.lazy(() => import('./Profile'));
-const Login = React.lazy(() => import('./Login'));
-const Register = React.lazy(() => import('./Register'));
+const Home = React.lazy(() => import('./Home'))
+const Map = React.lazy(() => import('./Map'))
+const Profile = React.lazy(() => import('./Profile'))
+const Login = React.lazy(() => import('./Login'))
+const Register = React.lazy(() => import('./Register'))
 
 const App = () => {
-    useRefreshToken();
+    useRefreshToken()
 
-    const { authState } = useContext<AuthContextInterface>(AuthContext);
+    const { authState } = useContext<AuthContextInterface>(AuthContext)
 
     return (
         <>
@@ -54,7 +54,7 @@ const App = () => {
             <ToastContainer />
             <Nav />
         </>
-    );
-};
+    )
+}
 
-export default App;
+export default App

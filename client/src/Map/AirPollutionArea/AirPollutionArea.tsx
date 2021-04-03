@@ -1,11 +1,11 @@
-import React, { FunctionComponent, useEffect } from 'react';
-import { Circle, useMap } from 'react-leaflet';
-import { useGetAirPollution } from '../../hooks/useGetAirPollution/useGetAirPollution';
-import { Route } from '../PolyLine/Route';
+import React, { FunctionComponent, useEffect } from 'react'
+import { Circle, useMap } from 'react-leaflet'
+import { useGetAirPollution } from '../../hooks/useGetAirPollution/useGetAirPollution'
+import { Route } from '../PolyLine/Route'
 
 interface Props {
-    route: Route;
-    airPollution: number;
+    route: Route
+    airPollution: number
 }
 
 const AreaColorMap = new Map<number, string>([
@@ -14,27 +14,27 @@ const AreaColorMap = new Map<number, string>([
     [90, 'orange'],
     [120, 'red'],
     [150, 'brown']
-]);
+])
 
 export const AirPollutionArea: FunctionComponent<Props> = ({
     route,
     airPollution
 }) => {
-    const map = useMap();
+    const map = useMap()
 
     if (!airPollution) {
-        return null;
+        return null
     }
 
-    let color: string = 'blue';
+    let color: string = 'blue'
 
     AreaColorMap.forEach((colorValue: string, number: number) => {
         if (color !== 'blue') {
-            return;
+            return
         }
 
-        color = airPollution >= number ? 'blue' : colorValue;
-    });
+        color = airPollution >= number ? 'blue' : colorValue
+    })
 
     return (
         <Circle
@@ -50,5 +50,5 @@ export const AirPollutionArea: FunctionComponent<Props> = ({
             }
             color={color}
         />
-    );
-};
+    )
+}
