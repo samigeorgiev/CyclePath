@@ -3,7 +3,6 @@ module.exports = {
         {
             name: 'cyclepath-backend',
             script: './backend/dist/main.js',
-            watch: true,
             env: {
                 PORT: 5000,
                 NODE_ENV: 'production',
@@ -12,7 +11,6 @@ module.exports = {
         {
             name: 'cyclepath-frontend',
             script: 'serve',
-            watch: true,
             env: {
                 PM2_SERVE_PATH: './client/build',
                 PM2_SERVE_PORT: 3000,
