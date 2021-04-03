@@ -1,4 +1,4 @@
-version: '3.9'
+version: '3.8'
 
 services:
     neo4j:
@@ -12,10 +12,10 @@ services:
             - NEO4J_AUTH=${CON_USER}/${CON_PASS}
             - NEO4JLABS_PLUGINS=["graph-data-science", "apoc"]
         volumes:
-            - $HOME/docker/neo4j/data:/data
-            - $HOME/docker/neo4j/logs:/logs
-            - $HOME/docker/neo4j/import:/var/lib/neo4j/import
-            - $HOME/docker/neo4j/plugins:/plugins
+            - data:/data
+            - logs:/logs
+            - import:/var/lib/neo4j/import
+            - plugins:/plugins
 
 volumes:
     data:

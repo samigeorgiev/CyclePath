@@ -1,10 +1,20 @@
 from math import asin, cos, radians, sin, sqrt
 
+from utils import GraphNode
 
-def haversine(node_a, node_b):
-    """
-    Calculate the great circle distance between two points 
+
+def haversine(node_a: GraphNode, node_b: GraphNode):
+    """haversine distance
+
+    Calculate the great circle distance between two points
     on the earth (specified in decimal degrees)
+
+    Args:
+        node_a: (GraphNode), starting node
+        node_b: (GraphNode), ending node
+
+    Returns:
+        float: distance in kilometers between the two nodes
     """
     # convert decimal degrees to radians
     lon1, lat1, lon2, lat2 = map(
