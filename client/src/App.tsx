@@ -9,7 +9,6 @@ import { useRefreshToken } from './hooks/Auth/useRefreshToken'
 import { MapProvider } from './Map/MapProvider'
 
 const Home = React.lazy(() => import('./Home'))
-const Map = React.lazy(() => import('./Map'))
 const Profile = React.lazy(() => import('./Profile'))
 const Login = React.lazy(() => import('./Login'))
 const Register = React.lazy(() => import('./Register'))

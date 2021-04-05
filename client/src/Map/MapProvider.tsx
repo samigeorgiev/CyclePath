@@ -1,11 +1,11 @@
+import { TextField } from '@material-ui/core'
 import { LatLngExpression } from 'leaflet'
 import { FunctionComponent, useCallback, useState } from 'react'
+import { HiOutlineSearch } from 'react-icons/hi'
 import { MapContainer } from 'react-leaflet'
 import { useDestinationSearch } from '../hooks/useDestinationSearch/useDestinationSearch'
 import { Map } from './Map'
 import styles from './Map.module.scss'
-import { TextField, InputAdornment } from '@material-ui/core'
-import { HiOutlineSearch } from 'react-icons/hi'
 
 interface Props {}
 

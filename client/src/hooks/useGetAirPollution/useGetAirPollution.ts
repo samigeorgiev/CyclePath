@@ -1,9 +1,8 @@
 import { useCallback, useContext, useState } from 'react'
-import { useToast } from 'react-toastify'
+import { toast } from 'react-toastify'
 import { AuthContext } from '../../context/Auth/AuthContext'
 import { AuthContextInterface } from '../../context/Auth/AuthContext.interface'
 import { Route } from '../../Map/PolyLine/Route'
-import { toast } from 'react-toastify'
 
 interface GetAirPollutions {
     airPollutions: number[] | null

@@ -1,17 +1,17 @@
-import React, { FunctionComponent, useEffect, useMemo, useState } from 'react'
-import { Polyline, Popup, useMap } from 'react-leaflet'
-import { useRateRoute } from '../../hooks/useRateRoute/useRateRoute'
-import { Route } from './Route'
+import { Box, Button, Typography } from '@material-ui/core'
 import {
-    SentimentVeryDissatisfied,
     SentimentDissatisfied,
     SentimentSatisfied,
     SentimentSatisfiedAlt,
+    SentimentVeryDissatisfied,
     SentimentVerySatisfied
 } from '@material-ui/icons'
-import { Box, Button, Typography } from '@material-ui/core'
-import { Rating, IconContainerProps } from '@material-ui/lab'
+import { IconContainerProps, Rating } from '@material-ui/lab'
+import React, { FunctionComponent, useEffect, useMemo, useState } from 'react'
+import { Polyline, Popup, useMap } from 'react-leaflet'
+import { useRateRoute } from '../../hooks/useRateRoute/useRateRoute'
 import styles from './PolyLine.module.scss'
+import { Route } from './Route'
 
 interface Props {
     route: Route

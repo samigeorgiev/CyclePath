@@ -1,6 +1,5 @@
-import React, { FunctionComponent, useEffect } from 'react'
+import React, { FunctionComponent } from 'react'
 import { Circle, useMap } from 'react-leaflet'
-import { useGetAirPollution } from '../../hooks/useGetAirPollution/useGetAirPollution'
 import { Route } from '../PolyLine/Route'
 
 interface Props {
