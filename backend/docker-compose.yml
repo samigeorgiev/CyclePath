@@ -4,7 +4,7 @@ services:
     postgres:
         image: postgres
         restart: always
-        container_name: postgres_cyclepath
+        container_name: postgres-cyclepath
         ports:
             - '5432:5432'
         environment:
