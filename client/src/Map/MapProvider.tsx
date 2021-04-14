@@ -1,5 +1,5 @@
 import { TextField } from '@material-ui/core'
-import { LatLngExpression } from 'leaflet'
+import { LatLngLiteral } from 'leaflet'
 import { FunctionComponent, useCallback, useState } from 'react'
 import { HiOutlineSearch } from 'react-icons/hi'
 import { MapContainer } from 'react-leaflet'
@@ -9,13 +9,15 @@ import styles from './Map.module.scss'
 
 interface Props {}
 
-const defaultLocation: LatLngExpression = {
+const defaultLocation: LatLngLiteral = {
     lat: 37.3347986,
     lng: -122.0091069
 }
 
 export const MapProvider: FunctionComponent<Props> = (props) => {
-    const { destination, getDestinationFromSearch } = useDestinationSearch()
+    const { destination, getDestinationFromSearch } = useDestinationSearch(
+        defaultLocation
+    )
 
     const [search, setSearch] = useState<string>('')
 

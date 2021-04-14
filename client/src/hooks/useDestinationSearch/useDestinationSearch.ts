@@ -7,11 +7,16 @@ interface UseDestinationSearch {
 }
 
 const MAPS_API_URL: string =
-    'https://maps.googleapis.com/maps/api/geocode/json?address='
+    'https://maps.googleapis.com/maps/api/place/findplacefromtext/json?location='
 
 const keyQuery: string = `&key=${process.env.REACT_APP_MAPS_KEY}`
 
-export const useDestinationSearch = (): UseDestinationSearch => {
+export const useDestinationSearch = (
+    userLocation: LatLngLiteral
+): UseDestinationSearch => {
+    const locationBiasQuery = `&locationbias=circle:2000@${userLocation.lat},${userLocation.lng}`
+    // search within 3km of the user's current location
+
     const [destination, setDestination] = useState<LatLng | null>(null)
 
     const getDestinationFromSearch = useCallback((search: string) => {
@@ -21,7 +26,7 @@ export const useDestinationSearch = (): UseDestinationSearch => {
 
         const searchForQuery: string = search.split(' ').join('+')
 
-        fetch(MAPS_API_URL + searchForQuery + keyQuery)
+        fetch(MAPS_API_URL + searchForQuery + locationBiasQuery + keyQuery)
             .then((res: Response) => res.json())
             .then((data) => {
                 if (data.status !== 'OK') {
