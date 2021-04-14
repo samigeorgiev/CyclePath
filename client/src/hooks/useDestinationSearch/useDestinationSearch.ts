@@ -12,6 +12,11 @@ const MAPS_API_URL: string =
 export const useDestinationSearch = (
     userLocation: LatLngLiteral
 ): UseDestinationSearch => {
+    const inputType = 'inputtype=textquery'
+    const locationBias = `locationbias=circle:2000@${userLocation.lat},${userLocation.lng}`
+    const fields = 'fields=formatted_address,geometry'
+    const apiKey = `key=${process.env.REACT_APP_MAPS_KEY}`
+
     const [destination, setDestination] = useState<LatLng | null>(null)
 
     const getDestinationFromSearch = useCallback((search: string) => {
@@ -19,21 +24,11 @@ export const useDestinationSearch = (
             return
         }
 
-        const searchForQuery: string = search.split(' ').join('%20')
+        const searchQuery: string = `input=${search.split(' ').join('+')}`
 
-        const fetchURL = new URL(MAPS_API_URL)
-        fetchURL.searchParams.set('input', searchForQuery)
-        fetchURL.searchParams.set('inputtype', 'textquery')
-
-        fetchURL.searchParams.set(
-            'locationbias',
-            `circle:2000@${userLocation.lat},${userLocation.lng}`
-        ) // search within 3km of the user's current location
-
-        fetchURL.searchParams.set('fields', 'formatted_address,geometry')
-        fetchURL.searchParams.set('key', process.env.REACT_APP_MAPS_KEY ?? '')
-
-        fetch(fetchURL.toString())
+        fetch(
+            `${MAPS_API_URL}?${searchQuery}&${inputType}&${locationBias}&${fields}&${apiKey}`
+        )
             .then((res: Response) => res.json())
             .then((data) => {
                 if (data.status !== 'OK') {
