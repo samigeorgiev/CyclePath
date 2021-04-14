@@ -7,16 +7,11 @@ interface UseDestinationSearch {
 }
 
 const MAPS_API_URL: string =
-    'https://maps.googleapis.com/maps/api/place/findplacefromtext/json?location='
-
-const keyQuery: string = `&key=${process.env.REACT_APP_MAPS_KEY}`
+    'https://maps.googleapis.com/maps/api/place/findplacefromtext/json'
 
 export const useDestinationSearch = (
     userLocation: LatLngLiteral
 ): UseDestinationSearch => {
-    const locationBiasQuery = `&locationbias=circle:2000@${userLocation.lat},${userLocation.lng}`
-    // search within 3km of the user's current location
-
     const [destination, setDestination] = useState<LatLng | null>(null)
 
     const getDestinationFromSearch = useCallback((search: string) => {
@@ -24,9 +19,21 @@ export const useDestinationSearch = (
             return
         }
 
-        const searchForQuery: string = search.split(' ').join('+')
+        const searchForQuery: string = search.split(' ').join('%20')
 
-        fetch(MAPS_API_URL + searchForQuery + locationBiasQuery + keyQuery)
+        const fetchURL = new URL(MAPS_API_URL)
+        fetchURL.searchParams.set('input', searchForQuery)
+        fetchURL.searchParams.set('inputtype', 'textquery')
+
+        fetchURL.searchParams.set(
+            'locationbias',
+            `circle:2000@${userLocation.lat},${userLocation.lng}`
+        ) // search within 3km of the user's current location
+
+        fetchURL.searchParams.set('fields', 'formatted_address,geometry')
+        fetchURL.searchParams.set('key', process.env.REACT_APP_MAPS_KEY ?? '')
+
+        fetch(fetchURL.toString())
             .then((res: Response) => res.json())
             .then((data) => {
                 if (data.status !== 'OK') {
