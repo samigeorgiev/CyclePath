@@ -10,17 +10,17 @@ const MAPS_API_URL: string =
     'https://maps.googleapis.com/maps/api/place/findplacefromtext/json'
 
 export const useDestinationSearch = (
-    userLocation: LatLngLiteral
+    userLocation: LatLngLiteral | null
 ): UseDestinationSearch => {
     const inputType = 'inputtype=textquery'
-    const locationBias = `locationbias=circle:2000@${userLocation.lat},${userLocation.lng}`
+    const locationBias = `locationbias=circle:2000@${userLocation?.lat},${userLocation?.lng}`
     const fields = 'fields=formatted_address,geometry'
     const apiKey = `key=${process.env.REACT_APP_MAPS_KEY}`
 
     const [destination, setDestination] = useState<LatLng | null>(null)
 
     const getDestinationFromSearch = useCallback((search: string) => {
-        if (!search.trim()) {
+        if (!search.trim() || !userLocation) {
             return
         }
 

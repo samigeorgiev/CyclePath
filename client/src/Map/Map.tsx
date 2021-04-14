@@ -1,9 +1,9 @@
 import { FormControlLabel, Switch, useMediaQuery } from '@material-ui/core'
-import { LatLngLiteral, LocationEvent, Map as LeafletMap } from 'leaflet'
+import { LatLngLiteral } from 'leaflet'
 import 'leaflet/dist/leaflet.css'
 import React, { useCallback, useEffect, useState } from 'react'
 import { SiTailwindcss } from 'react-icons/si'
-import { Pane, TileLayer, useMapEvents } from 'react-leaflet'
+import { Pane, TileLayer, useMap } from 'react-leaflet'
 import { v4 as uuid } from 'uuid'
 import { useGetRoute } from '../hooks/useGetRoute/useGetRoute'
 import { AirPollutionWrapper } from './AirPollutionArea/AirPollutionWrapper'
@@ -14,12 +14,12 @@ import { Route } from './PolyLine/Route'
 
 interface Props {
     destination: LatLngLiteral | null
+    position: LatLngLiteral | null
 }
 
 export const Map: React.FC<Props> = (props) => {
+    const map = useMap()
     const { getRoute, routes } = useGetRoute()
-
-    const [position, setPosition] = useState<LatLngLiteral | null>(null)
 
     const [visible, setVisible] = useState<boolean>(false)
 
@@ -37,38 +37,19 @@ export const Map: React.FC<Props> = (props) => {
         setShouldReload(true)
     }, [])
 
-    const map: LeafletMap = useMapEvents({
-        locationfound(event: LocationEvent) {
-            // setPosition(event.latlng);
-            setPosition({ lat: 43.73429996534598, lng: 7.418578619024726 })
-            map.flyTo(
-                { lat: 43.73429996534598, lng: 7.418578619024726 },
-                map.getZoom(),
-                { duration: 1 }
-            )
-        }
-    })
-
     useEffect(() => {
-        map.locate()
-        const pane = map.createPane('popup')
-
-        pane.style.zIndex = '600'
-    }, [])
-
-    useEffect(() => {
-        if (props.destination && position) {
+        if (props.destination && props.position) {
             getRoute(
-                [position.lat, position.lng],
+                [props.position.lat, props.position.lng],
                 [props.destination.lat, props.destination.lng]
             )
             map.fitBounds([
-                [position.lat, position.lng],
+                [props.position.lat, props.position.lng],
                 [props.destination.lat, props.destination.lng]
             ])
             setShouldReload(false)
         }
-    }, [props.destination, position, shouldReload])
+    }, [props.destination, props.position, shouldReload])
 
     return (
         <>
@@ -150,7 +131,10 @@ export const Map: React.FC<Props> = (props) => {
                 attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
                 url='https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png'
             />
-            <LocationMarker message='Current location' position={position} />
+            <LocationMarker
+                message='Current location'
+                position={props.position}
+            />
             <LocationMarker
                 message='Destination'
                 position={props.destination}

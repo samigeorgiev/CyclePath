@@ -1,4 +1,6 @@
+import { LatLngLiteral } from 'leaflet'
 import React, { Suspense, useContext } from 'react'
+import { MapContainer } from 'react-leaflet'
 import { Route, Switch } from 'react-router-dom'
 import { ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
@@ -17,6 +19,10 @@ const App = () => {
     useRefreshToken()
 
     const { authState } = useContext<AuthContextInterface>(AuthContext)
+    const defaultLocation: LatLngLiteral = {
+        lat: 37.3347986,
+        lng: -122.0091069
+    }
 
     return (
         <>
@@ -27,7 +33,14 @@ const App = () => {
                     </Route>
                     {authState ? (
                         <Route exact path='/map'>
-                            <MapProvider />
+                            <MapContainer
+                                center={defaultLocation}
+                                zoom={15}
+                                className='map'
+                                zoomControl={false}
+                            >
+                                <MapProvider />
+                            </MapContainer>
                         </Route>
                     ) : null}
                     {authState ? (

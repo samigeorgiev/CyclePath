@@ -1,22 +1,23 @@
 import { TextField } from '@material-ui/core'
-import { LatLngLiteral } from 'leaflet'
-import { FunctionComponent, useCallback, useState } from 'react'
+import { LatLngLiteral, LocationEvent, Map as LeafletMap } from 'leaflet'
+import React, {
+    FunctionComponent,
+    useCallback,
+    useEffect,
+    useState
+} from 'react'
 import { HiOutlineSearch } from 'react-icons/hi'
-import { MapContainer } from 'react-leaflet'
+import { useMapEvents } from 'react-leaflet'
 import { useDestinationSearch } from '../hooks/useDestinationSearch/useDestinationSearch'
 import { Map } from './Map'
 import styles from './Map.module.scss'
 
 interface Props {}
 
-const defaultLocation: LatLngLiteral = {
-    lat: 37.3347986,
-    lng: -122.0091069
-}
-
 export const MapProvider: FunctionComponent<Props> = (props) => {
+    const [position, setPosition] = useState<LatLngLiteral | null>(null)
     const { destination, getDestinationFromSearch } = useDestinationSearch(
-        defaultLocation
+        position
     )
 
     const [search, setSearch] = useState<string>('')
@@ -27,6 +28,25 @@ export const MapProvider: FunctionComponent<Props> = (props) => {
         },
         []
     )
+
+    const map: LeafletMap = useMapEvents({
+        locationfound(event: LocationEvent) {
+            // setPosition(event.latlng);
+            setPosition({ lat: 43.73429996534598, lng: 7.418578619024726 })
+            map.flyTo(
+                { lat: 43.73429996534598, lng: 7.418578619024726 },
+                map.getZoom(),
+                { duration: 1 }
+            )
+        }
+    })
+
+    useEffect(() => {
+        map.locate()
+        const pane = map.createPane('popup')
+
+        pane.style.zIndex = '600'
+    }, [])
 
     return (
         <>
@@ -46,14 +66,7 @@ export const MapProvider: FunctionComponent<Props> = (props) => {
                     startAdornment: <HiOutlineSearch />
                 }}
             />
-            <MapContainer
-                center={defaultLocation}
-                zoom={15}
-                className={styles.root}
-                zoomControl={false}
-            >
-                <Map destination={destination} />
-            </MapContainer>
+            <Map destination={destination} position={position} />
         </>
     )
 }
