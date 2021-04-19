@@ -19,7 +19,14 @@
 
 .moto {
     font-family: 'Akaya Telivigala', cursive;
-    color: #35a331;
     font-size: 2rem;
     text-align: center;
+}
+
+.message {
+    margin-top: 1rem;
+    max-width: 500px;
+    background-color: #ffc40075;
+    border-left: 7px solid #ffc400;
+    padding: 1.25rem 1.7rem;
 }

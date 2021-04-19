@@ -1,33 +1,25 @@
-import { TextField } from '@material-ui/core'
-import { LatLngLiteral, LocationEvent, Map as LeafletMap } from 'leaflet'
-import React, {
-    FunctionComponent,
-    useCallback,
-    useEffect,
-    useState
-} from 'react'
+import { Icon, InputAdornment, TextField } from '@material-ui/core'
+import {
+    LatLng,
+    LatLngLiteral,
+    LocationEvent,
+    Map as LeafletMap
+} from 'leaflet'
+import React, { useEffect, useState } from 'react'
 import { HiOutlineSearch } from 'react-icons/hi'
 import { useMapEvents } from 'react-leaflet'
-import { useDestinationSearch } from '../hooks/useDestinationSearch/useDestinationSearch'
 import { Map } from './Map'
 import styles from './Map.module.scss'
 
 interface Props {}
 
-export const MapProvider: FunctionComponent<Props> = (props) => {
+const MAPS_API_URL: string =
+    'https://maps.googleapis.com/maps/api/place/findplacefromtext/json'
+
+export const MapProvider: React.FC<Props> = (props) => {
     const [position, setPosition] = useState<LatLngLiteral | null>(null)
-    const { destination, getDestinationFromSearch } = useDestinationSearch(
-        position
-    )
-
+    const [destination, setDestination] = useState<LatLng | null>(null)
     const [search, setSearch] = useState<string>('')
-
-    const searchChangeHandler = useCallback(
-        (event: React.ChangeEvent<HTMLInputElement>) => {
-            setSearch(event.target.value)
-        },
-        []
-    )
 
     const map: LeafletMap = useMapEvents({
         locationfound(event: LocationEvent) {
@@ -48,24 +40,57 @@ export const MapProvider: FunctionComponent<Props> = (props) => {
         pane.style.zIndex = '600'
     }, [])
 
+    const getDestinationFromSearch = async () => {
+        if (!search.trim() || !position) return
+
+        const inputType = 'inputtype=textquery'
+        const locationBias = `locationbias=circle:2000@${position?.lat},${position?.lng}`
+        const fields = 'fields=formatted_address,geometry'
+        const apiKey = `key=${process.env.REACT_APP_MAPS_KEY}`
+
+        const searchQuery: string = `input=${search.split(' ').join('+')}`
+
+        const res = await fetch(
+            `${MAPS_API_URL}?${searchQuery}&${inputType}&${locationBias}&${fields}&${apiKey}`
+        )
+        console.log(res)
+        if (!res.ok) return
+        const data = await res.json()
+        if (destination?.equals(data.results[0].geometry.location)) return
+
+        setDestination(data.results[0].geometry.location)
+    }
+
     return (
         <>
-            <TextField
-                id='input-with-icon-textfield'
-                value={search}
-                variant='outlined'
-                onChange={searchChangeHandler}
-                onKeyDown={(e) => {
-                    if (e.key === 'Enter') {
-                        getDestinationFromSearch(search)
-                    }
+            <form
+                onSubmit={(e) => {
+                    e.preventDefault()
+                    getDestinationFromSearch()
                 }}
-                fullWidth
-                className={styles.search}
-                InputProps={{
-                    startAdornment: <HiOutlineSearch />
-                }}
-            />
+            >
+                <TextField
+                    id='input-with-icon-textfield'
+                    value={search}
+                    variant='outlined'
+                    onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                        setSearch(e.target.value)
+                    }}
+                    fullWidth
+                    className={styles.search}
+                    InputProps={{
+                        startAdornment: (
+                            <InputAdornment position='start'>
+                                <Icon
+                                    color='primary'
+                                    component={HiOutlineSearch}
+                                />
+                            </InputAdornment>
+                        )
+                    }}
+                />
+            </form>
+
             <Map destination={destination} position={position} />
         </>
     )
