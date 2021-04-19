@@ -2,7 +2,7 @@ import { FormControlLabel, Switch, useMediaQuery } from '@material-ui/core'
 import { LatLngLiteral } from 'leaflet'
 import 'leaflet/dist/leaflet.css'
 import React, { useCallback, useEffect, useState } from 'react'
-import { WiFog } from 'react-icons/wi'
+import { FaRoute, FaSmog } from 'react-icons/fa'
 import { Pane, TileLayer, useMap } from 'react-leaflet'
 import { v4 as uuid } from 'uuid'
 import {
@@ -68,9 +68,9 @@ export const Map: React.FC<Props> = (props) => {
                 }
                 label={
                     matches ? (
-                        'Air Pollution'
+                        'Air pollution'
                     ) : (
-                        <WiFog className={styles.pollution} />
+                        <FaSmog className={styles.icon} />
                     )
                 }
                 className={styles.toggle}
@@ -85,7 +85,9 @@ export const Map: React.FC<Props> = (props) => {
                         color='primary'
                     />
                 }
-                label='Route'
+                label={
+                    matches ? 'Best route' : <FaRoute className={styles.icon} />
+                }
                 className={styles.routes}
             />
 
