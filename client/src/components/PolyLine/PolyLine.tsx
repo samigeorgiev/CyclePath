@@ -7,7 +7,7 @@ import {
     SentimentVerySatisfied
 } from '@material-ui/icons'
 import { IconContainerProps, Rating } from '@material-ui/lab'
-import React, { FunctionComponent, useEffect, useMemo, useState } from 'react'
+import React, { useEffect, useMemo, useState } from 'react'
 import { Polyline, Popup, useMap } from 'react-leaflet'
 import { useRateRoute } from '../../hooks/useRateRoute/useRateRoute'
 import styles from './PolyLine.module.scss'
@@ -58,7 +58,7 @@ function IconContainer(props: IconContainerProps) {
     return <span {...other}>{customIcons[value].icon}</span>
 }
 
-export const PolyLine: FunctionComponent<Props> = ({
+export const PolyLine: React.FC<Props> = ({
     route,
     forceReload,
     active,

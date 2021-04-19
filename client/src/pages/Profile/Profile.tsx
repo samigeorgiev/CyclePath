@@ -1,8 +1,7 @@
 import { Button } from '@material-ui/core'
 import React from 'react'
-import styles from './Profile.module.scss'
 import { ImExit } from 'react-icons/im'
-import { useLogout } from '../hooks/Auth/useLogout'
+import { useLogout } from '../../hooks'
 
 interface Props {}
 
@@ -10,7 +9,7 @@ const Profile: React.FC<Props> = () => {
     const { logout } = useLogout()
 
     return (
-        <div className={styles.root}>
+        <div className='centered'>
             <Button
                 variant='contained'
                 color='primary'

@@ -1,13 +1,11 @@
-import { Link } from '@material-ui/core'
+import { Link, Typography } from '@material-ui/core'
 import decode from 'jwt-decode'
 import React, { useContext, useState } from 'react'
 import { useHistory } from 'react-router-dom'
 import { toast } from 'react-toastify'
-import LoginForm from '../components/LoginForm'
-import { AuthContext } from '../context/Auth/AuthContext'
-import { AuthContextInterface } from '../context/Auth/AuthContext.interface'
-import { DecodedToken } from '../tokenTypes/DecodedToken'
-import styles from './Login.module.scss'
+import { LoginForm } from '../../components'
+import { AuthContext, AuthContextInterface } from '../../context/Auth'
+import { DecodedToken } from '../../tokenTypes/DecodedToken'
 
 interface Props {}
 
@@ -53,7 +51,7 @@ const Login: React.FC<Props> = () => {
     }
 
     return (
-        <div className={styles.root}>
+        <div className='centered'>
             <LoginForm
                 email={email}
                 password={password}
@@ -61,10 +59,10 @@ const Login: React.FC<Props> = () => {
                 handlePassword={(e) => setPassword(e.target.value)}
                 handleLogin={login}
             />
-            <p>
+            <Typography variant='subtitle2' component='span'>
                 Don't have an account?{' '}
                 <Link href='/register'>Register Now!</Link>
-            </p>
+            </Typography>
         </div>
     )
 }

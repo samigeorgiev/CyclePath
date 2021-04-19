@@ -1,6 +1,6 @@
 import { LatLngTuple } from 'leaflet'
 import { useCallback, useState } from 'react'
-import { Route } from '../../Map/PolyLine/Route'
+import { Route } from '../components/PolyLine/Route'
 
 interface GetRoutes {
     routes: [Route[], Route[]] | null

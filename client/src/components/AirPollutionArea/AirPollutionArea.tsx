@@ -1,4 +1,4 @@
-import React, { FunctionComponent } from 'react'
+import React from 'react'
 import { Circle, useMap } from 'react-leaflet'
 import { Route } from '../PolyLine/Route'
 
@@ -15,10 +15,7 @@ const AreaColorMap = new Map<number, string>([
     [150, 'brown']
 ])
 
-export const AirPollutionArea: FunctionComponent<Props> = ({
-    route,
-    airPollution
-}) => {
+const AirPollutionArea: React.FC<Props> = ({ route, airPollution }) => {
     const map = useMap()
 
     if (!airPollution) {
@@ -51,3 +48,5 @@ export const AirPollutionArea: FunctionComponent<Props> = ({
         />
     )
 }
+
+export { AirPollutionArea }

@@ -1,4 +1,5 @@
-import { Icon, InputAdornment, TextField } from '@material-ui/core'
+import { InputAdornment, TextField } from '@material-ui/core'
+import { Search } from '@material-ui/icons'
 import {
     LatLng,
     LatLngLiteral,
@@ -6,7 +7,6 @@ import {
     Map as LeafletMap
 } from 'leaflet'
 import React, { useEffect, useState } from 'react'
-import { HiOutlineSearch } from 'react-icons/hi'
 import { useMapEvents } from 'react-leaflet'
 import { Map } from './Map'
 import styles from './Map.module.scss'
@@ -76,15 +76,11 @@ export const MapProvider: React.FC<Props> = (props) => {
                     onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
                         setSearch(e.target.value)
                     }}
-                    fullWidth
                     className={styles.search}
                     InputProps={{
                         startAdornment: (
                             <InputAdornment position='start'>
-                                <Icon
-                                    color='primary'
-                                    component={HiOutlineSearch}
-                                />
+                                <Search color='primary' />
                             </InputAdornment>
                         )
                     }}

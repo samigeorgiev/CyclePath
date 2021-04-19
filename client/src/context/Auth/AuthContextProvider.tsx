@@ -6,7 +6,7 @@ interface Props {
     children: React.ReactNode
 }
 
-export const AuthContextProvider: FunctionComponent<Props> = (props) => {
+export const AuthContextProvider: React.FC<Props> = (props) => {
     const [authState, setAuthState] = useState<AuthContextState | null>(null)
 
     return (

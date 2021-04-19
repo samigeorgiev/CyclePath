@@ -1,5 +1,5 @@
 import { Icon, LatLngExpression } from 'leaflet'
-import { FunctionComponent } from 'react'
+import React from 'react'
 import { Marker, Popup } from 'react-leaflet'
 import styles from './LocationMarker.module.scss'
 
@@ -8,7 +8,7 @@ interface Props {
     message: string
 }
 
-export const LocationMarker: FunctionComponent<Props> = (props) => {
+const LocationMarker: React.FC<Props> = (props) => {
     if (!props.position) {
         return null
     }
@@ -28,3 +28,5 @@ export const LocationMarker: FunctionComponent<Props> = (props) => {
         </Marker>
     )
 }
+
+export { LocationMarker }

@@ -2,15 +2,17 @@ import { FormControlLabel, Switch, useMediaQuery } from '@material-ui/core'
 import { LatLngLiteral } from 'leaflet'
 import 'leaflet/dist/leaflet.css'
 import React, { useCallback, useEffect, useState } from 'react'
-import { SiTailwindcss } from 'react-icons/si'
+import { WiFog } from 'react-icons/wi'
 import { Pane, TileLayer, useMap } from 'react-leaflet'
 import { v4 as uuid } from 'uuid'
-import { useGetRoute } from '../hooks/useGetRoute/useGetRoute'
-import { AirPollutionWrapper } from './AirPollutionArea/AirPollutionWrapper'
-import { LocationMarker } from './LocationMarker'
+import {
+    AirPollutionWrapper,
+    LocationMarker,
+    PolyLine,
+    Route
+} from '../../components'
+import { useGetRoute } from '../../hooks'
 import styles from './Map.module.scss'
-import { PolyLine } from './PolyLine'
-import { Route } from './PolyLine/Route'
 
 interface Props {
     destination: LatLngLiteral | null
@@ -68,7 +70,7 @@ export const Map: React.FC<Props> = (props) => {
                     matches ? (
                         'Air Pollution'
                     ) : (
-                        <SiTailwindcss className={styles.wind} />
+                        <WiFog className={styles.pollution} />
                     )
                 }
                 className={styles.toggle}

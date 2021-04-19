@@ -1,46 +1,33 @@
-import { LatLngLiteral } from 'leaflet'
+import { CircularProgress } from '@material-ui/core'
 import React, { Suspense, useContext } from 'react'
-import { MapContainer } from 'react-leaflet'
 import { Route, Switch } from 'react-router-dom'
 import { ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 import { Nav } from './components'
-import { AuthContext } from './context/Auth/AuthContext'
-import { AuthContextInterface } from './context/Auth/AuthContext.interface'
-import { useRefreshToken } from './hooks/Auth/useRefreshToken'
-import { MapProvider } from './Map/MapProvider'
+import { AuthContext, AuthContextInterface } from './context/Auth'
+import { useRefreshToken } from './hooks'
 
-const Home = React.lazy(() => import('./Home'))
-const Profile = React.lazy(() => import('./Profile'))
-const Login = React.lazy(() => import('./Login'))
-const Register = React.lazy(() => import('./Register'))
+const Home = React.lazy(() => import('./pages/Home'))
+const Profile = React.lazy(() => import('./pages/Profile'))
+const Login = React.lazy(() => import('./pages/Login'))
+const Register = React.lazy(() => import('./pages/Register'))
+const Map = React.lazy(() => import('./pages/Map'))
 
 const App = () => {
     useRefreshToken()
 
     const { authState } = useContext<AuthContextInterface>(AuthContext)
-    const defaultLocation: LatLngLiteral = {
-        lat: 37.3347986,
-        lng: -122.0091069
-    }
 
     return (
         <>
-            <Suspense fallback='loading...'>
+            <Suspense fallback={<CircularProgress />}>
                 <Switch>
                     <Route exact path='/'>
                         <Home />
                     </Route>
                     {authState ? (
                         <Route exact path='/map'>
-                            <MapContainer
-                                center={defaultLocation}
-                                zoom={15}
-                                className='map'
-                                zoomControl={false}
-                            >
-                                <MapProvider />
-                            </MapContainer>
+                            <Map />
                         </Route>
                     ) : null}
                     {authState ? (

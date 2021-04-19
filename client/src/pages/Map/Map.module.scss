@@ -1,0 +1,35 @@
+@import '../../scss/const';
+
+.overlay {
+    position: fixed;
+    background-color: white;
+    z-index: 2000;
+    border-radius: 8px;
+}
+
+.search {
+    @extend .overlay;
+    top: 1rem;
+    left: 1rem;
+    max-width: min(400px, 90vw);
+}
+
+.toggle {
+    @extend .overlay;
+    right: 1rem;
+    bottom: 5rem;
+    padding: 1rem;
+}
+
+.routes {
+    @extend .overlay;
+    right: 1rem;
+    bottom: 10rem;
+    padding: 1rem;
+}
+
+.pollution {
+    font-size: 1.4rem;
+    margin-top: 0.5rem;
+    color: #797e83;
+}

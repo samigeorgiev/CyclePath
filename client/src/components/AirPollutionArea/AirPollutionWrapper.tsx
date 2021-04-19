@@ -1,18 +1,15 @@
-import React, { FunctionComponent, useEffect } from 'react'
-import { useGetAirPollution } from '../../hooks/useGetAirPollution/useGetAirPollution'
+import React, { useEffect } from 'react'
+import { v4 as uuid } from 'uuid'
+import { useGetAirPollution } from '../../hooks'
 import { Route } from '../PolyLine/Route'
 import { AirPollutionArea } from './AirPollutionArea'
-import { v4 as uuid } from 'uuid'
 
 interface Props {
     routes: Route[]
     visible: boolean
 }
 
-export const AirPollutionWrapper: FunctionComponent<Props> = ({
-    routes,
-    visible
-}) => {
+const AirPollutionWrapper: React.FC<Props> = ({ routes, visible }) => {
     const { airPollutions, getAirPollutions } = useGetAirPollution()
 
     useEffect(() => {
@@ -36,3 +33,5 @@ export const AirPollutionWrapper: FunctionComponent<Props> = ({
         </>
     )
 }
+
+export { AirPollutionWrapper }

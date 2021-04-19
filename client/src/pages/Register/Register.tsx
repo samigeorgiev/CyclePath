@@ -1,13 +1,11 @@
-import { Link } from '@material-ui/core'
+import { Link, Typography } from '@material-ui/core'
 import decode from 'jwt-decode'
 import React, { useContext, useState } from 'react'
 import { useHistory } from 'react-router-dom'
 import { toast } from 'react-toastify'
-import RegisterForm from '../components/RegisterForm'
-import { AuthContext } from '../context/Auth/AuthContext'
-import { AuthContextInterface } from '../context/Auth/AuthContext.interface'
-import { DecodedToken } from '../tokenTypes/DecodedToken'
-import styles from './Register.module.scss'
+import { RegisterForm } from '../../components'
+import { AuthContext, AuthContextInterface } from '../../context/Auth'
+import { DecodedToken } from '../../tokenTypes/DecodedToken'
 
 interface Props {}
 
@@ -55,7 +53,7 @@ const Register: React.FC<Props> = () => {
     }
 
     return (
-        <div className={styles.root}>
+        <div className='centered'>
             <RegisterForm
                 name={name}
                 email={email}
@@ -65,9 +63,9 @@ const Register: React.FC<Props> = () => {
                 handlePassword={(e) => setPassword(e.target.value)}
                 handleRegister={register}
             />
-            <p>
+            <Typography variant='subtitle2' component='span'>
                 Already have an account? <Link href='/login'>Login!</Link>
-            </p>
+            </Typography>
         </div>
     )
 }
