@@ -6,6 +6,7 @@ import 'react-toastify/dist/ReactToastify.css'
 import { Nav } from './components'
 import { AuthContext, AuthContextInterface } from './context/Auth'
 import { useRefreshToken } from './hooks'
+import Error from './pages/Error'
 
 const Home = React.lazy(() => import('./pages/Home'))
 const Profile = React.lazy(() => import('./pages/Profile'))
@@ -46,7 +47,7 @@ const App = () => {
                         </Route>
                     )}
                     <Route path='/'>
-                        <div>404</div>
+                        <Error />
                     </Route>
                 </Switch>
             </Suspense>

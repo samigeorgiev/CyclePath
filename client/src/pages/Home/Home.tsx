@@ -35,7 +35,7 @@ const Home: React.FC<Props> = () => {
                 p='1.25rem 1.7rem'
             >
                 <Typography component='p'>
-                    &#x26a0; Unfortunately, duo to the limitations of our
+                    &#x26a0; Unfortunately, due to the limitations of our
                     server, we are unable to supply a map of Sofia. However you
                     will be able to try our product on a map of Monaco with a
                     default location.
