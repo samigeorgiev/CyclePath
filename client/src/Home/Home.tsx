@@ -1,31 +1,47 @@
-import { Typography } from '@material-ui/core'
+import { Box, Typography } from '@material-ui/core'
 import React from 'react'
-import styles from './Home.module.scss'
 
 interface Props {}
 
 const Home: React.FC<Props> = () => {
     return (
-        <div className={styles.root}>
-            <img
-                className={styles.banner}
-                alt='Home Banner'
-                src='images/eco_bike.webp'
-            />
-            <Typography className={styles.moto} color='primary'>
+        <Box
+            display='flex'
+            flexDirection='column'
+            justifyContent='center'
+            alignItems='center'
+            p='0 2rem 8rem 2rem'
+            width='100%'
+            height='100%'
+        >
+            <Box maxWidth='400px'>
+                <img
+                    style={{ width: '100%' }}
+                    alt='Home Banner'
+                    src='images/eco_bike.webp'
+                />
+            </Box>
+            <Typography variant='subtitle1' component='h1' color='primary'>
                 Take a ride
                 <br />
                 on the green side
             </Typography>
-            <blockquote className={styles.message}>
+            <Box
+                component='blockquote'
+                bgcolor='#ffc40075'
+                borderLeft='7px solid #ffc400'
+                maxWidth='500px'
+                marginTop='1rem'
+                p='1.25rem 1.7rem'
+            >
                 <Typography component='p'>
-                    &#x26a0; Unfortunately, duo to limitations of the server, we
-                    are unable to supply a map of Sofia. However you will be
-                    able to try our product on a map of Monaco with a default
-                    location.
+                    &#x26a0; Unfortunately, duo to the limitations of our
+                    server, we are unable to supply a map of Sofia. However you
+                    will be able to try our product on a map of Monaco with a
+                    default location.
                 </Typography>
-            </blockquote>
-        </div>
+            </Box>
+        </Box>
     )
 }
 
