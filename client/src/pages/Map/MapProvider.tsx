@@ -1,5 +1,3 @@
-import { InputAdornment, TextField } from '@material-ui/core'
-import { Search } from '@material-ui/icons'
 import {
     LatLng,
     LatLngLiteral,
@@ -8,18 +6,14 @@ import {
 } from 'leaflet'
 import React, { useEffect, useState } from 'react'
 import { useMapEvents } from 'react-leaflet'
+import { Search } from '../../components'
 import { Map } from './Map'
-import styles from './Map.module.scss'
 
 interface Props {}
-
-const MAPS_API_URL: string =
-    'https://maps.googleapis.com/maps/api/place/findplacefromtext/json'
 
 export const MapProvider: React.FC<Props> = (props) => {
     const [position, setPosition] = useState<LatLngLiteral | null>(null)
     const [destination, setDestination] = useState<LatLng | null>(null)
-    const [search, setSearch] = useState<string>('')
 
     const map: LeafletMap = useMapEvents({
         locationfound(event: LocationEvent) {
@@ -40,53 +34,9 @@ export const MapProvider: React.FC<Props> = (props) => {
         pane.style.zIndex = '600'
     }, [])
 
-    const getDestinationFromSearch = async () => {
-        if (!search.trim() || !position) return
-
-        const inputType = 'inputtype=textquery'
-        const locationBias = `locationbias=circle:2000@${position?.lat},${position?.lng}`
-        const fields = 'fields=formatted_address,geometry'
-        const apiKey = `key=${process.env.REACT_APP_MAPS_KEY}`
-
-        const searchQuery: string = `input=${search.split(' ').join('+')}`
-
-        const res = await fetch(
-            `${MAPS_API_URL}?${searchQuery}&${inputType}&${locationBias}&${fields}&${apiKey}`
-        )
-        console.log(res)
-        if (!res.ok) return
-        const data = await res.json()
-        if (destination?.equals(data.results[0].geometry.location)) return
-
-        setDestination(data.results[0].geometry.location)
-    }
-
     return (
         <>
-            <form
-                onSubmit={(e) => {
-                    e.preventDefault()
-                    getDestinationFromSearch()
-                }}
-            >
-                <TextField
-                    id='input-with-icon-textfield'
-                    value={search}
-                    variant='outlined'
-                    onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-                        setSearch(e.target.value)
-                    }}
-                    className={styles.search}
-                    InputProps={{
-                        startAdornment: (
-                            <InputAdornment position='start'>
-                                <Search color='primary' />
-                            </InputAdornment>
-                        )
-                    }}
-                />
-            </form>
-
+            <Search position={position} />
             <Map destination={destination} position={position} />
         </>
     )

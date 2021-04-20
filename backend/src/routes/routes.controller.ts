@@ -30,7 +30,7 @@ export class RoutesController {
         @Query('endNodeLong') endNodeLong: number
     ): Promise<IRouteSegment[][]> {
         const request = new GetRouteDto(startNodeLat, startNodeLong, endNodeLat, endNodeLong)
-        return await this.routesService.getRoute(request);
+        return await this.routesService.getRoute(request)
     }
 
     @Post('rate')

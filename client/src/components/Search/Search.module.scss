@@ -1,0 +1,9 @@
+.search {
+    position: fixed;
+    background-color: white;
+    z-index: 2000;
+    border-radius: 8px;
+    top: 1rem;
+    left: 1rem;
+    max-width: min(400px, 90vw);
+}

@@ -7,13 +7,6 @@
     border-radius: 8px;
 }
 
-.search {
-    @extend .overlay;
-    top: 1rem;
-    left: 1rem;
-    max-width: min(400px, 90vw);
-}
-
 .toggle {
     @extend .overlay;
     right: 1rem;

@@ -29,6 +29,7 @@
         "@nestjs/passport": "^7.1.5",
         "@nestjs/platform-express": "^7.0.0",
         "@types/kd-tree-javascript": "^1.0.0",
+        "axios": "^0.21.1",
         "bcrypt": "^5.0.1",
         "class-transformer": "^0.4.0",
         "class-validator": "^0.13.1",
