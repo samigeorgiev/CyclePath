@@ -1,5 +1,5 @@
 import { Controller, Get, InternalServerErrorException, Query } from '@nestjs/common'
-import { ILocation } from './interfaces'
+import { LocationDto } from './dto'
 import { SearchService } from './search.service'
 
 @Controller('search')
@@ -10,7 +10,7 @@ export class SeachController {
     async get(
         @Query('query') query: string,
         @Query('location') location: string
-    ): Promise<ILocation> {
-        return await this.searchService.fetchGmaps(query, location)
+    ): Promise<LocationDto> {
+        return this.searchService.fetchGmaps(query, location)
     }
 }

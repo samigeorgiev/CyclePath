@@ -30,7 +30,7 @@ export class RoutesController {
         @Query('endNodeLong') endNodeLong: number
     ): Promise<IRouteSegment[][]> {
         const request = new GetRouteDto(startNodeLat, startNodeLong, endNodeLat, endNodeLong)
-        return await this.routesService.getRoute(request)
+        return this.routesService.getRoute(request)
     }
 
     @Post('rate')
@@ -40,9 +40,7 @@ export class RoutesController {
         @Req() req: AuthenticatedRequest,
         @Body(ValidationPipe) rateRouteDto: RateRouteDto
     ): Promise<void> {
-        await this.routesService.rateRoute(rateRouteDto, req.user.id)
-
-        return
+        return this.routesService.rateRoute(rateRouteDto, req.user.id)
     }
 
     @Post('air-pollution')

@@ -1,4 +1,4 @@
-import { IsNumber, Max, Min } from 'class-validator'
+import { IsNumber } from 'class-validator'
 
 export class RateRouteDto {
     @IsNumber()

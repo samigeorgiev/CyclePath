@@ -1,11 +1,11 @@
 import { BadRequestException, HttpService, Injectable } from '@nestjs/common'
-import { ILocation } from './interfaces'
+import { LocationDto } from './dto'
 
 @Injectable()
 export class SearchService {
-    constructor(private httpService: HttpService) {}
+    constructor(private readonly httpService: HttpService) {}
 
-    async fetchGmaps(query: string, location: string): Promise<ILocation> {
+    async fetchGmaps(query: string, location: string): Promise<LocationDto> {
         // matches format like "123.1234,123.1234"
         const locationStringRegex = /(\d*\.)?\d+,+((\d*\.)?\d)+/
 
