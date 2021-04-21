@@ -100,6 +100,9 @@ def load(
             end_node_key=("Node", "node_id"),
         )
 
+    print("creating gds graph")
+    db.run("CALL gds.graph.create( 'nodesGraph', 'Node', 'Route', { relationshipProperties: ['rating', 'cost', 'distance'] } )")
+
     print(f"total time: {(time() - start_time)/60:.2f} minutes")
 
 
