@@ -1,9 +1,4 @@
-import {
-    LatLng,
-    LatLngLiteral,
-    LocationEvent,
-    Map as LeafletMap
-} from 'leaflet'
+import { LatLngLiteral, LocationEvent, Map as LeafletMap } from 'leaflet'
 import React, { useEffect, useState } from 'react'
 import { useMapEvents } from 'react-leaflet'
 import { Search } from '../../components'
@@ -13,7 +8,7 @@ interface Props {}
 
 export const MapProvider: React.FC<Props> = (props) => {
     const [position, setPosition] = useState<LatLngLiteral | null>(null)
-    const [destination, setDestination] = useState<LatLng | null>(null)
+    const [destination, setDestination] = useState<LatLngLiteral | null>(null)
 
     const map: LeafletMap = useMapEvents({
         locationfound(event: LocationEvent) {
@@ -36,7 +31,7 @@ export const MapProvider: React.FC<Props> = (props) => {
 
     return (
         <>
-            <Search position={position} />
+            <Search position={position} setDestination={setDestination} />
             <Map destination={destination} position={position} />
         </>
     )

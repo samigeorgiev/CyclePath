@@ -9,8 +9,9 @@ export class SeachController {
     @Get()
     async get(
         @Query('query') query: string,
-        @Query('location') location: string
+        @Query('location') location: string,
+        @Query('locale') language: string = 'en'
     ): Promise<LocationDto> {
-        return this.searchService.fetchGmaps(query, location)
+        return this.searchService.fetchGmaps(query, location, language)
     }
 }

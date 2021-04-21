@@ -9,4 +9,7 @@ export class LocationDto {
 
     @IsString()
     name: string
+
+    @IsString()
+    address: string
 }
