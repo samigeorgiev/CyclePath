@@ -6,7 +6,6 @@
     "private": true,
     "license": "MIT",
     "scripts": {
-        "prebuild": "rimraf dist",
         "build": "nest build",
         "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
         "start": "nest start",
@@ -28,8 +27,6 @@
         "@nestjs/mapped-types": "*",
         "@nestjs/passport": "^7.1.5",
         "@nestjs/platform-express": "^7.0.0",
-        "@types/kd-tree-javascript": "^1.0.0",
-        "axios": "^0.21.1",
         "bcrypt": "^5.0.1",
         "class-transformer": "^0.4.0",
         "class-validator": "^0.13.1",
@@ -40,8 +37,7 @@
         "passport-jwt": "^4.0.0",
         "pg": "^8.5.1",
         "reflect-metadata": "^0.1.13",
-        "rimraf": "^3.0.2",
-        "rxjs": "^6.5.4",
+        "rxjs": "^6.6.7",
         "typeorm": "^0.2.31"
     },
     "devDependencies": {
@@ -53,6 +49,7 @@
         "@types/cookie-parser": "^1.4.2",
         "@types/express": "^4.17.3",
         "@types/jest": "26.0.10",
+        "@types/kd-tree-javascript": "^1.0.0",
         "@types/node": "^13.9.1",
         "@types/passport-jwt": "^3.0.5",
         "@types/supertest": "^2.0.8",
