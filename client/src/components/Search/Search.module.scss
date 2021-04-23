@@ -7,12 +7,6 @@
     left: 1rem;
     max-width: min(400px, 90vw);
     width: 100%;
-
-    &:focus-within {
-        .results {
-            max-height: 40vh;
-        }
-    }
 }
 
 .results {
@@ -21,4 +15,8 @@
     max-height: 0;
     padding: 0 !important;
     overflow-y: scroll;
+}
+
+.active {
+    max-height: 40vh;
 }
