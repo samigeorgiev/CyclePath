@@ -3,6 +3,7 @@ import {
     ClickAwayListener,
     InputAdornment,
     List,
+    ListItem,
     ListItemText,
     TextField
 } from '@material-ui/core'
@@ -119,7 +120,8 @@ const Search: React.FC<Props> = (props) => {
                         ].join(' ')}
                     >
                         {results.map((result) => (
-                            <ListItemText
+                            <ListItem
+                                button
                                 key={`${result.lat},${result.lng}`}
                                 onClick={() => clickHandler(result)}
                             >
@@ -127,7 +129,7 @@ const Search: React.FC<Props> = (props) => {
                                     primary={result.name}
                                     secondary={result.address}
                                 />
-                            </ListItemText>
+                            </ListItem>
                         ))}
                     </List>
                 </form>
