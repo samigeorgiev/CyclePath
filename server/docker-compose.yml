@@ -1,10 +1,22 @@
-version: '3.1'
+version: '3.9'
 
 services:
+    neo4j:
+        image: neo4j
+        restart: always
+        ports:
+            - '7687:7687'
+        environment:
+            - NEO4J_AUTH=${NEO4J_USERNAME}/${NEO4J_PASSWORD}
+            - NEO4JLABS_PLUGINS=["graph-data-science", "apoc"]
+        volumes:
+            - neo4j_data:/data
+            - neo4j_logs:/logs
+            - neo4j_import:/var/lib/neo4j/import
+            - neo4j_plugins:/plugins
     postgres:
         image: postgres
         restart: always
-        container_name: postgres-cyclepath
         ports:
             - '5432:5432'
         environment:
@@ -13,9 +25,13 @@ services:
             POSTGRES_DB: ${PG_DB}
             PGDATA: /var/lib/postgresql/data/pgdata
         volumes:
-            - data:/var/lib/postgresql/data/pgdata
-            - logs:/logs
+            - postgres_data:/var/lib/postgresql/data/pgdata
+            - postgres_logs:/logs
 
 volumes:
-    data:
-    logs:
+    postgres_data:
+    postgres_logs:
+    neo4j_data:
+    neo4j_logs:
+    neo4j_import:
+    neo4j_plugins:

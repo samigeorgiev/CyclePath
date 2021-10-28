@@ -25,8 +25,8 @@ Next-gen bike mapping. Get routes that are fast and reliable. CyclePath is an ap
 
 ## Authors
 
--   [@ManiacMaxo](https://www.github.com/ManiacMaxo)
--   [@valentin30](https://www.github.com/valentin30)
+-   [@ManiacMaxo](https://github.com/ManiacMaxo)
+-   [@valentin30](https://github.com/valentin30)
 -   [@samigeorgiev](https://github.com/samigeorgiev)
 -   [@toniyanchev](https://github.com/toniyanchev)
 
