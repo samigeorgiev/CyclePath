@@ -4,7 +4,7 @@ import { AiOutlineHome } from 'react-icons/ai'
 import { HiOutlineLogin } from 'react-icons/hi'
 import { CgProfile } from 'react-icons/cg'
 import { SiGooglemaps } from 'react-icons/si'
-import { useHistory, useLocation } from 'react-router-dom'
+import { useNavigate, useLocation } from 'react-router-dom'
 import { AuthContext } from '../../context/Auth/AuthContext'
 import { AuthContextInterface } from '../../context/Auth/AuthContext.interface'
 import styles from './Nav.module.scss'
@@ -12,7 +12,7 @@ import styles from './Nav.module.scss'
 interface Props {}
 
 const Nav: React.FC<Props> = () => {
-    const history = useHistory()
+    const navigator = useNavigate()
 
     const { pathname } = useLocation()
 
@@ -20,9 +20,7 @@ const Nav: React.FC<Props> = () => {
 
     const [navAction, setNavAction] = useState<string>(pathname)
 
-    useEffect(() => {
-        history.push(navAction)
-    }, [navAction])
+    useEffect(() => navigator(navAction), [navAction])
 
     return (
         <BottomNavigation

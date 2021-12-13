@@ -1,21 +1,19 @@
 import { Link, Typography } from '@material-ui/core'
 import decode from 'jwt-decode'
 import React, { useContext, useState } from 'react'
-import { useHistory } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import { toast } from 'react-toastify'
 import { LoginForm } from '../../components'
 import { AuthContext, AuthContextInterface } from '../../context/Auth'
 import { DecodedToken } from '../../tokenTypes/DecodedToken'
 
-interface Props {}
-
-const Login: React.FC<Props> = () => {
+const Login: React.FC = () => {
     const [email, setEmail] = useState<string>('')
     const [password, setPassword] = useState<string>('')
 
     const { setAuthState } = useContext<AuthContextInterface>(AuthContext)
 
-    let history = useHistory()
+    const navigator = useNavigate()
 
     const login = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault()
@@ -28,8 +26,8 @@ const Login: React.FC<Props> = () => {
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify({
-                email: email,
-                password: password
+                email,
+                password
             })
         })
             .then((res) => res.json())
@@ -45,7 +43,7 @@ const Login: React.FC<Props> = () => {
                         userId: id
                     })
                     toast.success('Successful!')
-                    history.push('/')
+                    navigator('/')
                 }
             })
     }

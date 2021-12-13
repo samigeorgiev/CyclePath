@@ -1,19 +1,19 @@
 import { Injectable } from '@nestjs/common'
 import { InjectRepository } from '@nestjs/typeorm'
 import { kdTree } from 'kd-tree-javascript'
+import fetch from 'node-fetch'
 import { Node } from 'src/nodes/entities/node.entity'
+import { RouteSegment } from 'src/nodes/entities/route-segment.entity'
 import { NodesService } from 'src/nodes/nodes.service'
 import { NodesRepository } from 'src/nodes/repository/nodes.repository'
+import { IRouteSegment } from '../nodes/interfaces/route-segment.interface'
 import { AirPollutionReqDto } from './dto/air-pollution-req.dto'
 import { GetRouteDto } from './dto/get-route.dto'
 import { RateRouteDto } from './dto/rate-route.dto'
 import { Route } from './entities/route.entity'
+import { AirPollutionRes } from './interfaces/air-pollution-res.interface'
 import { RoutesRatingRepository } from './repository/routes-rating.repository'
 import { RoutesRepository } from './repository/routes.repository'
-import fetch from 'node-fetch'
-import { AirPollutionRes } from './interfaces/air-pollution-res.interface'
-import { IRouteSegment } from '../nodes/interfaces/route-segment.interface'
-import { RouteSegment } from 'src/nodes/entities/route-segment.entity'
 
 @Injectable()
 export class RoutesService {
@@ -107,7 +107,7 @@ export class RoutesService {
 
         if (!(startPointUrl in airPollutionReqDto)) {
             const startPointRes: Response = await fetch(startPointUrl)
-            if(!startPointRes.ok){
+            if (!startPointRes.ok) {
                 return
             }
             const startPointData = await startPointRes.json()
@@ -115,37 +115,38 @@ export class RoutesService {
         }
         if (!(endPointUrl in airPollutionReqDto)) {
             const endPointRes: Response = await fetch(endPointUrl)
-            if(!endPointRes.ok){
+            if (!endPointRes.ok) {
                 return
             }
             const endPointData = await endPointRes.json()
             this.airPollutionData[endPointUrl] = endPointData
         }
 
-        return { startPointData: this.airPollutionData[startPointUrl], endPointData: this.airPollutionData[endPointUrl] }
+        return {
+            startPointData: this.airPollutionData[startPointUrl],
+            endPointData: this.airPollutionData[endPointUrl]
+        }
     }
 
     async airPollution(airPollutionReqDtos: AirPollutionReqDto[]): Promise<AirPollutionRes[]> {
         const requests = airPollutionReqDtos.map(dto => this.getPollutionData(dto))
         const responses = await Promise.all(requests)
 
-        console.log(responses);
-        
+        console.log(responses)
+
         let date: Date
         let pollution: number
 
-        let data: AirPollutionRes[] = []
+        const data: AirPollutionRes[] = []
         responses.map(res => {
-            if (
-                new Date(res.startPointData.data.time.s).getTime() >
-                new Date(res.endPointData.data.time.s).getTime()
-            ) {
+            if (res.startPointData.data.time.s > res.endPointData.data.time.s) {
                 date = res.startPointData.data.time.s
             } else {
                 date = res.endPointData.data.time.s
             }
 
-            pollution = (res.startPointData.data.iaqi.pm10.v + res.endPointData.data.iaqi.pm10.v) / 2
+            pollution =
+                (res.startPointData.data.iaqi.pm10.v + res.endPointData.data.iaqi.pm10.v) / 2
 
             data.push({
                 measurementTime: date,

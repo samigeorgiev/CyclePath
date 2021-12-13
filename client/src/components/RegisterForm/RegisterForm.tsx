@@ -9,7 +9,7 @@ interface Props {
     handleName: (e: React.ChangeEvent<HTMLInputElement>) => void
     handleEmail: (e: React.ChangeEvent<HTMLInputElement>) => void
     handlePassword: (e: React.ChangeEvent<HTMLInputElement>) => void
-    handleRegister: (event: React.FormEvent<HTMLFormElement>) => Promise<void>
+    handleRegister: (event: React.FormEvent<HTMLFormElement>) => void
 }
 
 const RegisterForm: React.FC<Props> = (props) => {

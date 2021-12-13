@@ -2,6 +2,7 @@ import { ThemeProvider } from '@material-ui/core'
 import React from 'react'
 import ReactDOM from 'react-dom'
 import { BrowserRouter } from 'react-router-dom'
+import { ToastContainer } from 'react-toastify'
 import App from './App'
 import { AuthContextProvider } from './context/Auth/AuthContextProvider'
 import reportWebVitals from './reportWebVitals'
@@ -14,6 +15,7 @@ ReactDOM.render(
             <AuthContextProvider>
                 <ThemeProvider theme={theme}>
                     <App />
+                    <ToastContainer />
                 </ThemeProvider>
             </AuthContextProvider>
         </BrowserRouter>

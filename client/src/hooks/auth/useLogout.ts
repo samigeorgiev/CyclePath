@@ -1,5 +1,5 @@
 import { useCallback, useContext } from 'react'
-import { useHistory } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import { AuthContext } from '../../context/Auth/AuthContext'
 import { AuthContextInterface } from '../../context/Auth/AuthContext.interface'
 import { AuthContextState } from '../../context/Auth/AuthContextState'
@@ -10,11 +10,10 @@ interface LogoutState {
 }
 
 export const useLogout = (): LogoutState => {
-    const { setAuthState, authState } = useContext<AuthContextInterface>(
-        AuthContext
-    )
+    const { setAuthState, authState } =
+        useContext<AuthContextInterface>(AuthContext)
 
-    let history = useHistory()
+    const navigator = useNavigate()
 
     const logout = useCallback(async () => {
         if (!authState?.token) {
@@ -31,7 +30,7 @@ export const useLogout = (): LogoutState => {
         })
 
         setAuthState(null)
-        history.push('/')
+        navigator('/')
     }, [authState?.token, setAuthState])
 
     return { logout, authState }

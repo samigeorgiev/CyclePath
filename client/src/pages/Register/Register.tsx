@@ -1,27 +1,25 @@
 import { Link, Typography } from '@material-ui/core'
 import decode from 'jwt-decode'
 import React, { useContext, useState } from 'react'
-import { useHistory } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import { toast } from 'react-toastify'
 import { RegisterForm } from '../../components'
 import { AuthContext, AuthContextInterface } from '../../context/Auth'
 import { DecodedToken } from '../../tokenTypes/DecodedToken'
 
-interface Props {}
-
-const Register: React.FC<Props> = () => {
+const Register: React.FC = () => {
     const [name, setName] = useState<string>('')
     const [email, setEmail] = useState<string>('')
     const [password, setPassword] = useState<string>('')
 
     const { setAuthState } = useContext<AuthContextInterface>(AuthContext)
 
-    let history = useHistory()
+    const navigator = useNavigate()
 
-    const register = async (event: React.FormEvent<HTMLFormElement>) => {
+    const register = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault()
 
-        await fetch(`${process.env.REACT_APP_API_URL}/auth/sign-up`, {
+        fetch(`${process.env.REACT_APP_API_URL}/auth/sign-up`, {
             method: 'POST',
             credentials: 'include',
             headers: {
@@ -29,9 +27,9 @@ const Register: React.FC<Props> = () => {
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify({
-                name: name,
-                email: email,
-                password: password
+                name,
+                email,
+                password
             })
         })
             .then((res) => res.json())
@@ -47,7 +45,7 @@ const Register: React.FC<Props> = () => {
                         userId: id
                     })
                     toast.success('Successful!')
-                    history.push('/')
+                    navigator('/')
                 }
             })
     }

@@ -1,8 +1,7 @@
 import { CircularProgress } from '@material-ui/core'
 import React, { Suspense, useContext } from 'react'
-import { Route, Switch } from 'react-router-dom'
-import { ToastContainer } from 'react-toastify'
-import 'react-toastify/dist/ReactToastify.css'
+import { Route, Routes } from 'react-router-dom'
+import 'react-toastify/dist/ReactToastify.min.css'
 import { Nav } from './components'
 import { AuthContext, AuthContextInterface } from './context/Auth'
 import { useRefreshToken } from './hooks'
@@ -22,36 +21,22 @@ const App = () => {
     return (
         <>
             <Suspense fallback={<CircularProgress />}>
-                <Switch>
-                    <Route exact path='/'>
-                        <Home />
-                    </Route>
+                <Routes>
+                    <Route path='/' element={<Home />} />
                     {authState ? (
-                        <Route exact path='/map'>
-                            <Map />
-                        </Route>
-                    ) : null}
-                    {authState ? (
-                        <Route exact path='/profile'>
-                            <Profile />
-                        </Route>
-                    ) : null}
-                    {authState ? null : (
-                        <Route exact path='/login'>
-                            <Login />
-                        </Route>
+                        <>
+                            <Route path='/map' element={<Map />} />
+                            <Route path='/profile' element={<Profile />} />
+                        </>
+                    ) : (
+                        <>
+                            <Route path='/login' element={<Login />} />
+                            <Route path='/register' element={<Register />} />
+                        </>
                     )}
-                    {authState ? null : (
-                        <Route exact path='/register'>
-                            <Register />
-                        </Route>
-                    )}
-                    <Route path='/'>
-                        <Error />
-                    </Route>
-                </Switch>
+                    <Route path='*' element={<Error />} />
+                </Routes>
             </Suspense>
-            <ToastContainer />
             <Nav />
         </>
     )
