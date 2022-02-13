@@ -1,4 +1,5 @@
-import { HttpModule, Module } from '@nestjs/common'
+import { HttpModule } from '@nestjs/axios'
+import { Module } from '@nestjs/common'
 import { SeachController } from './search.controller'
 import { SearchService } from './search.service'
 

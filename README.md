@@ -8,7 +8,7 @@
 ![react](https://img.shields.io/github/package-json/dependency-version/maniacmaxo/cyclepath/react?filename=client%2Fpackage.json&label=React)
 ![nest](https://img.shields.io/github/package-json/dependency-version/maniacmaxo/cyclepath/@nestjs/core?filename=server%2Fpackage.json&label=NestJS)
 
-_This project was made primarily over the course of a weekend during the hackathon Hack TUES GG. It placed 1st and was awarded by multiple industry-leading companies._
+_This project was made primarily over the course of a weekend during the hackathon [Hack TUES GG](https://hacktues.com). It placed 1st and was awarded by multiple industry-leading companies._
 
 Next-gen bike mapping. Get routes that are fast and reliable. CyclePath is an application for finding the best-rated routes for cyclists based on the ratings of other users.
 

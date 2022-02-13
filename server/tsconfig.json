@@ -9,7 +9,7 @@
     "module": "commonjs",
     "outDir": "./dist",
     "removeComments": true,
-    "sourceMap": true,
+    "sourceMap": false,
     "target": "es2017"
   }
 }

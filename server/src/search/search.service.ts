@@ -1,4 +1,5 @@
-import { BadRequestException, HttpService, Injectable } from '@nestjs/common'
+import { HttpService } from '@nestjs/axios'
+import { BadRequestException, Injectable } from '@nestjs/common'
 import { LocationDto } from './dto'
 
 @Injectable()

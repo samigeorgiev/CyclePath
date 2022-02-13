@@ -13,6 +13,6 @@ Before you begin:
 
 -   Populate .env files in /server and /osm-integration
     (Maps API key is from Google and Air Quality key is from ...)
--   Compose docker images in /server with `docker-compose up -d`
+-   Compose docker images in /server with `docker compose --env-file ./server/.env up -d`
 -   Install dependencies in /client and /server then run `yarn build`
 -   If you chose to run with (pm2)[https://pm2.keymetrics.io/], an .env file must be present in the root directory

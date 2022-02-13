@@ -2,14 +2,12 @@ FROM node:lts as builder
 
 WORKDIR /app/server
 # caching installing dependencies
-COPY ./server/yarn.lock ./
-COPY ./server/package.json ./
+COPY ./server/yarn.lock ./server/package.json ./
 RUN yarn install --frozen-lockfile && yarn cache clean
 
 WORKDIR /app/client
 # caching installing dependencies
-COPY ./client/yarn.lock ./
-COPY ./client/package.json ./
+COPY ./client/yarn.lock ./client/package.json ./
 RUN yarn install --frozen-lockfile && yarn cache clean
 
 WORKDIR /app/server
@@ -22,19 +20,27 @@ RUN yarn build
 
 FROM alpine
 
-WORKDIR /app
-COPY --from=builder /app/server/dist ./server
-COPY --from=builder /app/client/build ./client
+RUN apk add --update \
+    nginx supervisor nodejs=16.14.0-r0 npm && \
+    npm i -g yarn
 
-RUN apk add --update nodejs=16.13.1-r0 npm nginx postgresql
-RUN npm install -g yarn
+RUN addgroup -S cyclepath && adduser -S cyclepath -G cyclepath
+USER cyclepath
+
+WORKDIR /app
+COPY --from=builder --chown=cyclepath:cyclepath /app/server/dist ./server
+COPY --from=builder --chown=cyclepath:cyclepath /app/client/build ./client
 
 WORKDIR /app/server
-
-COPY server/package.json ./
+COPY server/package.json server/yarn.lock ./
 RUN yarn install --production && yarn cache clean
 
+RUN mkdir -p /etc/
+COPY ./docker/supervisord.conf /etc/supervisord.conf
 COPY ./docker/nginx.conf /etc/nginx/nginx.conf
-COPY ./docker/entrypoint.sh /app/entrypoint.sh
 
-ENTRYPOINT [ "/app/entrypoint.sh" ]
+RUN install -dv -m 0755 -o cyclepath -g cyclepath /var/log/nginx /var/lib/nginx /var/lib/nginx/body
+RUN chown -R cyclepath:cyclepath /var/log/nginx /var/lib/nginx
+
+EXPOSE 80
+CMD ["/usr/bin/supervisord", "-c", "/etc/supervisord.conf"]
