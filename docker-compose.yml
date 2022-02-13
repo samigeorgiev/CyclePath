@@ -24,8 +24,8 @@ services:
             - postgres_data:/var/lib/postgresql/data/pgdata
             - postgres_logs:/logs
     app:
-        build: .
-        # image: cyclepath
+        # build: .
+        image: cyclepath
         restart: unless-stopped
         depends_on:
             - neo4j
@@ -48,6 +48,9 @@ services:
             - PG_USER=${PG_USER}
             - PG_PASSWORD=${PG_PASSWORD}
             - PG_DB=${PG_DB}
+
+            - ACCESS_TOKEN_SECRET=${ACCESS_TOKEN_SECRET}
+            - REFRESH_TOKEN_SECRET=${REFRESH_TOKEN_SECRET}
 
 volumes:
     postgres_data:
